@@ -1,0 +1,10 @@
+framework module SwiftHTTP {
+  umbrella header "SwiftHTTP.h"
+
+  export *
+  module * { export * }
+}
+
+module SwiftHTTP.Swift {
+    header "SwiftHTTP-Swift.h"
+}

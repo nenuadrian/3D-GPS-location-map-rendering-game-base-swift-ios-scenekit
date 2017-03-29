@@ -1,0 +1,10 @@
+{
+  "xcodeVersion" : "Xcode 8.3\nBuild version 8E162",
+  "commitish" : "2.0.2",
+  "iOS" : [
+    {
+      "hash" : "fe94a0b764b6757c06a8b12a415b5006f7845db700efb7faa33f60cef91b2801",
+      "name" : "SwiftHTTP"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "hack-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Adrian M. Nenu",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "email-validator": "^1.0.7",
+    "express": "^4.10.2",
+    "md5": "^2.2.1",
+    "mongodb": "^2.2.21",
+    "request": "*",
+    "restify": "^4.3.0",
+    "socket.io": "^1.7.2",
+    "uuid": "^3.0.1",
+    "vector2-node": "0.0.3"
+  }
+}

@@ -1,0 +1,6 @@
+github "SwiftyJSON/SwiftyJSON"
+
+github "daltoniam/SwiftHTTP" >= 2.0.0
+
+github "thii/FontAwesome.swift"
+

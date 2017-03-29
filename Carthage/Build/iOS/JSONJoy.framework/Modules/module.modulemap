@@ -1,0 +1,10 @@
+framework module JSONJoy {
+  umbrella header "JSONJoy.h"
+
+  export *
+  module * { export * }
+}
+
+module JSONJoy.Swift {
+    header "JSONJoy-Swift.h"
+}
