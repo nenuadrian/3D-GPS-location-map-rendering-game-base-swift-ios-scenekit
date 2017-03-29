@@ -1,6 +1,0 @@
-framework module FontAwesome {
-  umbrella header "FontAwesome.h"
-
-  export *
-  module * { export * }
-}
