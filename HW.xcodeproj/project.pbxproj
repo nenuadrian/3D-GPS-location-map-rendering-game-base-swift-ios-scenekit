@@ -17,20 +17,21 @@
 		D68AD0FF1E93048000B659E3 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD0FE1E93048000B659E3 /* AuthViewController.swift */; };
 		D68AD1011E930C8B00B659E3 /* GUIMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1001E930C8B00B659E3 /* GUIMaster.swift */; };
 		D68AD1061E93195F00B659E3 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1051E93195F00B659E3 /* Inventory.swift */; };
-		D68AD1081E931C9E00B659E3 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1071E931C9E00B659E3 /* DropView.swift */; };
-		D68AD10A1E93272C00B659E3 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1091E93272C00B659E3 /* InventoryView.swift */; };
-		D68AD10C1E93282B00B659E3 /* CraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10B1E93282B00B659E3 /* CraftView.swift */; };
+		D68AD1081E931C9E00B659E3 /* DropInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1071E931C9E00B659E3 /* DropInterface.swift */; };
+		D68AD10A1E93272C00B659E3 /* InventoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1091E93272C00B659E3 /* InventoryInterface.swift */; };
+		D68AD10C1E93282B00B659E3 /* CraftInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10B1E93282B00B659E3 /* CraftInterface.swift */; };
 		D68AD10E1E93289F00B659E3 /* Craft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10D1E93289F00B659E3 /* Craft.swift */; };
 		D68AD1101E9328D700B659E3 /* Apps.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10F1E9328D700B659E3 /* Apps.swift */; };
 		D68AD1121E932B0E00B659E3 /* FormulaInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1111E932B0E00B659E3 /* FormulaInterface.swift */; };
 		D68AD1141E93993A00B659E3 /* HomebaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1131E93993A00B659E3 /* HomebaseView.swift */; };
-		D68AD1161E93AC8000B659E3 /* HomebaseInsideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1151E93AC8000B659E3 /* HomebaseInsideView.swift */; };
-		D68AD1181E93ACDD00B659E3 /* AppsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1171E93ACDD00B659E3 /* AppsView.swift */; };
-		D68AD11A1E93AEA600B659E3 /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68AD1191E93AEA600B659E3 /* SocketIO.framework */; };
-		D68AD11F1E93F2DB00B659E3 /* HomebaseInstallApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD11E1E93F2DB00B659E3 /* HomebaseInstallApp.swift */; };
+		D68AD1161E93AC8000B659E3 /* HomebaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1151E93AC8000B659E3 /* HomebaseInterface.swift */; };
+		D68AD1181E93ACDD00B659E3 /* AppsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1171E93ACDD00B659E3 /* AppsInterface.swift */; };
+		D68AD11F1E93F2DB00B659E3 /* HomebaseInstallInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD11E1E93F2DB00B659E3 /* HomebaseInstallInterface.swift */; };
 		D68AD1211E94225200B659E3 /* NPC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1201E94225200B659E3 /* NPC.swift */; };
 		D68AD1231E942E0700B659E3 /* NPCInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1221E942E0700B659E3 /* NPCInterface.swift */; };
 		D68AD1251E9438D500B659E3 /* CardinalInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1241E9438D500B659E3 /* CardinalInterface.swift */; };
+		D68AD12A1E944EFC00B659E3 /* Starscream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68AD1291E944EFC00B659E3 /* Starscream.framework */; };
+		D68AD12D1E945D2300B659E3 /* GridPointInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD12C1E945D2300B659E3 /* GridPointInterface.swift */; };
 		D69182001E895D1500DC038E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69181FF1E895D1500DC038E /* AppDelegate.swift */; };
 		D69182021E895D1500DC038E /* WorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69182011E895D1500DC038E /* WorldViewController.swift */; };
 		D69182081E895D1500DC038E /* HW.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D69182061E895D1500DC038E /* HW.xcdatamodeld */; };
@@ -55,20 +56,22 @@
 		D68AD0FE1E93048000B659E3 /* AuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
 		D68AD1001E930C8B00B659E3 /* GUIMaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIMaster.swift; sourceTree = "<group>"; };
 		D68AD1051E93195F00B659E3 /* Inventory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
-		D68AD1071E931C9E00B659E3 /* DropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
-		D68AD1091E93272C00B659E3 /* InventoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
-		D68AD10B1E93282B00B659E3 /* CraftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CraftView.swift; sourceTree = "<group>"; };
+		D68AD1071E931C9E00B659E3 /* DropInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropInterface.swift; sourceTree = "<group>"; };
+		D68AD1091E93272C00B659E3 /* InventoryInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryInterface.swift; sourceTree = "<group>"; };
+		D68AD10B1E93282B00B659E3 /* CraftInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CraftInterface.swift; sourceTree = "<group>"; };
 		D68AD10D1E93289F00B659E3 /* Craft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Craft.swift; sourceTree = "<group>"; };
 		D68AD10F1E9328D700B659E3 /* Apps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Apps.swift; sourceTree = "<group>"; };
 		D68AD1111E932B0E00B659E3 /* FormulaInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormulaInterface.swift; sourceTree = "<group>"; };
 		D68AD1131E93993A00B659E3 /* HomebaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebaseView.swift; sourceTree = "<group>"; };
-		D68AD1151E93AC8000B659E3 /* HomebaseInsideView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebaseInsideView.swift; sourceTree = "<group>"; };
-		D68AD1171E93ACDD00B659E3 /* AppsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsView.swift; sourceTree = "<group>"; };
+		D68AD1151E93AC8000B659E3 /* HomebaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebaseInterface.swift; sourceTree = "<group>"; };
+		D68AD1171E93ACDD00B659E3 /* AppsInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsInterface.swift; sourceTree = "<group>"; };
 		D68AD1191E93AEA600B659E3 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = Carthage/Build/iOS/SocketIO.framework; sourceTree = "<group>"; };
-		D68AD11E1E93F2DB00B659E3 /* HomebaseInstallApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebaseInstallApp.swift; sourceTree = "<group>"; };
+		D68AD11E1E93F2DB00B659E3 /* HomebaseInstallInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebaseInstallInterface.swift; sourceTree = "<group>"; };
 		D68AD1201E94225200B659E3 /* NPC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NPC.swift; sourceTree = "<group>"; };
 		D68AD1221E942E0700B659E3 /* NPCInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NPCInterface.swift; sourceTree = "<group>"; };
 		D68AD1241E9438D500B659E3 /* CardinalInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardinalInterface.swift; sourceTree = "<group>"; };
+		D68AD1291E944EFC00B659E3 /* Starscream.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Starscream.framework; path = Carthage/Build/iOS/Starscream.framework; sourceTree = "<group>"; };
+		D68AD12C1E945D2300B659E3 /* GridPointInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridPointInterface.swift; sourceTree = "<group>"; };
 		D69181FC1E895D1500DC038E /* HW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HW.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69181FF1E895D1500DC038E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D69182011E895D1500DC038E /* WorldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldViewController.swift; sourceTree = "<group>"; };
@@ -89,7 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D68AD11A1E93AEA600B659E3 /* SocketIO.framework in Frameworks */,
+				D68AD12A1E944EFC00B659E3 /* Starscream.framework in Frameworks */,
 				D6EA44FE1E8B342700658CAF /* CoreMotion.framework in Frameworks */,
 				D68906971E897B8300D51592 /* SwiftyJSON.framework in Frameworks */,
 				D6846A8D1E8976A60016C0F0 /* SwiftHTTP.framework in Frameworks */,
@@ -103,6 +106,7 @@
 		D6846A841E8960120016C0F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D68AD1291E944EFC00B659E3 /* Starscream.framework */,
 				D68AD1191E93AEA600B659E3 /* SocketIO.framework */,
 				D6EA44FD1E8B342700658CAF /* CoreMotion.framework */,
 				D68906961E897B8300D51592 /* SwiftyJSON.framework */,
@@ -126,18 +130,16 @@
 		D68AD1031E93191F00B659E3 /* World */ = {
 			isa = PBXGroup;
 			children = (
+				D68AD12B1E945C6D00B659E3 /* GridPoint */,
 				D68AD11B1E93F18F00B659E3 /* Homebase */,
-				D69182011E895D1500DC038E /* WorldViewController.swift */,
-				D68906981E8985CA00D51592 /* Tile2D.swift */,
-				D617C4241E89FD43001D2DAD /* GridPoint.swift */,
+				D68AD1281E944AFD00B659E3 /* Map */,
+				D68AD1261E944AD900B659E3 /* NPC */,
 				D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */,
 				D68AD11C1E93F19800B659E3 /* Craft */,
-				D68AD1001E930C8B00B659E3 /* GUIMaster.swift */,
-				D68AD1071E931C9E00B659E3 /* DropView.swift */,
+				D68AD1271E944AE600B659E3 /* GUI */,
+				D68AD1071E931C9E00B659E3 /* DropInterface.swift */,
 				D68AD11D1E93F1A500B659E3 /* Apps */,
-				D68AD1091E93272C00B659E3 /* InventoryView.swift */,
-				D68AD1201E94225200B659E3 /* NPC.swift */,
-				D68AD1221E942E0700B659E3 /* NPCInterface.swift */,
+				D68AD1091E93272C00B659E3 /* InventoryInterface.swift */,
 			);
 			name = World;
 			sourceTree = "<group>";
@@ -156,8 +158,8 @@
 			isa = PBXGroup;
 			children = (
 				D68AD1131E93993A00B659E3 /* HomebaseView.swift */,
-				D68AD1151E93AC8000B659E3 /* HomebaseInsideView.swift */,
-				D68AD11E1E93F2DB00B659E3 /* HomebaseInstallApp.swift */,
+				D68AD1151E93AC8000B659E3 /* HomebaseInterface.swift */,
+				D68AD11E1E93F2DB00B659E3 /* HomebaseInstallInterface.swift */,
 			);
 			name = Homebase;
 			sourceTree = "<group>";
@@ -165,7 +167,7 @@
 		D68AD11C1E93F19800B659E3 /* Craft */ = {
 			isa = PBXGroup;
 			children = (
-				D68AD10B1E93282B00B659E3 /* CraftView.swift */,
+				D68AD10B1E93282B00B659E3 /* CraftInterface.swift */,
 				D68AD10D1E93289F00B659E3 /* Craft.swift */,
 				D68AD1111E932B0E00B659E3 /* FormulaInterface.swift */,
 			);
@@ -176,9 +178,45 @@
 			isa = PBXGroup;
 			children = (
 				D68AD10F1E9328D700B659E3 /* Apps.swift */,
-				D68AD1171E93ACDD00B659E3 /* AppsView.swift */,
+				D68AD1171E93ACDD00B659E3 /* AppsInterface.swift */,
 			);
 			name = Apps;
+			sourceTree = "<group>";
+		};
+		D68AD1261E944AD900B659E3 /* NPC */ = {
+			isa = PBXGroup;
+			children = (
+				D68AD1201E94225200B659E3 /* NPC.swift */,
+				D68AD1221E942E0700B659E3 /* NPCInterface.swift */,
+			);
+			name = NPC;
+			sourceTree = "<group>";
+		};
+		D68AD1271E944AE600B659E3 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				D68AD1001E930C8B00B659E3 /* GUIMaster.swift */,
+				D68AD1241E9438D500B659E3 /* CardinalInterface.swift */,
+			);
+			name = GUI;
+			sourceTree = "<group>";
+		};
+		D68AD1281E944AFD00B659E3 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				D69182011E895D1500DC038E /* WorldViewController.swift */,
+				D68906981E8985CA00D51592 /* Tile2D.swift */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
+		D68AD12B1E945C6D00B659E3 /* GridPoint */ = {
+			isa = PBXGroup;
+			children = (
+				D617C4241E89FD43001D2DAD /* GridPoint.swift */,
+				D68AD12C1E945D2300B659E3 /* GridPointInterface.swift */,
+			);
+			name = GridPoint;
 			sourceTree = "<group>";
 		};
 		D69181F31E895D1400DC038E = {
@@ -210,7 +248,6 @@
 				D68AD1021E93190400B659E3 /* Helpers */,
 				D68AD1031E93191F00B659E3 /* World */,
 				D68AD1041E93193300B659E3 /* Player */,
-				D68AD1241E9438D500B659E3 /* CardinalInterface.swift */,
 			);
 			path = HW;
 			sourceTree = "<group>";
@@ -292,7 +329,7 @@
 			inputPaths = (
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftHTTP.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/SocketIO.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Starscream.framework",
 			);
 			name = "Run Script";
 			outputPaths = (
@@ -313,7 +350,7 @@
 				D689069B1E8993E200D51592 /* Utils.swift in Sources */,
 				D617C4251E89FD43001D2DAD /* GridPoint.swift in Sources */,
 				D69182081E895D1500DC038E /* HW.xcdatamodeld in Sources */,
-				D68AD10C1E93282B00B659E3 /* CraftView.swift in Sources */,
+				D68AD10C1E93282B00B659E3 /* CraftInterface.swift in Sources */,
 				D68AD1141E93993A00B659E3 /* HomebaseView.swift in Sources */,
 				D6EA44FA1E8A5DF100658CAF /* Player.swift in Sources */,
 				D68AD1121E932B0E00B659E3 /* FormulaInterface.swift in Sources */,
@@ -322,20 +359,21 @@
 				D6EA44F61E8A281F00658CAF /* API.swift in Sources */,
 				D6EA44F81E8A536800658CAF /* Tasks.swift in Sources */,
 				D69182021E895D1500DC038E /* WorldViewController.swift in Sources */,
-				D68AD1081E931C9E00B659E3 /* DropView.swift in Sources */,
+				D68AD1081E931C9E00B659E3 /* DropInterface.swift in Sources */,
 				D68AD0FF1E93048000B659E3 /* AuthViewController.swift in Sources */,
 				D69182001E895D1500DC038E /* AppDelegate.swift in Sources */,
 				D68906991E8985CA00D51592 /* Tile2D.swift in Sources */,
-				D68AD1181E93ACDD00B659E3 /* AppsView.swift in Sources */,
+				D68AD1181E93ACDD00B659E3 /* AppsInterface.swift in Sources */,
 				D68AD10E1E93289F00B659E3 /* Craft.swift in Sources */,
 				D68AD1061E93195F00B659E3 /* Inventory.swift in Sources */,
 				D68AD1211E94225200B659E3 /* NPC.swift in Sources */,
-				D68AD11F1E93F2DB00B659E3 /* HomebaseInstallApp.swift in Sources */,
-				D68AD10A1E93272C00B659E3 /* InventoryView.swift in Sources */,
+				D68AD11F1E93F2DB00B659E3 /* HomebaseInstallInterface.swift in Sources */,
+				D68AD10A1E93272C00B659E3 /* InventoryInterface.swift in Sources */,
 				D68AD1101E9328D700B659E3 /* Apps.swift in Sources */,
 				D6EA44FC1E8AC81D00658CAF /* LocationMaster.swift in Sources */,
+				D68AD12D1E945D2300B659E3 /* GridPointInterface.swift in Sources */,
 				D6EA44F41E8A26EC00658CAF /* Constants.swift in Sources */,
-				D68AD1161E93AC8000B659E3 /* HomebaseInsideView.swift in Sources */,
+				D68AD1161E93AC8000B659E3 /* HomebaseInterface.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -63,7 +63,6 @@ class Task {
 class TasksManager {
     static var tasks: [String: Task] = [:]
     
-    
     static func initTasks(tasks: JSON) {
         for task in tasks.array! {
             TasksManager.addTask(task: Task(task: task))
@@ -79,16 +78,9 @@ class TasksManager {
         
         switch task.type! {
         case Task.TYPE.HOME_BASE:
+            Player.homebase = Homebase(coords: Vector2(x: Scalar(task.data["coords"][0].double!), y: Scalar(task.data["coords"][1].double!)))
             break
         case Task.TYPE.CRAFT:
-            let id = task.data["formula"].int!
-            if let formula = Craft.formulas.first(where: { $0.id == id }) {
-                if formula.item != nil {
-                    Inventory.add(item: formula.item)
-                } else {
-                    Apps.add(app: formula.app)
-                }
-            }
             break
         default:
             break

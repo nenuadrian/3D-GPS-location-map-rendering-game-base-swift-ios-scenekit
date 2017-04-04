@@ -10,14 +10,21 @@ import Foundation
 import SwiftyJSON
 
 class App {
+    var id: String
     var type: Int
     
     init(type: Int) {
+        self.id = ""
+        self.type = type
+    }
+    
+    init(id: String, type: Int) {
+        self.id = id
         self.type = type
     }
     
     convenience init(data: JSON) {
-        self.init(type: data["type"].int!)
+        self.init(id: data["_id"].string!, type: data["type"].int!)
     }
     
 }

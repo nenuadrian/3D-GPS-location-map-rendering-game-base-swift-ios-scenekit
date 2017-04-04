@@ -11,19 +11,15 @@ import Foundation
 import UIKit
 import SwiftyJSON
 
-class ItemView: UIView, UIGestureRecognizerDelegate {
-    var item: Item!
+class InstallAppBitView: UIView, UIGestureRecognizerDelegate {
+    var app: App!
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    init(frame: CGRect, item: Item) {
-        self.item = item
+    init(frame: CGRect, app: App) {
+        self.app = app
         super.init(frame: frame)
         
         let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 100, height: 20))
-        nameLabel.text = "Item \(item.type) x \(item.q)"
+        nameLabel.text = "App \(app.type)"
         addSubview(nameLabel)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: nil)
@@ -32,40 +28,36 @@ class ItemView: UIView, UIGestureRecognizerDelegate {
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        API.post(endpoint: "homebase/install/\(app.id)") { (data) in
+            Apps.apps.remove(at: Apps.apps.index(where: { $0.id == self.app.id })!)
+            self.removeFromSuperview()
+
+        }
         return false
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
 
-class InventoryView: UIView {
+class HomebaseInstallInterface: CardinalInterface {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-       backgroundColor = UIColor.brown
-        
+    func show() {
         var index = 0
-        for item in Inventory.items {
+        for app in Apps.apps {
             index += 1
-            let itemView = ItemView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), item: item)
-            addSubview(itemView)
+            let appBtiView = InstallAppBitView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), app: app)
+            addSubview(v: appBtiView)
         }
         
         let done = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
         done.setTitle("done", for: .normal)
-        done.addTarget(self, action: #selector(doneCall), for: .touchUpInside)
-        
-        addSubview(done)
+        done.addTarget(self, action: #selector(doneCall), for: .touchDown)
+        addSubview(v: done)
     }
     
-    func doneCall(_ sender: AnyObject?) {
-        removeFromSuperview()
-    }
-    
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    @objc func doneCall(_ sender: AnyObject?) {
+        close()
     }
 }

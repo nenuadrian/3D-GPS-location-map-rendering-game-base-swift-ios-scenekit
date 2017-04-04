@@ -40,6 +40,14 @@ class API {
                     if json["data"]["action"]["drop"] != JSON.null {
                         GUIMaster.drop(data: json["data"]["action"]["drop"])
                     }
+                
+                    if json["data"]["action"]["item"] != JSON.null {
+                        Inventory.add(item: Item(data: json["data"]["action"]["item"]))
+                    }
+                    
+                    if json["data"]["action"]["app"] != JSON.null {
+                        Apps.apps.append(App(data: json["data"]["action"]["app"]))
+                    }
                 }
                 
                 callback(json)

@@ -15,10 +15,6 @@ class GridPoint: UIView {
     var gridPointPosition: Vector2!
     var state: Int = 1
     var timer: Timer!
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
     
     init(tileKey: Vector2) {
         srand48(Int(tileKey.x) * Int(tileKey.y) * Int(10000))
@@ -27,6 +23,7 @@ class GridPoint: UIView {
         let gridPointPosition = Vector2(Float(611) / 2, Float(611) / 2) +
             Vector2(Scalar(200 - Int((drand48() * 1000).truncatingRemainder(dividingBy: 500))),
                     Scalar(200 - Int((drand48() * 1000).truncatingRemainder(dividingBy: 500))))
+        
         super.init(frame: CGRect(x: Double(gridPointPosition.x), y: Double(gridPointPosition.y), width: 20, height: 20))
         self.gridPointPosition = gridPointPosition
         
@@ -65,28 +62,8 @@ class GridPoint: UIView {
         self.setState(state: 1)
     }
     
-    func someAction(_ sender:UITapGestureRecognizer){
-        switch self.state {
-        case 2:
-            API.post(endpoint: "gridPoint/\(Int(self.tileKey.x))/\(Int(self.tileKey.y))/surge", callback: { (data) in
-                for tileData in data["data"]["network"].array! {
-                    let tile = Vector2(Scalar(tileData["x"].int!), Scalar(tileData["y"].int!))
-                    if let mapTile = WorldViewController.mapTiles[tile] {
-                        mapTile.gridPoint.setState(state: 3, remaining: data["data"]["remaining"].int!)
-                    }
-                }
-            })
-            break
-        case 1:
-            API.post(endpoint: "gridPoint/\(Int(self.tileKey.x))/\(Int(self.tileKey.y))/hack", callback: { (data) in
-                if data["code"].int! == 200 {
-                    self.setState(state: 2, remaining: data["data"]["s"].int!)
-                }
-            })
-            break
-        default: break
-        }
-        
+    func someAction(_ sender: UITapGestureRecognizer) {
+        GridPointInterface.init().show(gridPoint: self)
     }
     
     required init?(coder aDecoder: NSCoder) {

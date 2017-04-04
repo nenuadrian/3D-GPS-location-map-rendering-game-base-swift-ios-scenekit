@@ -14,11 +14,7 @@ import SwiftyJSON
 class DropItemView: UIView, UIGestureRecognizerDelegate {
     var item: Item!
     var selected: Bool = false
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
+
     init(frame: CGRect, item: Item) {
         self.item = item
         super.init(frame: frame)
@@ -44,16 +40,10 @@ class DropItemView: UIView, UIGestureRecognizerDelegate {
     }
 }
 
-class DropView: UIView {
+class DropInterface: CardinalInterface {
     private var items: [DropItemView] = []
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    init(frame: CGRect, items: JSON) {
-        super.init(frame: frame)
-        backgroundColor = UIColor.brown
+    func show(items: JSON) {
 
         var index = 0
         for item in items.array! {
@@ -65,7 +55,7 @@ class DropView: UIView {
         
         let done = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
         done.setTitle("done", for: .normal)
-        done.addTarget(self, action: #selector(doneCall), for: .touchUpInside)
+        done.addTarget(self, action: #selector(doneCall), for: .touchDown)
 
         addSubview(done)
     }
@@ -77,11 +67,7 @@ class DropView: UIView {
             self.items.filter({ $0.selected }).forEach({ Inventory.add(item: $0.item) })
         })
         
-        removeFromSuperview()
+        close()
     }
-
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 }

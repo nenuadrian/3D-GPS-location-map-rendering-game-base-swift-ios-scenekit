@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import SwiftyJSON
 
 class AuthViewController: UIViewController {
     override func viewDidLoad() {
@@ -16,6 +17,9 @@ class AuthViewController: UIViewController {
         
         API.get(endpoint: "player", callback: { data in
             Player.initPlayer(data: data["data"]["player"])
+            if data["data"]["player"]["home_base"] != JSON.null {
+                Player.homebase = Homebase(data: data["data"]["player"]["home_base"])
+            }
             TasksManager.initTasks(tasks: data["data"]["tasks"])
             Inventory.initInventory(items: data["data"]["player"]["inventory"])
             Apps.initApps(apps: data["data"]["player"]["apps"])

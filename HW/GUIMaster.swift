@@ -16,38 +16,55 @@ class GUIMaster {
     
     init(view: UIView) {
         GUIMaster.view = view
-        refreshTasks()
         
         let invButton = UIButton(frame: CGRect(x: 10, y: 600, width: 70, height:30))
         invButton.setTitle("inv", for: .normal)
-        invButton.addTarget(self, action: #selector(inventory), for: .touchUpInside)
+        invButton.addTarget(self, action: #selector(inventory), for: .touchDown)
         view.addSubview(invButton)
         
         let craftButton = UIButton(frame: CGRect(x: 90, y: 600, width: 70, height:30))
         craftButton.setTitle("craft", for: .normal)
-        craftButton.addTarget(self, action: #selector(craft), for: .touchUpInside)
+        craftButton.addTarget(self, action: #selector(craft), for: .touchDown)
         view.addSubview(craftButton)
+
+    
+        let appsButton = UIButton(frame: CGRect(x: 170, y: 600, width: 70, height:30))
+        appsButton.setTitle("apps", for: .normal)
+        appsButton.addTarget(self, action: #selector(apps), for: .touchDown)
+        view.addSubview(appsButton)
     }
     
     @objc func inventory() {
-        GUIMaster.view.addSubview(InventoryView(frame: CGRect(x: 10, y: 10, width: 200, height: 500)))
+        InventoryInterface().show()
+    }
+    
+    @objc func apps() {
+        AppsInterface().show()
     }
     
     @objc func craft() {
-        GUIMaster.view.addSubview(CraftView(frame: CGRect(x: 10, y: 10, width: 200, height: 500)))
+       CraftInterface().show()
     }
     
-    func refreshTasks() {
-        // TODO go through children and find the ones which are task views and manage them
+    static func homebase() {
+        HomebaseInterface().show()
+    }
+    
+    static func homebaseInstallApp() {
+        HomebaseInstallInterface().show()
+    }
+    
+    static func npc(npc: NPC) {
+        NPCInterface().show(npc: npc)
     }
     
     static func formula(formula: CraftFormula) {
-        view.addSubview(FormulaView(frame: CGRect(x: 10, y: 10, width: 200, height: 500), formula: formula))
+        FormulaInterface().show(formula: formula)
     }
     
     static func drop(data: JSON) {
         DispatchQueue.main.async {
-            view.addSubview(DropView(frame: CGRect(x: 10, y: 10, width: 200, height: 500), items: data))
+            DropInterface().show(items: data)
         }
     }
 }

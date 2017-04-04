@@ -31,6 +31,6 @@ function deg2rad(angle) {
   return (Math.PI / 180) * angle;
 }
 
-module.export = {
-  
+module.exports = {
+  latLonToTile: latLonToTile
 }

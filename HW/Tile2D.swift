@@ -14,23 +14,45 @@ class Tile2D: UIView {
     var data: JSON = JSON.null
     var tileKey: Vector2 = Vector2.zero
     var gridPoint: GridPoint!
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
 
-    init(frame: CGRect, data: JSON, tileKey: Vector2) {
-        self.data = data
+    init(tileKey: Vector2) {
         self.tileKey = tileKey
-
+        
+        let delta = (tileKey - WorldViewController.primordialTile) * 611.5 + Vector2(5000, 5000)
+        super.init(frame: CGRect(x: Double(delta.x), y: Double(delta.y), width: 611.5, height: 611.5))
+        
         gridPoint = GridPoint(tileKey: tileKey)
-        super.init(frame: frame)
         self.addSubview(gridPoint)
+        
+        Homebase.placeIfOn(mapTile: self)
+        
+        if WorldViewController.tilesDataCache[tileKey] != nil {
+            self.data = WorldViewController.tilesDataCache[tileKey]!
+            renderTile()
+        } else {
+            WorldViewController.tilesDataCache[tileKey] = JSON.null
+            API.get(endpoint: "tile/\(Int(tileKey.x))/\(Int(tileKey.y))", callback: { (data) in
+                WorldViewController.tilesDataCache[tileKey] = data["data"]
+                self.data = data["data"]
+                DispatchQueue.main.async {
+                    self.renderTile()
+                }
+            })
+        }
     }
 
+    func renderTile() {
+        self.setNeedsDisplay()
+        data["npcs"].array!.forEach { (npcData) in
+            let npc = NPC(data: npcData)
+            addSubview(npc)
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
+    
     func drawShapes(field: String) {
         let context = UIGraphicsGetCurrentContext()!
         context.setStrokeColor(UIColor(red:0.20, green:0.60, blue:0.88, alpha:1.0).cgColor)
@@ -86,11 +108,10 @@ class Tile2D: UIView {
         context.addRect(rect)
         context.drawPath(using: .fillStroke)
         
-        
-    //    drawShapes(field: "buildings")
-        drawShapes(field: "roads")
-      //  drawShapes(field: "water")
-        
-
+        if data != JSON.null {
+            //    drawShapes(field: "buildings")
+            drawShapes(field: "roads")
+            //  drawShapes(field: "water")
+        }
     }
 }

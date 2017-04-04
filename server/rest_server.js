@@ -16,7 +16,6 @@ var restify = require('restify'),
 
 var TASK = { TYPES: { HOME_BASE_PLACE: 1, CRAFT: 2 } }
 
-
 class Player {
   constructor(data) {
     delete data.password
@@ -125,15 +124,17 @@ server.get('/homebase', authLock, (req, res, next) => {
 })
 
 server.post('/homebase/install/:app', authLock, (req, res, next) => {
-  var app = req.user.data.apps.splice(req.params.app, 1)
-  req.user.data.home_base.apps.push(app[0])
+  var app = req.user.data.apps.find(a => a._id == req.params.app)
+  req.user.data.apps.splice(req.user.data.apps.indexOf(app), 1)
+  req.user.data.home_base.apps.push(app)
   req.user.save()
   req.answer(200)
 })
 
 server.post('/homebase/uninstall/:app', authLock, (req, res, next) => {
-  var app = req.user.data.home_base.apps.splice(req.params.app, 1)
-  req.user.data.apps.push(app[0])
+  var app = req.user.data.home_base.apps.find(a => a._id == req.params.app)
+  req.user.data.home_base.apps.splice(req.user.data.home_base.apps.indexOf(app), 1)
+  req.user.data.apps.push(app)
   req.user.save()
   req.answer(200)
 })
@@ -239,8 +240,11 @@ server.post('/gridPoint/:tileX/:tileY/surge', authLock, (req, res, next) => {
 
 server.get('/tile/:x/:y', authLock, (req, res, next) => {
   if (!req.user.data) { return req.answer(401) }
-  var data = JSON.parse(fs.readFileSync('./tiles/' + req.params.x + '/' + req.params.y + '.json', 'utf8'))
-  req.answer(200, data)
+  var data = JSON.parse(fs.readFileSync('./tiles/' + parseInt(req.params.x) + '/' + parseInt(req.params.y) + '.json', 'utf8'))
+  mongoDB.collection('npcs').find({ "tile": [parseInt(req.params.x), parseInt(req.params.y)] }).toArray((err, npcs) => {
+    data.npcs = npcs
+    req.answer(200, data)
+  })
 })
 
 
@@ -272,18 +276,25 @@ server.get('/task/:task_id', authLock, (req, res, next) => {
     } else {
       req.user.data.tasks.splice(req.user.data.tasks.findIndex(t => t._id == task._id ), 1)
       mongoDB.collection('users').updateOne({ _id: req.user.data._id }, { $set: { 'tasks': req.user.data.tasks }})
+      var data = {}
       if (task.type == TASK.TYPES.HOME_BASE_PLACE) {
         req.user.data.home_base = { x: task.data.coords[0], y: task.data.coords[1], level: 1, tile: utils.latLonToTile(task.data.coords[0], task.data.coords[1]), apps: [] }
       } else if (task.type == TASK.TYPES.CRAFT) {
         var formula = craft.formulas.find(f => f.id == task.data.formula)
         if (formula.item) {
           req.user.inventory.add(formula.item)
+          data.action = { item: formula.item }
         } else {
-          req.user.data.apps.push(formula.app)
+          var app = {
+            type: formula.app.type,
+            _id: new ObjectID()
+          }
+          req.user.data.apps.push(app)
+          data.action = { app: app }
         }
       }
       req.user.save()
-      req.answer(200)
+      req.answer(200, data)
     }
   }
 })
@@ -291,24 +302,20 @@ server.get('/task/:task_id', authLock, (req, res, next) => {
 server.get('/player', authLock, (req, res, next) => {
   var notHackedBefore = new Date()
   notHackedBefore.setSeconds(notHackedBefore.getSeconds() - config.GP_HACK_WAIT)
-  mongoDB.collection('grid_points').find({ user_id: req.user.data._id, 'last_hack': {'$gt': notHackedBefore }  }).toArray((err, r) =>  {
-    req.user.data.tasks.forEach(t => {
-      t.s = Math.floor((t.finishes_at.getTime() - new Date().getTime()) / 1000)
-      delete t.created_at
-      delete t.finishes_at
-    })
-    req.answer(200, {
-      player: req.user.basic(),
-      visited_nodes: r.map(vn => { return { t: vn.grid_point.split('-'), s: Math.floor((new Date().getTime() - vn.last_hack.getTime()) / 1000) }}),
-      tasks: req.user.data.tasks,
-    })
+  req.user.data.tasks.forEach(t => {
+    t.s = Math.floor((t.finishes_at.getTime() - new Date().getTime()) / 1000)
+    delete t.created_at
+    delete t.finishes_at
+  })
+  req.answer(200, {
+    player: req.user.basic(),
+    tasks: req.user.data.tasks,
   })
 })
 
 server.post('/auth', (req, res, next) => {
   mongoDB.collection('users').findOne({ username: req.params.username }).then(function(user) {
     if (!user || !bcrypt.compareSync(req.params.password, user.password)) {
-
       return req.answer(401)
     }
     var authToken = bcrypt.hashSync(uuidV4() + (new Date).getTime + req.params.username)
