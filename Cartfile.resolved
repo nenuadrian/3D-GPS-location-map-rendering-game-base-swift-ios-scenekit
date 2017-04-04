@@ -1,3 +1,4 @@
+github "ReactiveX/RxSwift" "3.3.1"
 github "SwiftyJSON/SwiftyJSON" "3.1.4"
 github "daltoniam/SwiftHTTP" "2.0.2"
-github "thii/FontAwesome.swift" "1.1.1"
+github "thii/FontAwesome.swift" "1.1.2"

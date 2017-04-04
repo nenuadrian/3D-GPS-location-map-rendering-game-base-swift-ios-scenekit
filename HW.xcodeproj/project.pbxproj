@@ -14,9 +14,17 @@
 		D68906971E897B8300D51592 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68906961E897B8300D51592 /* SwiftyJSON.framework */; };
 		D68906991E8985CA00D51592 /* Tile2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68906981E8985CA00D51592 /* Tile2D.swift */; };
 		D689069B1E8993E200D51592 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D689069A1E8993E200D51592 /* Utils.swift */; };
+		D68AD0FF1E93048000B659E3 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD0FE1E93048000B659E3 /* AuthViewController.swift */; };
+		D68AD1011E930C8B00B659E3 /* GUIMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1001E930C8B00B659E3 /* GUIMaster.swift */; };
+		D68AD1061E93195F00B659E3 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1051E93195F00B659E3 /* Inventory.swift */; };
+		D68AD1081E931C9E00B659E3 /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1071E931C9E00B659E3 /* DropView.swift */; };
+		D68AD10A1E93272C00B659E3 /* InventoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1091E93272C00B659E3 /* InventoryView.swift */; };
+		D68AD10C1E93282B00B659E3 /* CraftView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10B1E93282B00B659E3 /* CraftView.swift */; };
+		D68AD10E1E93289F00B659E3 /* Craft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10D1E93289F00B659E3 /* Craft.swift */; };
+		D68AD1101E9328D700B659E3 /* Apps.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10F1E9328D700B659E3 /* Apps.swift */; };
+		D68AD1121E932B0E00B659E3 /* FormulaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1111E932B0E00B659E3 /* FormulaView.swift */; };
 		D69182001E895D1500DC038E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69181FF1E895D1500DC038E /* AppDelegate.swift */; };
 		D69182021E895D1500DC038E /* WorldViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D69182011E895D1500DC038E /* WorldViewController.swift */; };
-		D69182051E895D1500DC038E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D69182031E895D1500DC038E /* Main.storyboard */; };
 		D69182081E895D1500DC038E /* HW.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D69182061E895D1500DC038E /* HW.xcdatamodeld */; };
 		D691820A1E895D1500DC038E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D69182091E895D1500DC038E /* Assets.xcassets */; };
 		D691820D1E895D1500DC038E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D691820B1E895D1500DC038E /* LaunchScreen.storyboard */; };
@@ -26,7 +34,6 @@
 		D6EA44FA1E8A5DF100658CAF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44F91E8A5DF100658CAF /* Player.swift */; };
 		D6EA44FC1E8AC81D00658CAF /* LocationMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */; };
 		D6EA44FE1E8B342700658CAF /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6EA44FD1E8B342700658CAF /* CoreMotion.framework */; };
-		D6EA45001E8B4D6600658CAF /* GameWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44FF1E8B4D6500658CAF /* GameWorld.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,10 +44,18 @@
 		D68906961E897B8300D51592 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		D68906981E8985CA00D51592 /* Tile2D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tile2D.swift; sourceTree = "<group>"; };
 		D689069A1E8993E200D51592 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		D68AD0FE1E93048000B659E3 /* AuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
+		D68AD1001E930C8B00B659E3 /* GUIMaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIMaster.swift; sourceTree = "<group>"; };
+		D68AD1051E93195F00B659E3 /* Inventory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
+		D68AD1071E931C9E00B659E3 /* DropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
+		D68AD1091E93272C00B659E3 /* InventoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryView.swift; sourceTree = "<group>"; };
+		D68AD10B1E93282B00B659E3 /* CraftView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CraftView.swift; sourceTree = "<group>"; };
+		D68AD10D1E93289F00B659E3 /* Craft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Craft.swift; sourceTree = "<group>"; };
+		D68AD10F1E9328D700B659E3 /* Apps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Apps.swift; sourceTree = "<group>"; };
+		D68AD1111E932B0E00B659E3 /* FormulaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormulaView.swift; sourceTree = "<group>"; };
 		D69181FC1E895D1500DC038E /* HW.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HW.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69181FF1E895D1500DC038E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D69182011E895D1500DC038E /* WorldViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorldViewController.swift; sourceTree = "<group>"; };
-		D69182041E895D1500DC038E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D69182071E895D1500DC038E /* HW.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HW.xcdatamodel; sourceTree = "<group>"; };
 		D69182091E895D1500DC038E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D691820C1E895D1500DC038E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -51,7 +66,6 @@
 		D6EA44F91E8A5DF100658CAF /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationMaster.swift; sourceTree = "<group>"; };
 		D6EA44FD1E8B342700658CAF /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
-		D6EA44FF1E8B4D6500658CAF /* GameWorld.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameWorld.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +94,45 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D68AD1021E93190400B659E3 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				D617BCAB1E89E76C008556B9 /* VectorMath.swift */,
+				D689069A1E8993E200D51592 /* Utils.swift */,
+				D6EA44F31E8A26EC00658CAF /* Constants.swift */,
+				D6EA44F51E8A281F00658CAF /* API.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		D68AD1031E93191F00B659E3 /* World */ = {
+			isa = PBXGroup;
+			children = (
+				D69182011E895D1500DC038E /* WorldViewController.swift */,
+				D68906981E8985CA00D51592 /* Tile2D.swift */,
+				D617C4241E89FD43001D2DAD /* GridPoint.swift */,
+				D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */,
+				D68AD1001E930C8B00B659E3 /* GUIMaster.swift */,
+				D68AD1071E931C9E00B659E3 /* DropView.swift */,
+				D68AD1091E93272C00B659E3 /* InventoryView.swift */,
+				D68AD10B1E93282B00B659E3 /* CraftView.swift */,
+				D68AD10D1E93289F00B659E3 /* Craft.swift */,
+				D68AD10F1E9328D700B659E3 /* Apps.swift */,
+				D68AD1111E932B0E00B659E3 /* FormulaView.swift */,
+			);
+			name = World;
+			sourceTree = "<group>";
+		};
+		D68AD1041E93193300B659E3 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				D6EA44F71E8A536800658CAF /* Tasks.swift */,
+				D6EA44F91E8A5DF100658CAF /* Player.swift */,
+				D68AD1051E93195F00B659E3 /* Inventory.swift */,
+			);
+			name = Player;
+			sourceTree = "<group>";
+		};
 		D69181F31E895D1400DC038E = {
 			isa = PBXGroup;
 			children = (
@@ -100,23 +153,15 @@
 		D69181FE1E895D1500DC038E /* HW */ = {
 			isa = PBXGroup;
 			children = (
-				D69181FF1E895D1500DC038E /* AppDelegate.swift */,
-				D617BCAB1E89E76C008556B9 /* VectorMath.swift */,
-				D69182011E895D1500DC038E /* WorldViewController.swift */,
-				D69182031E895D1500DC038E /* Main.storyboard */,
 				D69182091E895D1500DC038E /* Assets.xcassets */,
-				D691820B1E895D1500DC038E /* LaunchScreen.storyboard */,
-				D691820E1E895D1500DC038E /* Info.plist */,
 				D69182061E895D1500DC038E /* HW.xcdatamodeld */,
-				D68906981E8985CA00D51592 /* Tile2D.swift */,
-				D689069A1E8993E200D51592 /* Utils.swift */,
-				D617C4241E89FD43001D2DAD /* GridPoint.swift */,
-				D6EA44F31E8A26EC00658CAF /* Constants.swift */,
-				D6EA44F51E8A281F00658CAF /* API.swift */,
-				D6EA44F71E8A536800658CAF /* Tasks.swift */,
-				D6EA44F91E8A5DF100658CAF /* Player.swift */,
-				D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */,
-				D6EA44FF1E8B4D6500658CAF /* GameWorld.swift */,
+				D691820E1E895D1500DC038E /* Info.plist */,
+				D691820B1E895D1500DC038E /* LaunchScreen.storyboard */,
+				D69181FF1E895D1500DC038E /* AppDelegate.swift */,
+				D68AD0FE1E93048000B659E3 /* AuthViewController.swift */,
+				D68AD1021E93190400B659E3 /* Helpers */,
+				D68AD1031E93191F00B659E3 /* World */,
+				D68AD1041E93193300B659E3 /* Player */,
 			);
 			path = HW;
 			sourceTree = "<group>";
@@ -184,7 +229,6 @@
 			files = (
 				D691820D1E895D1500DC038E /* LaunchScreen.storyboard in Resources */,
 				D691820A1E895D1500DC038E /* Assets.xcassets in Resources */,
-				D69182051E895D1500DC038E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,16 +258,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				D617BCAC1E89E76C008556B9 /* VectorMath.swift in Sources */,
+				D68AD1011E930C8B00B659E3 /* GUIMaster.swift in Sources */,
 				D689069B1E8993E200D51592 /* Utils.swift in Sources */,
 				D617C4251E89FD43001D2DAD /* GridPoint.swift in Sources */,
 				D69182081E895D1500DC038E /* HW.xcdatamodeld in Sources */,
+				D68AD10C1E93282B00B659E3 /* CraftView.swift in Sources */,
 				D6EA44FA1E8A5DF100658CAF /* Player.swift in Sources */,
+				D68AD1121E932B0E00B659E3 /* FormulaView.swift in Sources */,
 				D6EA44F61E8A281F00658CAF /* API.swift in Sources */,
 				D6EA44F81E8A536800658CAF /* Tasks.swift in Sources */,
 				D69182021E895D1500DC038E /* WorldViewController.swift in Sources */,
-				D6EA45001E8B4D6600658CAF /* GameWorld.swift in Sources */,
+				D68AD1081E931C9E00B659E3 /* DropView.swift in Sources */,
+				D68AD0FF1E93048000B659E3 /* AuthViewController.swift in Sources */,
 				D69182001E895D1500DC038E /* AppDelegate.swift in Sources */,
 				D68906991E8985CA00D51592 /* Tile2D.swift in Sources */,
+				D68AD10E1E93289F00B659E3 /* Craft.swift in Sources */,
+				D68AD1061E93195F00B659E3 /* Inventory.swift in Sources */,
+				D68AD10A1E93272C00B659E3 /* InventoryView.swift in Sources */,
+				D68AD1101E9328D700B659E3 /* Apps.swift in Sources */,
 				D6EA44FC1E8AC81D00658CAF /* LocationMaster.swift in Sources */,
 				D6EA44F41E8A26EC00658CAF /* Constants.swift in Sources */,
 			);
@@ -232,14 +284,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		D69182031E895D1500DC038E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				D69182041E895D1500DC038E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		D691820B1E895D1500DC038E /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -353,7 +397,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = HW/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Adrian-Nenu.HW";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -373,7 +417,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = HW/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "Adrian-Nenu.HW";
 				PRODUCT_NAME = "$(TARGET_NAME)";

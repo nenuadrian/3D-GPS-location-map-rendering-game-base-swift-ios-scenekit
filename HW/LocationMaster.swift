@@ -10,8 +10,10 @@ import Foundation
 import CoreLocation
 
 class LocationMaster: NSObject, CLLocationManagerDelegate {
-    let locationManager = CLLocationManager()
-    static var last: Vector2!
+    private let locationManager = CLLocationManager()
+    private static var last: Vector2 = Vector2.zero
+    private static var debugLast: Vector2 = Vector2(53.45884, -2.22993)
+    static var debug: Bool = false
     
     override init() {
         super.init()
@@ -32,6 +34,13 @@ class LocationMaster: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         LocationMaster.last = Vector2(Scalar(manager.location!.coordinate.latitude), Scalar(manager.location!.coordinate.longitude))
 
+    }
+    
+    static func getLast() -> Vector2 {
+        if LocationMaster.debug {
+            return LocationMaster.debugLast
+        }
+        return LocationMaster.last
     }
 
 }

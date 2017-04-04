@@ -8,9 +8,14 @@
 
 import Foundation
 import UIKit
-import SwiftHTTP
+import SwiftyJSON
 
 class Player: UIView {
+    static var level: Int = 1
+    static var exp: Int = 0
+    static var group: Int = 0
+    static var username: String = ""
+    
     var tileKey: Vector2 = Vector2.zero
     var gridPointPosition: Vector2!
     var state: Int = 1
@@ -27,12 +32,18 @@ class Player: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    static func initPlayer(data: JSON) {
+        Player.level = data["level"].int!
+        Player.exp = data["exp"].int!
+        Player.group = data["group"].int!
+        Player.username = data["username"].string!
+    }
+    
     func someAction(_ sender:UITapGestureRecognizer) {
         API.put(endpoint: "tasks/homebase", callback: { (data) in
             if data["code"].int! == 200 {
-                TasksManager.addTask(task: data["data"]["task"])
             }
         })
     }
-  
+    
 }

@@ -45,15 +45,15 @@ class GridPoint: UIView {
             switch self.state {
             case 2:
                 self.backgroundColor = UIColor.yellow
-               // self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(remaining), repeats: false, block: self.resetState)
-
+                Timer.scheduledTimer(timeInterval: TimeInterval(remaining), target: self, selector: #selector(self.resetState), userInfo: nil, repeats: false)
                 break
             case 1:
                 self.backgroundColor = UIColor.green
                 break
             case 3:
                 self.backgroundColor = UIColor.red
-             //   self.timer = Timer.scheduledTimer(withTimeInterval: TimeInterval(remaining), repeats: false, block: self.resetState)
+                Timer.scheduledTimer(timeInterval: TimeInterval(remaining), target: self, selector: #selector(self.resetState), userInfo: nil, repeats: false)
+
                 break
             default: break
             }
@@ -80,9 +80,7 @@ class GridPoint: UIView {
         case 1:
             API.post(endpoint: "gridPoint/\(Int(self.tileKey.x))/\(Int(self.tileKey.y))/hack", callback: { (data) in
                 if data["code"].int! == 200 {
-                    if data["code"].int! == 200 {
-                        self.setState(state: 2, remaining: data["data"]["remaining"].int!)
-                    }
+                    self.setState(state: 2, remaining: data["data"]["s"].int!)
                 }
             })
             break

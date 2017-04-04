@@ -11,15 +11,20 @@ import SwiftHTTP
 import SwiftyJSON
 
 class API {
-    static let host = "http://192.168.1.87:3001/"
-    static var token: String = "$2a$10$4t/TH1OG90Ov10D1w6n9MeIn7h3uvJCltegydwLe8iB02Nj7We3IG".addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+    static let host = "http://192.168.0.103:3001/"
+    private static var token: String = ""
     
-    static func request(method: HTTPVerb, endpoint: String, callback: @escaping (_: JSON) -> Void) {
+    static func setToken(token: String) {
+        API.token = token.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+    }
+    
+    static func request(method: HTTPVerb, params: [String : Any], endpoint: String, callback: @escaping (_: JSON) -> Void) {
         do {
-            let url = "\(host)\(endpoint)?token=\(token)\(LocationMaster.last != nil ? "&lat=\(LocationMaster.last.x)&long=\(LocationMaster.last.y)" : "")"
+            let url = "\(host)\(endpoint)?token=\(token)&lat=\(LocationMaster.getLast().x)&lon=\(LocationMaster.getLast().y)"
             print(url)
 
-            let opt = try HTTP.New(url, method: method)
+            let opt = try HTTP.New(url, method: method, parameters: params, requestSerializer: JSONParameterSerializer(), isDownload: false)
+          
             opt.start { response in
                 if let err = response.error {
                     print("error: \(err.localizedDescription)")
@@ -27,7 +32,16 @@ class API {
                 }
                 
                 let json = JSON(data: response.data)
-                //print(json)
+                if json["data"]["action"] != JSON.null {
+                    if json["data"]["action"]["task"] != JSON.null {
+                        TasksManager.addTask(task: Task(task: json["data"]["action"]["task"]))
+                    }
+                    
+                    if json["data"]["action"]["drop"] != JSON.null {
+                        GUIMaster.drop(data: json["data"]["action"]["drop"])
+                    }
+                }
+                
                 callback(json)
             }
 
@@ -37,14 +51,18 @@ class API {
     }
     
     static func get(endpoint: String, callback: @escaping (_: JSON) -> Void) {
-        request(method: .GET, endpoint: endpoint, callback: callback)
+        request(method: .GET, params: [:], endpoint: endpoint, callback: callback)
     }
     
     static func put(endpoint: String, callback: @escaping (_: JSON) -> Void) {
-        request(method: .PUT, endpoint: endpoint, callback: callback)
+        request(method: .PUT, params: [:], endpoint: endpoint, callback: callback)
     }
     
     static func post(endpoint: String, callback: @escaping (_: JSON) -> Void) {
-        request(method: .POST, endpoint: endpoint, callback: callback)
+        request(method: .POST, params: [:], endpoint: endpoint, callback: callback)
+    }
+    
+    static func post(endpoint: String, params: [String : Any], callback: @escaping (_: JSON) -> Void) {
+        request(method: .POST, params: params, endpoint: endpoint, callback: callback)
     }
 }

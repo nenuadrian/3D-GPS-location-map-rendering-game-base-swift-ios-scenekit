@@ -4,3 +4,4 @@ github "daltoniam/SwiftHTTP" >= 2.0.0
 
 github "thii/FontAwesome.swift"
 
+github "ReactiveX/RxSwift" ~> 3.0

@@ -87,9 +87,9 @@ class Tile2D: UIView {
         context.drawPath(using: .fillStroke)
         
         
-        drawShapes(field: "buildings")
+    //    drawShapes(field: "buildings")
         drawShapes(field: "roads")
-        drawShapes(field: "water")
+      //  drawShapes(field: "water")
         
 
     }

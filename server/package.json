@@ -15,8 +15,9 @@
     "mongodb": "^2.2.21",
     "request": "*",
     "restify": "^4.3.0",
-    "socket.io": "^1.7.2",
+    "socket.io": "^1.7.3",
     "uuid": "^3.0.1",
-    "vector2-node": "0.0.3"
+    "vector2-node": "0.0.3",
+    "ws": "^2.2.2"
   }
 }
