@@ -32,7 +32,7 @@ class LocationMaster: NSObject, CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        LocationMaster.last = Vector2(Scalar(manager.location!.coordinate.latitude), Scalar(manager.location!.coordinate.longitude))
+        LocationMaster.last = Vector2(Float(manager.location!.coordinate.latitude), Float(manager.location!.coordinate.longitude))
 
     }
     

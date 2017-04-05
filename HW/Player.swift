@@ -28,23 +28,18 @@ class Homebase {
         self.relativeCoords = Utils.latLonToMeters(coord: coords) - Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: self.tile))
         self.relativeCoords = Vector2(x: abs(self.relativeCoords.x), y: abs(self.relativeCoords.y))
         WorldViewController.mapTiles.forEach( { Homebase.placeIfOn(mapTile: $0.value) } )
-        
-        print("New HB on tile \(tile)")
     }
     
     convenience init(data: JSON) {
-        self.init(coords: Vector2(x: Scalar(data["x"].double!), y: Scalar(data["y"].double!)), level: data["level"].int!)
+        self.init(coords: Vector2(x: data["x"].float!, y: data["y"].float!), level: data["level"].int!)
 
     }
     
     static func placeIfOn(mapTile: Tile2D) {
         if Player.homebase != nil && Player.homebase.tile! == mapTile.tileKey {
-            print("Matched HB with tile; relative: \(Player.homebase.relativeCoords)")
-            
             Player.homebase.view =
                 HomebaseView(frame: CGRect(x: Double(Player.homebase.relativeCoords.x), y: Double(Player.homebase.relativeCoords.y), width: 30, height: 30))
             mapTile.addSubview(Player.homebase.view)
-            print("Homebase view created")
         }
     }
 }

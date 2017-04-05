@@ -78,7 +78,7 @@ class TasksManager {
         
         switch task.type! {
         case Task.TYPE.HOME_BASE:
-            Player.homebase = Homebase(coords: Vector2(x: Scalar(task.data["coords"][0].double!), y: Scalar(task.data["coords"][1].double!)))
+            Player.homebase = Homebase(coords: Vector2(x: task.data["coords"][0].float!, y: task.data["coords"][1].float!))
             break
         case Task.TYPE.CRAFT:
             break

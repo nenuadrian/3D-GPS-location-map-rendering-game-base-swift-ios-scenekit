@@ -23,9 +23,9 @@ class Utils {
     static func  latLonToTile(coord: Vector2)  -> Vector2 {
         let zoom: Float = pow(2, 16);
         
-        let x = Int(floor(((coord.y + 180) / 360) * zoom))
-        let y = Int(floor((1 - log(tan(deg2rad(angle: coord.x)) + 1 / cos(deg2rad(angle: coord.x))) / Float.pi)/2 * zoom))
-        return Vector2(Scalar(x), Scalar(y))
+        let x = Float(floor(((coord.y + 180) / 360) * zoom))
+        let y = Float(floor((1 - log(tan(deg2rad(angle: coord.x)) + 1 / cos(deg2rad(angle: coord.x))) / Float.pi)/2 * zoom))
+        return Vector2(x, y)
     }
     
     static func tileToLatLon(tile: Vector2) -> Vector2 {

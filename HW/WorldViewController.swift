@@ -16,6 +16,7 @@ import CoreMotion
 class WorldViewController: UIViewController, UIScrollViewDelegate {
     static var mapTiles = [Vector2: Tile2D]()
     static var tilesDataCache = [Vector2: JSON]()
+    static let TILE_RANGE = 1
     
     var mapView: UIView!
     var mapScrollView: UIScrollView!
@@ -91,13 +92,13 @@ class WorldViewController: UIViewController, UIScrollViewDelegate {
         let primordialMeters = Utils.latLonToMeters(coord: primordialLatLon)
         
         let primordialOffset = primordialMeters - currentTileMeters
-        let prepare = Vector2(Scalar(mapScrollView.contentSize.width), Scalar(mapScrollView.contentSize.height)) / 2 - primordialOffset + Vector2(-5000, -5000) - playerOffsetInsideTile
+        let prepare = Vector2(Float(mapScrollView.contentSize.width), Float(mapScrollView.contentSize.height)) / 2 - primordialOffset + Vector2(-5000, -5000) - playerOffsetInsideTile
         
         mapView.frame.origin = CGPoint(x: Double(prepare.x), y: Double(prepare.y))
         
-        for i in -1...1 {
-            for j in -1...1 {
-                let tileKey = currentTile + Vector2(Scalar(i), Scalar(j))
+        for i in -WorldViewController.TILE_RANGE...WorldViewController.TILE_RANGE {
+            for j in -WorldViewController.TILE_RANGE...WorldViewController.TILE_RANGE {
+                let tileKey = currentTile + Vector2(Float(i), Float(j))
                 if WorldViewController.mapTiles[tileKey] == nil {
                     let tile2d = Tile2D(tileKey: tileKey)
                     self.mapView.addSubview(tile2d)

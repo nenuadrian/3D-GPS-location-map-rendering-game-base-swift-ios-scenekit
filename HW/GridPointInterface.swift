@@ -40,7 +40,7 @@ class GridPointInterface: CardinalInterface {
         API.post(endpoint: "gridPoint/\(Int(gridPoint.tileKey.x))/\(Int(gridPoint.tileKey.y))/surge", callback: { (data) in
             if data["code"].int! == 200 {
                 for tileData in data["data"]["network"].array! {
-                    let tile = Vector2(Scalar(tileData[0].int!), Scalar(tileData[1].int!))
+                    let tile = Vector2(tileData[0].float!, tileData[1].float!)
                     if let mapTile = WorldViewController.mapTiles[tile] {
                         mapTile.gridPoint.setState(state: 3, remaining: data["data"]["s"].int!)
                     }

@@ -35,79 +35,63 @@ import Foundation
 
 //MARK: Types
 
-public typealias Scalar = Float
 
 public struct Vector2 {
-    public var x: Scalar
-    public var y: Scalar
+    public var x: Float
+    public var y: Float
 }
 
 public struct Vector3 {
-    public var x: Scalar
-    public var y: Scalar
-    public var z: Scalar
+    public var x: Float
+    public var y: Float
+    public var z: Float
 }
 
 public struct Vector4 {
-    public var x: Scalar
-    public var y: Scalar
-    public var z: Scalar
-    public var w: Scalar
+    public var x: Float
+    public var y: Float
+    public var z: Float
+    public var w: Float
 }
 
 public struct Matrix3 {
-    public var m11: Scalar
-    public var m12: Scalar
-    public var m13: Scalar
-    public var m21: Scalar
-    public var m22: Scalar
-    public var m23: Scalar
-    public var m31: Scalar
-    public var m32: Scalar
-    public var m33: Scalar
+    public var m11: Float
+    public var m12: Float
+    public var m13: Float
+    public var m21: Float
+    public var m22: Float
+    public var m23: Float
+    public var m31: Float
+    public var m32: Float
+    public var m33: Float
 }
 
 public struct Matrix4 {
-    public var m11: Scalar
-    public var m12: Scalar
-    public var m13: Scalar
-    public var m14: Scalar
-    public var m21: Scalar
-    public var m22: Scalar
-    public var m23: Scalar
-    public var m24: Scalar
-    public var m31: Scalar
-    public var m32: Scalar
-    public var m33: Scalar
-    public var m34: Scalar
-    public var m41: Scalar
-    public var m42: Scalar
-    public var m43: Scalar
-    public var m44: Scalar
+    public var m11: Float
+    public var m12: Float
+    public var m13: Float
+    public var m14: Float
+    public var m21: Float
+    public var m22: Float
+    public var m23: Float
+    public var m24: Float
+    public var m31: Float
+    public var m32: Float
+    public var m33: Float
+    public var m34: Float
+    public var m41: Float
+    public var m42: Float
+    public var m43: Float
+    public var m44: Float
 }
 
 public struct Quaternion {
-    public var x: Scalar
-    public var y: Scalar
-    public var z: Scalar
-    public var w: Scalar
+    public var x: Float
+    public var y: Float
+    public var z: Float
+    public var w: Float
 }
 
-//MARK: Scalar
-
-public extension Scalar {
-    public static let pi = Scalar(Double.pi)
-    public static let halfPi = Scalar(Double.pi / 2)
-    public static let quarterPi = Scalar(Double.pi / 4)
-    public static let twoPi = Scalar(Double.pi * 2)
-    public static let degreesPerRadian = 180 / pi
-    public static let radiansPerDegree = pi / 180
-    public static let epsilon: Scalar = 0.0001
-    
-    public static func ~=(lhs: Scalar, rhs: Scalar) -> Bool {
-        return Swift.abs(_:lhs - rhs) < .epsilon
-    }
-}
 
 //MARK: Vector2
 
@@ -120,11 +104,11 @@ extension Vector2: Equatable, Hashable {
         return x.hashValue &+ y.hashValue
     }
     
-    public var lengthSquared: Scalar {
+    public var lengthSquared: Float {
         return x * x + y * y
     }
     
-    public var length: Scalar {
+    public var length: Float {
         return sqrt(lengthSquared)
     }
     
@@ -132,24 +116,24 @@ extension Vector2: Equatable, Hashable {
         return -self
     }
     
-    public init(_ x: Scalar, _ y: Scalar) {
+    public init(_ x: Float, _ y: Float) {
         self.init(x: x, y: y)
     }
     
-    public init(_ v: [Scalar]) {
+    public init(_ v: [Float]) {
         assert(v.count == 2, "array must contain 2 elements, contained \(v.count)")
         self.init(v[0], v[1])
     }
     
-    public func toArray() -> [Scalar] {
+    public func toArray() -> [Float] {
         return [x, y]
     }
     
-    public func dot(_ v: Vector2) -> Scalar {
+    public func dot(_ v: Vector2) -> Float {
         return x * v.x + y * v.y
     }
     
-    public func cross(_ v: Vector2) -> Scalar {
+    public func cross(_ v: Vector2) -> Float {
         return x * v.y - y * v.x
     }
     
@@ -161,17 +145,17 @@ extension Vector2: Equatable, Hashable {
         return self / sqrt(lengthSquared)
     }
     
-    public func rotated(by radians: Scalar) -> Vector2 {
+    public func rotated(by radians: Float) -> Vector2 {
         let cs = cos(radians)
         let sn = sin(radians)
         return Vector2(x * cs - y * sn, x * sn + y * cs)
     }
     
-    public func rotated(by radians: Scalar, around pivot: Vector2) -> Vector2 {
+    public func rotated(by radians: Float, around pivot: Vector2) -> Vector2 {
         return (self - pivot).rotated(by: radians) + pivot
     }
     
-    public func angle(with v: Vector2) -> Scalar {
+    public func angle(with v: Vector2) -> Float {
         if self == v {
             return 0
         }
@@ -184,7 +168,7 @@ extension Vector2: Equatable, Hashable {
         return atan2(cross, dot)
     }
     
-    public func interpolated(with v: Vector2, by t: Scalar) -> Vector2 {
+    public func interpolated(with v: Vector2, by t: Float) -> Vector2 {
         return self + (v - self) * t
     }
     
@@ -204,7 +188,7 @@ extension Vector2: Equatable, Hashable {
         return Vector2(lhs.x * rhs.x, lhs.y * rhs.y)
     }
     
-    public static func *(lhs: Vector2, rhs: Scalar) -> Vector2 {
+    public static func *(lhs: Vector2, rhs: Float) -> Vector2 {
         return Vector2(lhs.x * rhs, lhs.y * rhs)
     }
     
@@ -219,7 +203,7 @@ extension Vector2: Equatable, Hashable {
         return Vector2(lhs.x / rhs.x, lhs.y / rhs.y)
     }
     
-    public static func /(lhs: Vector2, rhs: Scalar) -> Vector2 {
+    public static func /(lhs: Vector2, rhs: Float) -> Vector2 {
         return Vector2(lhs.x / rhs, lhs.y / rhs)
     }
     
@@ -244,11 +228,11 @@ extension Vector3: Equatable, Hashable {
         return x.hashValue &+ y.hashValue &+ z.hashValue
     }
     
-    public var lengthSquared: Scalar {
+    public var lengthSquared: Float {
         return x * x + y * y + z * z
     }
     
-    public var length: Scalar {
+    public var length: Float {
         return sqrt(lengthSquared)
     }
     
@@ -286,20 +270,20 @@ extension Vector3: Equatable, Hashable {
         }
     }
     
-    public init(_ x: Scalar, _ y: Scalar, _ z: Scalar) {
+    public init(_ x: Float, _ y: Float, _ z: Float) {
         self.init(x: x, y: y, z: z)
     }
     
-    public init(_ v: [Scalar]) {
+    public init(_ v: [Float]) {
         assert(v.count == 3, "array must contain 3 elements, contained \(v.count)")
         self.init(v[0], v[1], v[2])
     }
     
-    public func toArray() -> [Scalar] {
+    public func toArray() -> [Float] {
         return [x, y, z]
     }
     
-    public func dot(_ v: Vector3) -> Scalar {
+    public func dot(_ v: Vector3) -> Float {
         return x * v.x + y * v.y + z * v.z
     }
     
@@ -315,7 +299,7 @@ extension Vector3: Equatable, Hashable {
         return self / sqrt(lengthSquared)
     }
 
-    public func interpolated(with v: Vector3, by t: Scalar) -> Vector3 {
+    public func interpolated(with v: Vector3, by t: Float) -> Vector3 {
         return self + (v - self) * t
     }
     
@@ -335,7 +319,7 @@ extension Vector3: Equatable, Hashable {
         return Vector3(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z)
     }
     
-    public static func *(lhs: Vector3, rhs: Scalar) -> Vector3 {
+    public static func *(lhs: Vector3, rhs: Float) -> Vector3 {
         return Vector3(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs)
     }
     
@@ -366,7 +350,7 @@ extension Vector3: Equatable, Hashable {
         return Vector3(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z)
     }
     
-    public static func /(lhs: Vector3, rhs: Scalar) -> Vector3 {
+    public static func /(lhs: Vector3, rhs: Float) -> Vector3 {
         return Vector3(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs)
     }
     
@@ -392,11 +376,11 @@ extension Vector4: Equatable, Hashable {
         return x.hashValue &+ y.hashValue &+ z.hashValue &+ w.hashValue
     }
     
-    public var lengthSquared: Scalar {
+    public var lengthSquared: Float {
         return x * x + y * y + z * z + w * w
     }
     
-    public var length: Scalar {
+    public var length: Float {
         return sqrt(lengthSquared)
     }
     
@@ -445,20 +429,20 @@ extension Vector4: Equatable, Hashable {
         }
     }
     
-    public init(_ x: Scalar, _ y: Scalar, _ z: Scalar, _ w: Scalar) {
+    public init(_ x: Float, _ y: Float, _ z: Float, _ w: Float) {
         self.init(x: x, y: y, z: z, w: w)
     }
     
-    public init(_ v: [Scalar]) {
+    public init(_ v: [Float]) {
         assert(v.count == 4, "array must contain 4 elements, contained \(v.count)")
         self.init(v[0], v[1], v[2], v[3])
     }
     
-    public init(_ v: Vector3, w: Scalar) {
+    public init(_ v: Vector3, w: Float) {
         self.init(v.x, v.y, v.z, w)
     }
     
-    public func toArray() -> [Scalar] {
+    public func toArray() -> [Float] {
         return [x, y, z, w]
     }
     
@@ -470,7 +454,7 @@ extension Vector4: Equatable, Hashable {
         }
     }
     
-    public func dot(_ v: Vector4) -> Scalar {
+    public func dot(_ v: Vector4) -> Float {
         return x * v.x + y * v.y + z * v.z + w * v.w
     }
     
@@ -482,7 +466,7 @@ extension Vector4: Equatable, Hashable {
         return self / sqrt(lengthSquared)
     }
     
-    public func interpolated(with v: Vector4, by t: Scalar) -> Vector4 {
+    public func interpolated(with v: Vector4, by t: Float) -> Vector4 {
         return self + (v - self) * t
     }
     
@@ -502,7 +486,7 @@ extension Vector4: Equatable, Hashable {
         return Vector4(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z, lhs.w * rhs.w)
     }
     
-    public static func *(lhs: Vector4, rhs: Scalar) -> Vector4 {
+    public static func *(lhs: Vector4, rhs: Float) -> Vector4 {
         return Vector4(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs)
     }
     
@@ -519,7 +503,7 @@ extension Vector4: Equatable, Hashable {
         return Vector4(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z, lhs.w / rhs.w)
     }
     
-    public static func /(lhs: Vector4, rhs: Scalar) -> Vector4 {
+    public static func /(lhs: Vector4, rhs: Float) -> Vector4 {
         return Vector4(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs, lhs.w / rhs)
     }
     
@@ -544,9 +528,9 @@ extension Matrix3: Equatable, Hashable {
         return hash
     }
     
-    public init(_ m11: Scalar, _ m12: Scalar, _ m13: Scalar,
-        _ m21: Scalar, _ m22: Scalar, _ m23: Scalar,
-        _ m31: Scalar, _ m32: Scalar, _ m33: Scalar) {
+    public init(_ m11: Float, _ m12: Float, _ m13: Float,
+        _ m21: Float, _ m22: Float, _ m23: Float,
+        _ m31: Float, _ m32: Float, _ m33: Float) {
             
         self.m11 = m11 // 0
         self.m12 = m12 // 1
@@ -575,7 +559,7 @@ extension Matrix3: Equatable, Hashable {
         )
     }
     
-    public init(rotation radians: Scalar) {
+    public init(rotation radians: Float) {
         let cs = cos(radians)
         let sn = sin(radians)
         self.init(
@@ -585,12 +569,12 @@ extension Matrix3: Equatable, Hashable {
         )
     }
     
-    public init(_ m: [Scalar]) {
+    public init(_ m: [Float]) {
         assert(m.count == 9, "array must contain 9 elements, contained \(m.count)")
         self.init(m[0], m[1], m[2], m[3], m[4], m[5], m[6], m[7], m[8])
     }
     
-    public func toArray() -> [Scalar] {
+    public func toArray() -> [Float] {
         return [m11, m12, m13, m21, m22, m23, m31, m32, m33]
     }
     
@@ -608,7 +592,7 @@ extension Matrix3: Equatable, Hashable {
         )
     }
     
-    public var determinant: Scalar {
+    public var determinant: Float {
         return (m11 * m22 * m33 + m12 * m23 * m31 + m13 * m21 * m32)
             - (m13 * m22 * m31 + m11 * m23 * m32 + m12 * m21 * m33)
     }
@@ -621,7 +605,7 @@ extension Matrix3: Equatable, Hashable {
         return adjugate * (1 / determinant)
     }
 
-    public func interpolated(with m: Matrix3, by t: Scalar) -> Matrix3 {
+    public func interpolated(with m: Matrix3, by t: Float) -> Matrix3 {
         return Matrix3(
             m11 + (m.m11 - m11) * t,
             m12 + (m.m12 - m12) * t,
@@ -661,7 +645,7 @@ extension Matrix3: Equatable, Hashable {
         return rhs * lhs
     }
     
-    public static func *(lhs: Matrix3, rhs: Scalar) -> Matrix3 {
+    public static func *(lhs: Matrix3, rhs: Float) -> Matrix3 {
         return Matrix3(
             lhs.m11 * rhs, lhs.m12 * rhs, lhs.m13 * rhs,
             lhs.m21 * rhs, lhs.m22 * rhs, lhs.m23 * rhs,
@@ -709,10 +693,10 @@ extension Matrix4: Equatable, Hashable {
         return hash
     }
     
-    public init(_ m11: Scalar, _ m12: Scalar, _ m13: Scalar, _ m14: Scalar,
-        _ m21: Scalar, _ m22: Scalar, _ m23: Scalar, _ m24: Scalar,
-        _ m31: Scalar, _ m32: Scalar, _ m33: Scalar, _ m34: Scalar,
-        _ m41: Scalar, _ m42: Scalar, _ m43: Scalar, _ m44: Scalar) {
+    public init(_ m11: Float, _ m12: Float, _ m13: Float, _ m14: Float,
+        _ m21: Float, _ m22: Float, _ m23: Float, _ m24: Float,
+        _ m31: Float, _ m32: Float, _ m33: Float, _ m34: Float,
+        _ m41: Float, _ m42: Float, _ m43: Float, _ m44: Float) {
             
         self.m11 = m11 // 0
         self.m12 = m12 // 1
@@ -763,15 +747,15 @@ extension Matrix4: Equatable, Hashable {
         )
     }
     
-    public init(fovx: Scalar, fovy: Scalar, near: Scalar, far: Scalar) {
+    public init(fovx: Float, fovy: Float, near: Float, far: Float) {
         self.init(fovy: fovy, aspect: fovx / fovy, near: near, far: far)
     }
     
-    public init(fovx: Scalar, aspect: Scalar, near: Scalar, far: Scalar) {
+    public init(fovx: Float, aspect: Float, near: Float, far: Float) {
         self.init(fovy: fovx / aspect, aspect: aspect, near: near, far: far)
     }
     
-    public init(fovy: Scalar, aspect: Scalar, near: Scalar, far: Scalar) {
+    public init(fovy: Float, aspect: Float, near: Float, far: Float) {
         let dz = far - near
         
         assert(dz > 0, "far value must be greater than near")
@@ -789,7 +773,7 @@ extension Matrix4: Equatable, Hashable {
         )
     }
     
-    public init(top: Scalar, right: Scalar, bottom: Scalar, left: Scalar, near: Scalar, far: Scalar) {
+    public init(top: Float, right: Float, bottom: Float, left: Float, near: Float, far: Float) {
         let dx = right - left
         let dy = top - bottom
         let dz = far - near
@@ -802,7 +786,7 @@ extension Matrix4: Equatable, Hashable {
         )
     }
     
-    public init(_ m: [Scalar]) {
+    public init(_ m: [Float]) {
         assert(m.count == 16, "array must contain 16 elements, contained \(m.count)")
         
         m11 = m[0]
@@ -823,7 +807,7 @@ extension Matrix4: Equatable, Hashable {
         m44 = m[15]
     }
     
-    public func toArray() -> [Scalar] {
+    public func toArray() -> [Float] {
         return [m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44]
     }
     
@@ -897,11 +881,11 @@ extension Matrix4: Equatable, Hashable {
         return m
     }
     
-    private func determinant(forAdjugate m: Matrix4) -> Scalar {
+    private func determinant(forAdjugate m: Matrix4) -> Float {
         return m11 * m.m11 + m12 * m.m21 + m13 * m.m31 + m14 * m.m41
     }
     
-    public var determinant: Scalar {
+    public var determinant: Float {
         return determinant(forAdjugate: adjugate)
     }
     
@@ -985,7 +969,7 @@ extension Matrix4: Equatable, Hashable {
         return rhs * lhs
     }
     
-    public static func *(lhs: Matrix4, rhs: Scalar) -> Matrix4 {
+    public static func *(lhs: Matrix4, rhs: Float) -> Matrix4 {
         return Matrix4(
             lhs.m11 * rhs, lhs.m12 * rhs, lhs.m13 * rhs, lhs.m14 * rhs,
             lhs.m21 * rhs, lhs.m22 * rhs, lhs.m23 * rhs, lhs.m24 * rhs,
@@ -1045,11 +1029,11 @@ extension Quaternion: Equatable, Hashable {
         return x.hashValue &+ y.hashValue &+ z.hashValue &+ w.hashValue
     }
     
-    public var lengthSquared: Scalar {
+    public var lengthSquared: Float {
         return x * x + y * y + z * z + w * w
     }
     
-    public var length: Scalar {
+    public var length: Float {
         return sqrt(lengthSquared)
     }
     
@@ -1068,19 +1052,19 @@ extension Quaternion: Equatable, Hashable {
         }
     }
     
-    public var pitch: Scalar {
+    public var pitch: Float {
         return atan2(2 * (y * z + w * x), w * w - x * x - y * y + z * z)
     }
     
-    public var yaw: Scalar {
+    public var yaw: Float {
         return asin(-2 * (x * z - w * y))
     }
     
-    public var roll: Scalar {
+    public var roll: Float {
         return atan2(2 * (x * y + w * z), w * w + x * x - y * y - z * z)
     }
     
-    public init(_ x: Scalar, _ y: Scalar, _ z: Scalar, _ w: Scalar) {
+    public init(_ x: Float, _ y: Float, _ z: Float, _ w: Float) {
         self.init(x: x, y: y, z: z, w: w)
     }
     
@@ -1091,7 +1075,7 @@ extension Quaternion: Equatable, Hashable {
         self.init(a.x, a.y, a.z, cos(r))
     }
     
-    public init(pitch: Scalar, yaw: Scalar, roll: Scalar) {
+    public init(pitch: Float, yaw: Float, roll: Float) {
         let quatPitch = Quaternion(axisAngle: Vector4(1, 0, 0, pitch))
         let quatYaw = Quaternion(axisAngle: Vector4(0, 1, 0, yaw))
         let quatRoll = Quaternion(axisAngle: Vector4(0, 0, 1, roll))
@@ -1135,7 +1119,7 @@ extension Quaternion: Equatable, Hashable {
         }
     }
     
-    public init(_ v: [Scalar]) {
+    public init(_ v: [Float]) {
         assert(v.count == 4, "array must contain 4 elements, contained \(v.count)")
         
         x = v[0]
@@ -1144,24 +1128,16 @@ extension Quaternion: Equatable, Hashable {
         w = v[3]
     }
     
-    public func toAxisAngle() -> Vector4 {
-        let scale = xyz.length
-        if scale ~= 0 || scale ~= .twoPi {
-            return .z
-        } else {
-            return Vector4(x / scale, y / scale, z / scale, acos(w) * 2)
-        }
-    }
     
-    public func toPitchYawRoll() -> (pitch: Scalar, yaw: Scalar, roll: Scalar) {
+    public func toPitchYawRoll() -> (pitch: Float, yaw: Float, roll: Float) {
         return (pitch, yaw, roll)
     }
     
-    public func toArray() -> [Scalar] {
+    public func toArray() -> [Float] {
         return [x, y, z, w]
     }
     
-    public func dot(_ v: Quaternion) -> Scalar {
+    public func dot(_ v: Quaternion) -> Float {
         return x * v.x + y * v.y + z * v.z + w * v.w
     }
     
@@ -1173,7 +1149,7 @@ extension Quaternion: Equatable, Hashable {
         return self / sqrt(lengthSquared)
     }
     
-    public func interpolated(with q: Quaternion, by t: Scalar) -> Quaternion {
+    public func interpolated(with q: Quaternion, by t: Float) -> Quaternion {
         let dot = max(-1, min(1, self.dot(q)))
         if dot ~= 1 {
             return (self + (q - self) * t).normalized()
@@ -1210,11 +1186,11 @@ extension Quaternion: Equatable, Hashable {
         return rhs * lhs
     }
     
-    public static func *(lhs: Quaternion, rhs: Scalar) -> Quaternion {
+    public static func *(lhs: Quaternion, rhs: Float) -> Quaternion {
         return Quaternion(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs, lhs.w * rhs)
     }
     
-    public static func /(lhs: Quaternion, rhs: Scalar) -> Quaternion {
+    public static func /(lhs: Quaternion, rhs: Float) -> Quaternion {
         return Quaternion(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs, lhs.w / rhs)
     }
     

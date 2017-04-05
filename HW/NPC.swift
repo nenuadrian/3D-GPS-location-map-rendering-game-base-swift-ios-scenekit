@@ -21,8 +21,8 @@ class NPC: UIView, UIGestureRecognizerDelegate {
     var gridPoint: GridPoint!
     
     init(data: JSON) {
-        self.coords = Vector2(x: Scalar(data["coords"][0].double!), y: Scalar(data["coords"][1].double!))
-        self.tile = Vector2(x: Scalar(data["tile"][0].double!), y: Scalar(data["tile"][1].double!))
+        self.coords = Vector2(x: data["coords"][0].float!, y: data["coords"][1].float!)
+        self.tile = Vector2(x: data["tile"][0].float!, y: data["tile"][1].float!)
         self.relativePosition = Utils.latLonToMeters(coord: self.coords) - Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: self.tile))
         self.relativePosition = Vector2(x: abs(self.relativePosition.x), y: abs(self.relativePosition.y))
         

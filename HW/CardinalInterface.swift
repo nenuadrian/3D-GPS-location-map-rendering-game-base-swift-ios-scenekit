@@ -14,12 +14,12 @@ class CardinalInterface: UIView {
     private var scrollView: UIScrollView!
     
     init() {
-        super.init(frame: CGRect(x: 20, y: 20, width: UIScreen.main.bounds.width - 40, height: UIScreen.main.bounds.height - 40 ))
+        super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
         GUIMaster.view.addSubview(self)
         backgroundColor = UIColor.black
+        alpha = 0.8
 
-        scrollView = UIScrollView(frame: CGRect(x: 15, y: 15, width: frame.width - 30, height: frame.height - 30))
-        scrollView.backgroundColor = UIColor.red
+        scrollView = UIScrollView(frame: CGRect(x: 40, y: 40, width: frame.width - 80, height: frame.height - 80))
         
         addSubview(scrollView)
     }

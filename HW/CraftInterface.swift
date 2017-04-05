@@ -24,6 +24,7 @@ class FormulaBitView: UIView, UIGestureRecognizerDelegate {
         
         let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 100, height: 20))
         nameLabel.text = "Craft \(formula.item) \(formula.app)"
+        nameLabel.textColor = UIColor.red
         addSubview(nameLabel)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: nil)
