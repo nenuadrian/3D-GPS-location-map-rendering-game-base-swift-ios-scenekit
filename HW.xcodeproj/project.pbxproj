@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		D617BCAC1E89E76C008556B9 /* VectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D617BCAB1E89E76C008556B9 /* VectorMath.swift */; };
 		D617C4251E89FD43001D2DAD /* GridPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D617C4241E89FD43001D2DAD /* GridPoint.swift */; };
+		D63510981E9502F900193100 /* QRCode.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D63510971E9502F900193100 /* QRCode.framework */; };
+		D635109A1E95030400193100 /* QRCodeReader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D63510991E95030400193100 /* QRCodeReader.framework */; };
+		D635109C1E9509EA00193100 /* QRCodeInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635109B1E9509EA00193100 /* QRCodeInterface.swift */; };
+		D635109E1E9534A500193100 /* World3DViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635109D1E9534A500193100 /* World3DViewController.swift */; };
+		D63510A21E95369000193100 /* MapTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63510A11E95369000193100 /* MapTile.swift */; };
 		D6846A8B1E8964800016C0F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6846A8A1E8964800016C0F0 /* CoreLocation.framework */; };
 		D6846A8D1E8976A60016C0F0 /* SwiftHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6846A8C1E8976A50016C0F0 /* SwiftHTTP.framework */; };
 		D68906971E897B8300D51592 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68906961E897B8300D51592 /* SwiftyJSON.framework */; };
@@ -48,6 +53,11 @@
 /* Begin PBXFileReference section */
 		D617BCAB1E89E76C008556B9 /* VectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMath.swift; sourceTree = "<group>"; };
 		D617C4241E89FD43001D2DAD /* GridPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridPoint.swift; sourceTree = "<group>"; };
+		D63510971E9502F900193100 /* QRCode.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QRCode.framework; path = Carthage/Build/iOS/QRCode.framework; sourceTree = "<group>"; };
+		D63510991E95030400193100 /* QRCodeReader.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QRCodeReader.framework; path = Carthage/Build/iOS/QRCodeReader.framework; sourceTree = "<group>"; };
+		D635109B1E9509EA00193100 /* QRCodeInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeInterface.swift; sourceTree = "<group>"; };
+		D635109D1E9534A500193100 /* World3DViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = World3DViewController.swift; sourceTree = "<group>"; };
+		D63510A11E95369000193100 /* MapTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
 		D6846A8A1E8964800016C0F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D6846A8C1E8976A50016C0F0 /* SwiftHTTP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftHTTP.framework; path = Carthage/Build/iOS/SwiftHTTP.framework; sourceTree = "<group>"; };
 		D68906961E897B8300D51592 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
@@ -92,6 +102,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D635109A1E95030400193100 /* QRCodeReader.framework in Frameworks */,
+				D63510981E9502F900193100 /* QRCode.framework in Frameworks */,
 				D68AD12A1E944EFC00B659E3 /* Starscream.framework in Frameworks */,
 				D6EA44FE1E8B342700658CAF /* CoreMotion.framework in Frameworks */,
 				D68906971E897B8300D51592 /* SwiftyJSON.framework in Frameworks */,
@@ -103,9 +115,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D635109F1E9534E300193100 /* 2D */ = {
+			isa = PBXGroup;
+			children = (
+				D69182011E895D1500DC038E /* WorldViewController.swift */,
+				D68906981E8985CA00D51592 /* Tile2D.swift */,
+			);
+			name = 2D;
+			sourceTree = "<group>";
+		};
+		D63510A01E9534EB00193100 /* 3D */ = {
+			isa = PBXGroup;
+			children = (
+				D635109D1E9534A500193100 /* World3DViewController.swift */,
+				D63510A11E95369000193100 /* MapTile.swift */,
+			);
+			name = 3D;
+			sourceTree = "<group>";
+		};
 		D6846A841E8960120016C0F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D63510991E95030400193100 /* QRCodeReader.framework */,
+				D63510971E9502F900193100 /* QRCode.framework */,
 				D68AD1291E944EFC00B659E3 /* Starscream.framework */,
 				D68AD1191E93AEA600B659E3 /* SocketIO.framework */,
 				D6EA44FD1E8B342700658CAF /* CoreMotion.framework */,
@@ -134,12 +166,9 @@
 				D68AD11B1E93F18F00B659E3 /* Homebase */,
 				D68AD1281E944AFD00B659E3 /* Map */,
 				D68AD1261E944AD900B659E3 /* NPC */,
-				D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */,
 				D68AD11C1E93F19800B659E3 /* Craft */,
 				D68AD1271E944AE600B659E3 /* GUI */,
-				D68AD1071E931C9E00B659E3 /* DropInterface.swift */,
 				D68AD11D1E93F1A500B659E3 /* Apps */,
-				D68AD1091E93272C00B659E3 /* InventoryInterface.swift */,
 			);
 			name = World;
 			sourceTree = "<group>";
@@ -148,6 +177,7 @@
 			isa = PBXGroup;
 			children = (
 				D6EA44F71E8A536800658CAF /* Tasks.swift */,
+				D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */,
 				D6EA44F91E8A5DF100658CAF /* Player.swift */,
 				D68AD1051E93195F00B659E3 /* Inventory.swift */,
 			);
@@ -195,8 +225,10 @@
 		D68AD1271E944AE600B659E3 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
-				D68AD1001E930C8B00B659E3 /* GUIMaster.swift */,
 				D68AD1241E9438D500B659E3 /* CardinalInterface.swift */,
+				D68AD1071E931C9E00B659E3 /* DropInterface.swift */,
+				D68AD1091E93272C00B659E3 /* InventoryInterface.swift */,
+				D635109B1E9509EA00193100 /* QRCodeInterface.swift */,
 			);
 			name = GUI;
 			sourceTree = "<group>";
@@ -204,8 +236,8 @@
 		D68AD1281E944AFD00B659E3 /* Map */ = {
 			isa = PBXGroup;
 			children = (
-				D69182011E895D1500DC038E /* WorldViewController.swift */,
-				D68906981E8985CA00D51592 /* Tile2D.swift */,
+				D63510A01E9534EB00193100 /* 3D */,
+				D635109F1E9534E300193100 /* 2D */,
 			);
 			name = Map;
 			sourceTree = "<group>";
@@ -245,6 +277,7 @@
 				D691820B1E895D1500DC038E /* LaunchScreen.storyboard */,
 				D69181FF1E895D1500DC038E /* AppDelegate.swift */,
 				D68AD0FE1E93048000B659E3 /* AuthViewController.swift */,
+				D68AD1001E930C8B00B659E3 /* GUIMaster.swift */,
 				D68AD1021E93190400B659E3 /* Helpers */,
 				D68AD1031E93191F00B659E3 /* World */,
 				D68AD1041E93193300B659E3 /* Player */,
@@ -330,6 +363,8 @@
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftHTTP.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Starscream.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/QRCode.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/QRCodeReader.framework",
 			);
 			name = "Run Script";
 			outputPaths = (
@@ -354,6 +389,7 @@
 				D68AD1141E93993A00B659E3 /* HomebaseView.swift in Sources */,
 				D6EA44FA1E8A5DF100658CAF /* Player.swift in Sources */,
 				D68AD1121E932B0E00B659E3 /* FormulaInterface.swift in Sources */,
+				D635109C1E9509EA00193100 /* QRCodeInterface.swift in Sources */,
 				D68AD1251E9438D500B659E3 /* CardinalInterface.swift in Sources */,
 				D68AD1231E942E0700B659E3 /* NPCInterface.swift in Sources */,
 				D6EA44F61E8A281F00658CAF /* API.swift in Sources */,
@@ -364,10 +400,12 @@
 				D69182001E895D1500DC038E /* AppDelegate.swift in Sources */,
 				D68906991E8985CA00D51592 /* Tile2D.swift in Sources */,
 				D68AD1181E93ACDD00B659E3 /* AppsInterface.swift in Sources */,
+				D63510A21E95369000193100 /* MapTile.swift in Sources */,
 				D68AD10E1E93289F00B659E3 /* Craft.swift in Sources */,
 				D68AD1061E93195F00B659E3 /* Inventory.swift in Sources */,
 				D68AD1211E94225200B659E3 /* NPC.swift in Sources */,
 				D68AD11F1E93F2DB00B659E3 /* HomebaseInstallInterface.swift in Sources */,
+				D635109E1E9534A500193100 /* World3DViewController.swift in Sources */,
 				D68AD10A1E93272C00B659E3 /* InventoryInterface.swift in Sources */,
 				D68AD1101E9328D700B659E3 /* Apps.swift in Sources */,
 				D6EA44FC1E8AC81D00658CAF /* LocationMaster.swift in Sources */,

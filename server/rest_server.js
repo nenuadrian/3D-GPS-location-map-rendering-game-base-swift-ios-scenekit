@@ -145,7 +145,7 @@ server.get('/server/info', authLock, (req, res, next) => {
 
 server.get('/npcs', authLock, (req, res, next) => {
   mongoDB.collection('npcs').find({ "tile.0": { $gte: 10, $lte: 1100000 }, "tile.1": { $gte: 10, $lte: 1100000 }}).toArray((err, npcs) => {
-    req.answer(200, npcs)
+    req.answer(200, { npcs: npcs })
   })
 })
 

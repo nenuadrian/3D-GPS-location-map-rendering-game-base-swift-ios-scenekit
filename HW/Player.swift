@@ -27,7 +27,7 @@ class Homebase {
         self.tile = Utils.latLonToTile(coord: coords)
         self.relativeCoords = Utils.latLonToMeters(coord: coords) - Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: self.tile))
         self.relativeCoords = Vector2(x: abs(self.relativeCoords.x), y: abs(self.relativeCoords.y))
-        WorldViewController.mapTiles.forEach( { Homebase.placeIfOn(mapTile: $0.value) } )
+       // WorldViewController.mapTiles.forEach( { Homebase.placeIfOn(mapTile: $0.value) } )
     }
     
     convenience init(data: JSON) {
@@ -35,37 +35,21 @@ class Homebase {
 
     }
     
-    static func placeIfOn(mapTile: Tile2D) {
+    /*static func placeIfOn(mapTile: Tile2D) {
         if Player.homebase != nil && Player.homebase.tile! == mapTile.tileKey {
             Player.homebase.view =
                 HomebaseView(frame: CGRect(x: Double(Player.homebase.relativeCoords.x), y: Double(Player.homebase.relativeCoords.y), width: 30, height: 30))
             mapTile.addSubview(Player.homebase.view)
         }
-    }
+    }*/
 }
 
-class Player: UIView {
+class Player {
     static var level: Int = 1
     static var exp: Int = 0
     static var group: Int = 0
     static var username: String = ""
     static var homebase: Homebase!
-    
-    var tileKey: Vector2 = Vector2.zero
-    var gridPointPosition: Vector2!
-    var state: Int = 1
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = UIColor.red
-        
-        let gesture = UITapGestureRecognizer(target: self, action:  #selector (self.someAction (_:)))
-        self.addGestureRecognizer(gesture)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     static func initPlayer(data: JSON) {
         Player.level = data["level"].int!
@@ -74,11 +58,11 @@ class Player: UIView {
         Player.username = data["username"].string!
     }
 
-    func someAction(_ sender:UITapGestureRecognizer) {
+    /*func someAction(_ sender:UITapGestureRecognizer) {
         API.put(endpoint: "tasks/homebase", callback: { (data) in
             if data["code"].int! == 200 {
             }
         })
-    }
+    }*/
     
 }

@@ -17,7 +17,7 @@ class Utils {
         var y = (log(tan((90 + coord.x) * Float.pi / 360)) / (Float.pi / 180))
         y = (y * originShift / 180.0)
         
-        return Vector2(x, y)
+        return Vector2(abs(x), abs(y))
     }
     
     static func  latLonToTile(coord: Vector2)  -> Vector2 {

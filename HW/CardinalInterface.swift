@@ -15,7 +15,7 @@ class CardinalInterface: UIView {
     
     init() {
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
-        GUIMaster.view.addSubview(self)
+        GUIMaster.myInstance.view.addSubview(self)
         backgroundColor = UIColor.black
         alpha = 0.8
 

@@ -5,7 +5,7 @@
 //  Created by Adrian Nenu on 27/03/2017.
 //  Copyright © 2017 Adrian Nenu. All rights reserved.
 //
-
+/*
 import UIKit
 import SwiftHTTP
 import SwiftyJSON
@@ -23,9 +23,7 @@ class WorldViewController: UIViewController, UIScrollViewDelegate {
     static var primordialTile: Vector2!
     var player: Player!
     var locationMaster: LocationMaster!
-    
-    var guiMaster: GUIMaster!
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         mapScrollView = UIScrollView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height))
@@ -34,7 +32,6 @@ class WorldViewController: UIViewController, UIScrollViewDelegate {
         mapScrollView.contentOffset = CGPoint(
             x: mapScrollView.contentSize.width/2-UIScreen.main.bounds.width/2,
             y: mapScrollView.contentSize.height/2-UIScreen.main.bounds.height/2)
-
 
         mapScrollView.delegate = self
         mapScrollView.bounces = false
@@ -50,31 +47,31 @@ class WorldViewController: UIViewController, UIScrollViewDelegate {
             y: -5000 + UIScreen.main.bounds.height / 2, width: 10000, height: 10000
         ))
         
-        
         mapScrollView.addSubview(mapView)
         self.mapScrollView.addSubview(player)
         
         locationMaster = LocationMaster()
         Timer.scheduledTimer(timeInterval: TimeInterval(1), target: self, selector: #selector(self.computeTiles), userInfo: nil, repeats: true)
-        
-        // UI
-        guiMaster = GUIMaster(view: self.view)
-        
-        
-        /*let gestureRec = UIRotationGestureRecognizer()
-        gestureRec.addTarget(self, action: #selector(handleRotate(recognizer:)))
-        mapScrollView.addGestureRecognizer(gestureRec)*/
-    }
+        Timer.scheduledTimer(timeInterval: TimeInterval(3), target: self, selector: #selector(self.npcsStatus), userInfo: nil, repeats: true)
+   }
 
-    /*func handleRotate(recognizer : UIRotationGestureRecognizer) {
-        if let view = recognizer.view {
-            view.transform = view.transform.rotated(by: recognizer.rotation)
-            recognizer.rotation = 0
-        }
-    }*/
-    
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
         scrollView.setContentOffset(scrollView.contentOffset, animated: true)
+    }
+    
+    func npcsStatus(timer: Timer) {
+        API.get(endpoint: "npcs") { (data) in
+            data["data"]["npcs"].array!.forEach({ (npc) in
+                let id = npc["_id"].string!
+                let tile = Vector2(npc["tile"][0].float!, npc["tile"][1].float!)
+                if let myTile = WorldViewController.mapTiles[tile] {
+                    if let myNPC = myTile.npcs.first(where: {  $0.npc.id == id }) {
+                        myNPC.npc.update(data: npc)
+                    }
+                    
+                }
+            })
+        }
     }
     
     func computeTiles(timer: Timer) {
@@ -108,10 +105,5 @@ class WorldViewController: UIViewController, UIScrollViewDelegate {
         }
         
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-
 }
-
+*/

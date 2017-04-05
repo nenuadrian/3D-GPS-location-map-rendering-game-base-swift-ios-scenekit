@@ -20,8 +20,9 @@ class API {
     
     static func request(method: HTTPVerb, params: [String : Any], endpoint: String, callback: @escaping (_: JSON) -> Void) {
         do {
+            print(endpoint)
+
             let url = "\(host)\(endpoint)?token=\(token)&lat=\(LocationMaster.getLast().x)&lon=\(LocationMaster.getLast().y)"
-            print(url)
 
             let opt = try HTTP.New(url, method: method, parameters: params, requestSerializer: JSONParameterSerializer(), isDownload: false)
           

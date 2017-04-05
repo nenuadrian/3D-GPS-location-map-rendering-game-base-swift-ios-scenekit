@@ -5,3 +5,7 @@ github "daltoniam/SwiftHTTP" >= 2.0.0
 github "thii/FontAwesome.swift"
 
 github "daltoniam/Starscream" >= 2.0.3
+
+github "aschuch/QRCode"
+
+github "yannickl/QRCodeReader.swift" >= 7.4.0

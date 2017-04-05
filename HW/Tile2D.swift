@@ -5,7 +5,7 @@
 //  Created by Adrian Nenu on 27/03/2017.
 //  Copyright © 2017 Adrian Nenu. All rights reserved.
 //
-
+/*
 import Foundation
 import UIKit
 import SwiftyJSON
@@ -14,7 +14,8 @@ class Tile2D: UIView {
     var data: JSON = JSON.null
     var tileKey: Vector2 = Vector2.zero
     var gridPoint: GridPoint!
-
+    var npcs: [NPCView] = []
+    
     init(tileKey: Vector2) {
         self.tileKey = tileKey
         
@@ -44,7 +45,8 @@ class Tile2D: UIView {
     func renderTile() {
         self.setNeedsDisplay()
         data["npcs"].array!.forEach { (npcData) in
-            let npc = NPC(data: npcData)
+            let npc = NPCView(npc: NPC(data: npcData))
+            self.npcs.append(npc)
             addSubview(npc)
         }
     }
@@ -115,3 +117,4 @@ class Tile2D: UIView {
         }
     }
 }
+*/

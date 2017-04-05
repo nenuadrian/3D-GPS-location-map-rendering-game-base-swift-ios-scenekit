@@ -19,7 +19,7 @@ class AppBitView: UIView {
         super.init(frame: frame)
         
         let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 100, height: 20))
-        nameLabel.text = "App \(app.type)"
+        nameLabel.text = "App \(app.type) Cor: \(app.broken)"
         addSubview(nameLabel)
     }
     

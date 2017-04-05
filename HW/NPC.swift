@@ -10,28 +10,38 @@ import Foundation
 import UIKit
 import SwiftyJSON
 
-class NPC: UIView, UIGestureRecognizerDelegate {
-    var name: String!
-    var id: String!
-    var type: Int!
-    //var data: JSON = JSON.null
-    var coords: Vector2 = Vector2.zero
-    var tile: Vector2 = Vector2.zero
-    var relativePosition: Vector2 = Vector2.zero
-    var gridPoint: GridPoint!
+class NPC {
+    let name: String
+    let id: String
+    let type: Int
+    let coords: Vector2
+    let tile: Vector2
+    let relativePosition: Vector2
     
     init(data: JSON) {
         self.coords = Vector2(x: data["coords"][0].float!, y: data["coords"][1].float!)
         self.tile = Vector2(x: data["tile"][0].float!, y: data["tile"][1].float!)
-        self.relativePosition = Utils.latLonToMeters(coord: self.coords) - Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: self.tile))
-        self.relativePosition = Vector2(x: abs(self.relativePosition.x), y: abs(self.relativePosition.y))
+        let relativePosition2 = Utils.latLonToMeters(coord: self.coords) - Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: self.tile))
+        relativePosition = Vector2(x: abs(relativePosition2.x), y: abs(relativePosition2.y))
         
-        name = data["name"].string!
         id = data["_id"].string!
+        name = data["name"].string!
         type = data["type"].int!
+    }
+    
+    func update(data: JSON) {
+        
+    }
+}
 
-        super.init(frame: CGRect(x: Double(self.relativePosition.x), y: Double(self.relativePosition.y), width: 10, height: 10))
-        backgroundColor = type == 1 ? UIColor.black : UIColor.brown
+class NPCView: UIView, UIGestureRecognizerDelegate {
+    let npc: NPC
+    init(npc: NPC) {
+        self.npc = npc
+
+        super.init(frame: CGRect(x: Double(npc.relativePosition.x), y: Double(npc.relativePosition.y), width: 10, height: 10))
+
+        backgroundColor = npc.type == 1 ? UIColor.black : UIColor.brown
         
         let tapGesture = UITapGestureRecognizer(target: self, action: nil)
         tapGesture.delegate = self
@@ -39,7 +49,7 @@ class NPC: UIView, UIGestureRecognizerDelegate {
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        GUIMaster.npc(npc: self)
+        GUIMaster.npc(npc: npc)
         return false
     }
     

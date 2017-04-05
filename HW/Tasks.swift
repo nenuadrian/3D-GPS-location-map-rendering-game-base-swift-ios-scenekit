@@ -65,12 +65,14 @@ class TasksManager {
     
     static func initTasks(tasks: JSON) {
         for task in tasks.array! {
-            TasksManager.addTask(task: Task(task: task))
+            let t =  Task(task: task)
+            TasksManager.tasks[t.id] = t
         }
     }
     
     static func addTask(task: Task) {
         TasksManager.tasks[task.id] = task
+        GUIMaster.addTask(task: task)
     }
     
     static func done(task: Task) {
@@ -87,5 +89,6 @@ class TasksManager {
         }
         print("Finished task")
         print(task.type)
+        GUIMaster.removeTask(task: task)
     }
 }

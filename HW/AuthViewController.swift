@@ -24,7 +24,7 @@ class AuthViewController: UIViewController {
             Inventory.initInventory(items: data["data"]["player"]["inventory"])
             Apps.initApps(apps: data["data"]["player"]["apps"])
             DispatchQueue.main.async {
-                let secondViewController: WorldViewController = WorldViewController()
+                let secondViewController = GUIMaster()
                 self.present(secondViewController, animated: true, completion: nil)
             }
             

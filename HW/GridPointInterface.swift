@@ -41,7 +41,7 @@ class GridPointInterface: CardinalInterface {
             if data["code"].int! == 200 {
                 for tileData in data["data"]["network"].array! {
                     let tile = Vector2(tileData[0].float!, tileData[1].float!)
-                    if let mapTile = WorldViewController.mapTiles[tile] {
+                    if let mapTile = World3DViewController.mapTiles[tile] {
                         mapTile.gridPoint.setState(state: 3, remaining: data["data"]["s"].int!)
                     }
                 }
