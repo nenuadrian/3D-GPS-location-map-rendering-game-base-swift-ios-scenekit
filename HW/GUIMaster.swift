@@ -41,12 +41,16 @@ class GUIMaster: UIViewController, QRCodeReaderViewControllerDelegate {
     
     override func viewDidLoad() {
         GUIMaster.myInstance = self
-        world = World3DViewController()
+        world = World3D()
         addChildViewController(world)
         world.view.frame = self.view.frame
         view.addSubview(world.view)
         world.didMove(toParentViewController: self)
-        
+
+        setupGUI()
+    }
+    
+    private func setupGUI() {
         let invButton = UIButton(frame: CGRect(x: 10, y: 600, width: 70, height:30))
         invButton.setTitle("inv", for: .normal)
         invButton.addTarget(self, action: #selector(inventory), for: .touchDown)
@@ -56,12 +60,12 @@ class GUIMaster: UIViewController, QRCodeReaderViewControllerDelegate {
         craftButton.setTitle("craft", for: .normal)
         craftButton.addTarget(self, action: #selector(craft), for: .touchDown)
         view.addSubview(craftButton)
-
+        
         let appsButton = UIButton(frame: CGRect(x: 170, y: 600, width: 70, height:30))
         appsButton.setTitle("apps", for: .normal)
         appsButton.addTarget(self, action: #selector(apps), for: .touchDown)
         view.addSubview(appsButton)
-
+        
         let qrButton = UIButton(frame: CGRect(x: 230, y: 600, width: 70, height:30))
         qrButton.setTitle("qr", for: .normal)
         qrButton.addTarget(self, action: #selector(qr), for: .touchDown)
@@ -71,8 +75,20 @@ class GUIMaster: UIViewController, QRCodeReaderViewControllerDelegate {
         myQrButton.setTitle("myqr", for: .normal)
         myQrButton.addTarget(self, action: #selector(myQr), for: .touchDown)
         view.addSubview(myQrButton)
-
+        
         TasksManager.tasks.forEach({ GUIMaster.addTask(task: $0.value) })
+        
+        
+        if Constants.DEBUG {
+            let move = UIButton(frame: CGRect(x: 260, y: 500, width: 70, height:30))
+            move.setTitle("move", for: .normal)
+            move.addTarget(self, action: #selector(moveCall), for: .touchDown)
+            view.addSubview(move)
+        }
+    }
+    
+    @objc func moveCall() {
+        LocationMaster.debugLast = LocationMaster.debugLast + Vector2(0.001, 0.001)
     }
     
     static func addTask(task: Task) {

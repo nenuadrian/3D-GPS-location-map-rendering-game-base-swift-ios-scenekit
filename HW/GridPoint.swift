@@ -9,13 +9,15 @@
 import Foundation
 import UIKit
 import SwiftHTTP
+import SceneKit
 
-class GridPoint: UIView {
+class GridPoint {
     var tileKey: Vector2 = Vector2.zero
     //var neighbouringPoints: [Vector2] = []
     var gridPointPosition: Vector2!
     var state: Int = 1
     var timer: Timer!
+    let node: SCNNode
     
     static func pseudorrandomPosition(of: Vector2) -> Vector2 {
         srand48(Int(of.x) * Int(of.y) * Int(10000))
@@ -24,18 +26,28 @@ class GridPoint: UIView {
                     Float(200 - Int((drand48() * 1000).truncatingRemainder(dividingBy: 500))))
     }
     
-    init(tileKey: Vector2) {
-        self.tileKey = tileKey
+    init(tile: MapTile) {
+        self.tileKey = tile.tileKey
         let gridPointPosition = GridPoint.pseudorrandomPosition(of: tileKey)
         
-        super.init(frame: CGRect(x: Double(gridPointPosition.x), y: Double(gridPointPosition.y), width: 20, height: 20))
-        self.gridPointPosition = gridPointPosition
+        self.gridPointPosition = Vector2(gridPointPosition.x, 611 - gridPointPosition.y)
         print("GP \(tileKey) \(gridPointPosition)")
-        self.setState(state: 1)
-
-        let gesture = UITapGestureRecognizer(target: self, action:  #selector (self.someAction (_:)))
-        self.addGestureRecognizer(gesture)
         
+        
+        node = SCNNode()
+        node.name = "Grid Node \(tileKey)"
+        node.position = SCNVector3(gridPointPosition.x, gridPointPosition.y, 10)
+        
+        let obj = SCNSphere(radius: 8.20)
+        obj.firstMaterial!.diffuse.contents = UIColor.purple
+        obj.firstMaterial!.specular.contents = UIColor.purple
+        let objNode = SCNNode(geometry: obj)
+        node.addChildNode(objNode)
+        
+        tile.tileNode.addChildNode(node)
+        
+        
+        self.setState(state: 1)
        /* var gpAbsolute = Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: tileKey))
             gpAbsolute = Vector2(abs(gpAbsolute.x), abs(gpAbsolute.y))
         for neigh in [ Vector2(-1, 0), Vector2(0, -1), Vector2(1, 0), Vector2(0, 1)] {
@@ -58,14 +70,11 @@ class GridPoint: UIView {
             }
             switch self.state {
             case 2:
-                self.backgroundColor = UIColor.yellow
                 Timer.scheduledTimer(timeInterval: TimeInterval(remaining), target: self, selector: #selector(self.resetState), userInfo: nil, repeats: false)
                 break
             case 1:
-                self.backgroundColor = UIColor.green
                 break
             case 3:
-                self.backgroundColor = UIColor.red
                 Timer.scheduledTimer(timeInterval: TimeInterval(remaining), target: self, selector: #selector(self.resetState), userInfo: nil, repeats: false)
 
                 break
@@ -75,33 +84,12 @@ class GridPoint: UIView {
         
     }
     
-    func resetState(timer: Timer) {
+    @objc func resetState(timer: Timer) {
         self.setState(state: 1)
     }
     
-    func someAction(_ sender: UITapGestureRecognizer) {
+    func someAction() {
         GridPointInterface.init().show(gridPoint: self)
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    /*override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()!
-        context.setFillColor(UIColor(red:1, green:0.28, blue:0.28, alpha:1.0).cgColor)
-        context.setLineWidth(0)
-        context.addRect(rect)
-        context.drawPath(using: .fillStroke)
-        
-        context.setStrokeColor(UIColor(red:0.20, green:0.60, blue:0.88, alpha:1.0).cgColor)
-        context.setLineWidth(2.0)
-        
-        for point in neighbouringPoints {
-            context.move(to: CGPoint(x: 10, y: 10))
-            context.addLine(to: CGPoint(x: Double(point.x), y: Double(point.y)))
-            context.strokePath()
-        }
-    }*/
     
 }

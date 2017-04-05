@@ -10,4 +10,5 @@ import Foundation
 
 class Constants {
     static let TILE_RANGE = 1
+    static let DEBUG = true
 }

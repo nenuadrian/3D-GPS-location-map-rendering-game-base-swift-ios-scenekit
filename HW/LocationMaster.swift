@@ -12,8 +12,7 @@ import CoreLocation
 class LocationMaster: NSObject, CLLocationManagerDelegate {
     private let locationManager = CLLocationManager()
     private static var last: Vector2 = Vector2.zero
-    private static var debugLast: Vector2 = Vector2(53.45878, -2.22999)
-    static var debug: Bool = false
+    static var debugLast: Vector2 = Vector2(53.45878, -2.22999)
     
     override init() {
         super.init()
@@ -37,7 +36,7 @@ class LocationMaster: NSObject, CLLocationManagerDelegate {
     }
     
     static func getLast() -> Vector2 {
-        if LocationMaster.debug {
+        if Constants.DEBUG {
             return LocationMaster.debugLast
         }
         return LocationMaster.last
