@@ -35,16 +35,14 @@ class GridPoint {
         
         
         node = SCNNode()
-        node.name = "Grid Node \(tileKey)"
+        node.name = "GP"
         node.position = SCNVector3(gridPointPosition.x, gridPointPosition.y, 10)
-        
+        tile.node.addChildNode(node)
+
         let obj = SCNSphere(radius: 8.20)
         obj.firstMaterial!.diffuse.contents = UIColor.purple
         obj.firstMaterial!.specular.contents = UIColor.purple
-        let objNode = SCNNode(geometry: obj)
-        node.addChildNode(objNode)
-        
-        tile.tileNode.addChildNode(node)
+        node.geometry = obj
         
         
         self.setState(state: 1)
@@ -88,8 +86,6 @@ class GridPoint {
         self.setState(state: 1)
     }
     
-    func someAction() {
-        GridPointInterface.init().show(gridPoint: self)
-    }
+   
     
 }

@@ -16,30 +16,30 @@ class MapTile {
     let tileKey: Vector2
     let position: Vector2
     var gridPoint: GridPoint!
-    var npcs: [NPCView] = []
-    var tileNode: SCNNode!
+    var npcs: [NPC] = []
+    var node: SCNNode!
     
     init(tileKey: Vector2, mapNode: SCNNode) {
         self.tileKey = tileKey
         
         self.position = (tileKey - World3D.primordialTile) * 611 + Vector2(611/2, 611/2)
-        
+
         //Homebase.placeIfOn(mapTile: self)
         
-        tileNode = SCNNode()
-        tileNode.position = SCNVector3(x: position.x, y: position.y, z: 1)
-        mapNode.addChildNode(tileNode)
-
+        node = SCNNode()
+        node.position = SCNVector3(x: position.x, y: position.y, z: 0)
+        mapNode.addChildNode(node)
+        
         if World3D.tilesDataCache[tileKey] != nil {
             self.data = World3D.tilesDataCache[tileKey]!
-            renderTile()
+            render()
         } else {
             World3D.tilesDataCache[tileKey] = JSON.null
             API.get(endpoint: "tile/\(Int(tileKey.x))/\(Int(tileKey.y))", callback: { (data) in
                 World3D.tilesDataCache[tileKey] = data["data"]
                 self.data = data["data"]
                 DispatchQueue.main.async {
-                    self.renderTile()
+                    self.render()
                 }
             })
         }
@@ -47,15 +47,14 @@ class MapTile {
         gridPoint = GridPoint(tile: self)
     }
     
-    func renderTile() {
+    func render() {
         let mapTile = SCNPlane(width: 611, height: 611)
         mapTile.firstMaterial!.diffuse.contents = texture()
         let features = SCNNode(geometry: mapTile)
-        tileNode.addChildNode(features)
+        node.addChildNode(features)
         
-        return;
         data["npcs"].array!.forEach { (npcData) in
-            let npc = NPCView(npc: NPC(data: npcData))
+            let npc = NPC(data: npcData, tileNode: node)
             self.npcs.append(npc)
         }
     }

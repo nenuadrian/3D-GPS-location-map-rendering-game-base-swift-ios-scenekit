@@ -13,6 +13,7 @@ import QuartzCore
 import CoreMotion
 import SceneKit
 
+// TODO when too far send to auth
 class World3D: UIViewController {
     static var mapTiles = [Vector2: MapTile]()
     static var tilesDataCache = [Vector2: JSON]()
@@ -50,18 +51,7 @@ class World3D: UIViewController {
     
     func sceneSetup() {
         mapScene = SCNScene()
-    
- /*
-        let camera = SCNCamera()
-        camera.zNear = 1
-        camera.zFar = 1000
-        
-        cameraNode = SCNNode()
-        cameraNode.position = SCNVector3(x: 100, y: 100, z: 50)
-        //cameraNode.pivot = SCNMatrix4MakeTranslation(-100, -10, -100)
 
-        cameraNode.camera = camera*/
-        
         let camera = SCNCamera()
         camera.zNear = 1
         camera.zFar = 1000
@@ -78,6 +68,7 @@ class World3D: UIViewController {
         player.firstMaterial!.specular.contents = UIColor.white
         
         World3D.playerNode = SCNNode(geometry: player)
+        World3D.playerNode.name = "P"
         mapScene.rootNode.addChildNode(World3D.playerNode)
         
         let constraint = SCNLookAtConstraint(target: World3D.playerNode)
@@ -115,8 +106,8 @@ class World3D: UIViewController {
                 let id = npc["_id"].string!
                 let tile = Vector2(npc["tile"][0].float!, npc["tile"][1].float!)
                 if let myTile = World3D.mapTiles[tile] {
-                    if let myNPC = myTile.npcs.first(where: {  $0.npc.id == id }) {
-                        myNPC.npc.update(data: npc)
+                    if let myNPC = myTile.npcs.first(where: {  $0.id == id }) {
+                        myNPC.update(data: npc)
                     }
                 }
             })
@@ -128,15 +119,17 @@ class World3D: UIViewController {
         let currentTile = Utils.latLonToTile(coord: LocationMaster.getLast())
         let currentTileLatLon = Utils.tileToLatLon(tile: currentTile)
         let currentTileMeters = Utils.latLonToMeters(coord: currentTileLatLon)
+        
         var playerOffsetInsideTile = locMeters - currentTileMeters
         playerOffsetInsideTile = Vector2(abs(playerOffsetInsideTile.x), 611 - abs(playerOffsetInsideTile.y))
+        
         if World3D.primordialTile == nil {
             World3D.primordialTile = currentTile
         }
         
-        let playerOffset = (World3D.primordialTile - currentTile) * 611 + playerOffsetInsideTile
+        let playerOffset = (currentTile - World3D.primordialTile) * 611 + playerOffsetInsideTile
         World3D.playerNode.position = SCNVector3(x: playerOffset.x, y: playerOffset.y, z: 10)
-        
+
         for i in -Constants.TILE_RANGE...Constants.TILE_RANGE {
             for j in -Constants.TILE_RANGE...Constants.TILE_RANGE {
                 let tileKey = currentTile + Vector2(Float(i), Float(j))
@@ -154,12 +147,11 @@ class World3D: UIViewController {
     func handlePanGesture(sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: sender.view!)
         
-        let widthRatio = Float(translation.x) / Float(sender.view!.frame.size.width) + lastWidthRatio
+        let widthRatio = Float(translation.x) / Float(360) + lastWidthRatio
         let heightRatio = Float(translation.y) / Float(sender.view!.frame.size.height) + lastHeightRatio
         
-        self.cameraOrbit.eulerAngles.z = -Float.pi/2 * widthRatio
-        self.cameraOrbit.eulerAngles.x = max(0.412128, min(1.40124, Float.pi * heightRatio))
-        
+        self.cameraOrbit.eulerAngles.z = -Float.pi*1.5 * widthRatio
+        self.cameraOrbit.eulerAngles.x = max(0.412028, min(1.40134, Float.pi * heightRatio))
         
         if (sender.state == .ended) {
             lastWidthRatio = widthRatio.remainder(dividingBy: 1)
@@ -169,34 +161,36 @@ class World3D: UIViewController {
   
     func handleTap(_ gestureRecognize: UIGestureRecognizer) {
         
-        // check what nodes are tapped
         let p = gestureRecognize.location(in: sceneView)
         let hitResults = sceneView.hitTest(p, options: [:])
         // check that we clicked on at least one object
-        if hitResults.count > 0 {
-            // retrieved the first clicked object
-            let result: AnyObject = hitResults[0]
-            
-            // get its material
-            let material = result.node!.geometry!.firstMaterial!
-            
-            // highlight it
-            SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.5
-            
-            // on completion - unhighlight
-            SCNTransaction.completionBlock = {
-                SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
-                
-                material.emission.contents = UIColor.black
-                
-                SCNTransaction.commit()
+
+        for result in hitResults {
+            if let name = result.node.name {
+                switch name {
+                    case "NPC":
+                        for t in World3D.mapTiles {
+                            for n in t.value.npcs {
+                                if n.node == result.node {
+                                    print("FOUND NPC")
+                                    GUIMaster.npc(npc: n)
+
+                                }
+                            }
+                        }
+                        break;
+                    case "GP":
+                        for t in World3D.mapTiles {
+                            if result.node == t.value.gridPoint.node {
+                                print("FOUND GP")
+                                GridPointInterface.init().show(gridPoint: t.value.gridPoint)
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
-            
-            material.emission.contents = UIColor.red
-            
-            SCNTransaction.commit()
         }
     }
 }

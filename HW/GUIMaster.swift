@@ -38,7 +38,9 @@ class GUIMaster: UIViewController, QRCodeReaderViewControllerDelegate {
         
         return QRCodeReaderViewController(builder: builder)
     }()
-    
+    let lat = UITextField(frame: CGRect(x: 260, y:400, width:100, height:30))
+    let lon = UITextField(frame: CGRect(x: 260, y:450, width:100, height:30))
+
     override func viewDidLoad() {
         GUIMaster.myInstance = self
         world = World3D()
@@ -71,7 +73,7 @@ class GUIMaster: UIViewController, QRCodeReaderViewControllerDelegate {
         qrButton.addTarget(self, action: #selector(qr), for: .touchDown)
         view.addSubview(qrButton)
         
-        let myQrButton = UIButton(frame: CGRect(x: 260, y: 600, width: 70, height:30))
+        let myQrButton = UIButton(frame: CGRect(x: 280, y: 600, width: 70, height:30))
         myQrButton.setTitle("myqr", for: .normal)
         myQrButton.addTarget(self, action: #selector(myQr), for: .touchDown)
         view.addSubview(myQrButton)
@@ -80,6 +82,12 @@ class GUIMaster: UIViewController, QRCodeReaderViewControllerDelegate {
         
         
         if Constants.DEBUG {
+            lat.text = "\(LocationMaster.debugLast.x)"
+            
+            lon.text = "\(LocationMaster.debugLast.y)"
+            view.addSubview(lat)
+            view.addSubview(lon)
+            
             let move = UIButton(frame: CGRect(x: 260, y: 500, width: 70, height:30))
             move.setTitle("move", for: .normal)
             move.addTarget(self, action: #selector(moveCall), for: .touchDown)
@@ -88,7 +96,7 @@ class GUIMaster: UIViewController, QRCodeReaderViewControllerDelegate {
     }
     
     @objc func moveCall() {
-        LocationMaster.debugLast = LocationMaster.debugLast + Vector2(0.001, 0.001)
+        LocationMaster.debugLast = Vector2(Float(lat.text!)!, Float(lon.text!)!)
     }
     
     static func addTask(task: Task) {

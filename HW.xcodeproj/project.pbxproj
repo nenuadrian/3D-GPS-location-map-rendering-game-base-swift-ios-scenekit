@@ -249,8 +249,8 @@
 		D69181FE1E895D1500DC038E /* HW */ = {
 			isa = PBXGroup;
 			children = (
-				D69182091E895D1500DC038E /* Assets.xcassets */,
 				D69182061E895D1500DC038E /* HW.xcdatamodeld */,
+				D69182091E895D1500DC038E /* Assets.xcassets */,
 				D691820E1E895D1500DC038E /* Info.plist */,
 				D691820B1E895D1500DC038E /* LaunchScreen.storyboard */,
 				D69181FF1E895D1500DC038E /* AppDelegate.swift */,

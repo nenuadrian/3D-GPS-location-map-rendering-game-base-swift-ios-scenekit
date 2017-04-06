@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import SwiftyJSON
+import SceneKit
 
 class NPC {
     let name: String
@@ -17,43 +18,38 @@ class NPC {
     let coords: Vector2
     let tile: Vector2
     let relativePosition: Vector2
+    let node: SCNNode
     
-    init(data: JSON) {
+    init(data: JSON, tileNode: SCNNode) {
         self.coords = Vector2(x: data["coords"][0].float!, y: data["coords"][1].float!)
         self.tile = Vector2(x: data["tile"][0].float!, y: data["tile"][1].float!)
         let relativePosition2 = Utils.latLonToMeters(coord: self.coords) - Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: self.tile))
-        relativePosition = Vector2(x: abs(relativePosition2.x), y: abs(relativePosition2.y))
-        
+        relativePosition = Vector2(x: abs(relativePosition2.x), y: 611 - abs(relativePosition2.y)) - Vector2(611, 611) / 2
+        print("NPC \(relativePosition) \(self.tile)")
         id = data["_id"].string!
         name = data["name"].string!
         type = data["type"].int!
+        
+        let obj = SCNSphere(radius: 8.20)
+        obj.firstMaterial!.diffuse.contents = UIColor.yellow
+        obj.firstMaterial!.specular.contents = UIColor.yellow
+        node = SCNNode(geometry: obj)
+        node.name = "NPC"
+        node.position = SCNVector3(relativePosition.x, relativePosition.y, 0)
+        tileNode.addChildNode(node)
+        
+        render()
+    }
+    
+    func render() {
+        let obj = SCNSphere(radius: 8.20)
+        obj.firstMaterial!.diffuse.contents = UIColor.yellow
+        obj.firstMaterial!.specular.contents = UIColor.yellow
+        
+        node.geometry = obj
     }
     
     func update(data: JSON) {
-        
-    }
-}
 
-class NPCView: UIView, UIGestureRecognizerDelegate {
-    let npc: NPC
-    init(npc: NPC) {
-        self.npc = npc
-
-        super.init(frame: CGRect(x: Double(npc.relativePosition.x), y: Double(npc.relativePosition.y), width: 10, height: 10))
-
-        backgroundColor = npc.type == 1 ? UIColor.black : UIColor.brown
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: nil)
-        tapGesture.delegate = self
-        addGestureRecognizer(tapGesture)
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        GUIMaster.npc(npc: npc)
-        return false
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
