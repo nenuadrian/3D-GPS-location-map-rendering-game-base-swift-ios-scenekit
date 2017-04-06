@@ -17,9 +17,21 @@ class FormulaInterface: CardinalInterface {
         self.formula = formula
         let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 300, height: 20))
         nameLabel.text = "Craft \(formula.item) \(formula.app)"
+        nameLabel.textColor = UIColor.white
+        
+        var index = 0
+        for item in formula.items {
+            index += 1
+            let itemLabel = UILabel(frame: CGRect(x: 5, y: 30 * index, width: 300, height: 20))
+            itemLabel.text = "Needs item \(item.type) x \(item.q)"
+            itemLabel.textColor = UIColor.white
+            addSubview(v: itemLabel)
+
+        }
         
         let craft = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
         craft.setTitle("craft", for: .normal)
+
         craft.addTarget(self, action: #selector(craftCall), for: .touchDown)
         
         addSubview(v: nameLabel)

@@ -54,13 +54,13 @@ class DropInterface: CardinalInterface {
         }
         
         let done = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
-        done.setTitle("done", for: .normal)
-        done.addTarget(self, action: #selector(doneCall), for: .touchDown)
+        done.setTitle("pick items", for: .normal)
+        done.addTarget(self, action: #selector(pickCall), for: .touchDown)
 
         addSubview(done)
     }
     
-    func doneCall(_ sender: AnyObject?) {
+    func pickCall(_ sender: AnyObject?) {
         var params: [String : Any] = [:]
         params["items"] = items.filter({ $0.selected }).map({ $0.item.type })
         API.post(endpoint: "drop", params: params, callback: { (data) in

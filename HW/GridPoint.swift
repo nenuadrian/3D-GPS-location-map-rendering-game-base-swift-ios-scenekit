@@ -13,18 +13,10 @@ import SceneKit
 
 class GridPoint {
     var tileKey: Vector2 = Vector2.zero
-    //var neighbouringPoints: [Vector2] = []
     var gridPointPosition: Vector2!
     var state: Int = 1
     var timer: Timer!
     let node: SCNNode
-    
-    static func pseudorrandomPosition(of: Vector2) -> Vector2 {
-        srand48(Int(of.x) * Int(of.y) * Int(10000))
-        return Vector2(Float(611) / 2, Float(611) / 2) +
-            Vector2(Float(200 - Int((drand48() * 1000).truncatingRemainder(dividingBy: 500))),
-                    Float(200 - Int((drand48() * 1000).truncatingRemainder(dividingBy: 500))))
-    }
     
     init(tile: MapTile) {
         self.tileKey = tile.tileKey
@@ -32,7 +24,6 @@ class GridPoint {
         
         self.gridPointPosition = Vector2(gridPointPosition.x, 611 - gridPointPosition.y)
         print("GP \(tileKey) \(gridPointPosition)")
-        
         
         node = SCNNode()
         node.name = "GP"
@@ -46,18 +37,7 @@ class GridPoint {
         
         
         self.setState(state: 1)
-       /* var gpAbsolute = Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: tileKey))
-            gpAbsolute = Vector2(abs(gpAbsolute.x), abs(gpAbsolute.y))
-        for neigh in [ Vector2(-1, 0), Vector2(0, -1), Vector2(1, 0), Vector2(0, 1)] {
-            let current = tileKey + neigh
-            let currentRelative = GridPoint.pseudorrandomPosition(of: current)
-            var neighAbsolute = Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: current))
-            neighAbsolute = Vector2(abs(neighAbsolute.x), abs(neighAbsolute.y))
-            neighAbsolute = neighAbsolute + currentRelative
-            
-            neighbouringPoints.append(neighAbsolute - gpAbsolute)
-        }
-        print (neighbouringPoints)*/
+       
     }
     
     public func setState(state: Int, remaining: Int = 0) {
@@ -86,6 +66,10 @@ class GridPoint {
         self.setState(state: 1)
     }
     
-   
-    
+    static func pseudorrandomPosition(of: Vector2) -> Vector2 {
+        srand48(Int(of.x) * Int(of.y) * Int(10000))
+        return Vector2(Float(611) / 2, Float(611) / 2) +
+            Vector2(Float(200 - Int((drand48() * 1000).truncatingRemainder(dividingBy: 500))),
+                    Float(200 - Int((drand48() * 1000).truncatingRemainder(dividingBy: 500))))
+    }
 }

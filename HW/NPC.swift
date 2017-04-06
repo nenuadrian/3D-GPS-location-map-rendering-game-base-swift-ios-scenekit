@@ -23,9 +23,10 @@ class NPC {
     init(data: JSON, tileNode: SCNNode) {
         self.coords = Vector2(x: data["coords"][0].float!, y: data["coords"][1].float!)
         self.tile = Vector2(x: data["tile"][0].float!, y: data["tile"][1].float!)
-        let relativePosition2 = Utils.latLonToMeters(coord: self.coords) - Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: self.tile))
-        relativePosition = Vector2(x: abs(relativePosition2.x), y: 611 - abs(relativePosition2.y)) - Vector2(611, 611) / 2
-        print("NPC \(relativePosition) \(self.tile)")
+        
+        relativePosition =  ((Utils.distanceInMetersBetween(latLon1: Utils.tileToLatLon(tile: self.tile), latLon2: self.coords)) - Vector2(611, 611) / 2)  * Vector2(1, -1)
+        
+        Logging.info(data: "NPC \(relativePosition) \(self.tile)")
         id = data["_id"].string!
         name = data["name"].string!
         type = data["type"].int!

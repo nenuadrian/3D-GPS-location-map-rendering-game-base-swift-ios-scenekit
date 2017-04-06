@@ -9,25 +9,26 @@
 import Foundation
 import UIKit
 import SwiftyJSON
+import SceneKit
 
 class Homebase {
-    var tile: Vector2!
-    var coords: Vector2!
-    var relativeCoords: Vector2!
+    let tile: Vector2
+    var coords: Vector2
+    var relativePosition: Vector2
     var level: Int = 1
-    var view: HomebaseView!
+    var node: SCNNode!
     
     init(coords: Vector2, level: Int = 1) {
         if Player.homebase != nil {
-            Player.homebase.view.removeFromSuperview()
+            Player.homebase.node.removeFromParentNode()
         }
         
         self.coords = coords
         self.level = level
-        self.tile = Utils.latLonToTile(coord: coords)
-        self.relativeCoords = Utils.latLonToMeters(coord: coords) - Utils.latLonToMeters(coord: Utils.tileToLatLon(tile: self.tile))
-        self.relativeCoords = Vector2(x: abs(self.relativeCoords.x), y: abs(self.relativeCoords.y))
-       // WorldViewController.mapTiles.forEach( { Homebase.placeIfOn(mapTile: $0.value) } )
+        tile = Utils.latLonToTile(coord: coords)
+        relativePosition =  ((Utils.distanceInMetersBetween(latLon1: Utils.tileToLatLon(tile: self.tile), latLon2: self.coords)) - Vector2(611, 611) / 2)  * Vector2(1, -1)
+
+        World3D.mapTiles.forEach( { Homebase.placeIfOn(mapTile: $0.value) } )
     }
     
     convenience init(data: JSON) {
@@ -35,13 +36,17 @@ class Homebase {
 
     }
     
-    /*static func placeIfOn(mapTile: Tile2D) {
-        if Player.homebase != nil && Player.homebase.tile! == mapTile.tileKey {
-            Player.homebase.view =
-                HomebaseView(frame: CGRect(x: Double(Player.homebase.relativeCoords.x), y: Double(Player.homebase.relativeCoords.y), width: 30, height: 30))
-            mapTile.addSubview(Player.homebase.view)
+    static func placeIfOn(mapTile: MapTile) {
+        if Player.homebase != nil && Player.homebase.tile == mapTile.tileKey {
+            let obj = SCNSphere(radius: 8.20)
+            obj.firstMaterial!.diffuse.contents = UIColor.black
+            obj.firstMaterial!.specular.contents = UIColor.black
+            Player.homebase.node = SCNNode(geometry: obj)
+            Player.homebase.node.name = "HB"
+            Player.homebase.node.position = SCNVector3(Player.homebase.relativePosition.x, Player.homebase.relativePosition.y, 0)
+            mapTile.node.addChildNode(Player.homebase.node)
         }
-    }*/
+    }
 }
 
 class Player {
@@ -57,12 +62,4 @@ class Player {
         Player.group = data["group"].int!
         Player.username = data["username"].string!
     }
-
-    /*func someAction(_ sender:UITapGestureRecognizer) {
-        API.put(endpoint: "tasks/homebase", callback: { (data) in
-            if data["code"].int! == 200 {
-            }
-        })
-    }*/
-    
 }

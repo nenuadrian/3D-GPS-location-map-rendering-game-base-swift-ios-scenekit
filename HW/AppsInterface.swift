@@ -20,6 +20,7 @@ class AppBitView: UIView {
         
         let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 100, height: 20))
         nameLabel.text = "App \(app.type) Cor: \(app.broken)"
+        nameLabel.textColor = UIColor.white
         addSubview(nameLabel)
     }
     
@@ -38,15 +39,7 @@ class AppsInterface: CardinalInterface {
             addSubview(appBtiView)
         }
         
-        let done = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
-        done.setTitle("done", for: .normal)
-        done.addTarget(self, action: #selector(doneCall), for: .touchDown)
-        
-        addSubview(done)
-    }
-    
-    func doneCall(_ sender: AnyObject?) {
-        close()
+      
     }
     
 }

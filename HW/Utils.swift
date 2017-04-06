@@ -9,6 +9,14 @@
 import Foundation
 
 class Utils {
+    static func distanceInMetersBetween(latLon1: Vector2, latLon2: Vector2) -> Vector2 {
+        return latLonToMeters(coord: latLon1) - latLonToMeters(coord: latLon2)
+    }
+    
+    static func tileToMeters(tile: Vector2) -> Vector2 {
+        return latLonToMeters(coord: tileToLatLon(tile: tile))
+    }
+    
     static func latLonToMeters(coord: Vector2) -> Vector2 {
         let earthRadius: Float = 6378137
         let originShift = (2 * Float.pi * earthRadius / 2)

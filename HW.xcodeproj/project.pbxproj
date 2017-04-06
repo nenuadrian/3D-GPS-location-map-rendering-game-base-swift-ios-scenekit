@@ -14,6 +14,7 @@
 		D635109C1E9509EA00193100 /* QRCodeInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635109B1E9509EA00193100 /* QRCodeInterface.swift */; };
 		D635109E1E9534A500193100 /* World3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635109D1E9534A500193100 /* World3D.swift */; };
 		D63510A21E95369000193100 /* MapTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63510A11E95369000193100 /* MapTile.swift */; };
+		D63510A41E96673600193100 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63510A31E96673600193100 /* Logging.swift */; };
 		D6846A8B1E8964800016C0F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6846A8A1E8964800016C0F0 /* CoreLocation.framework */; };
 		D6846A8D1E8976A60016C0F0 /* SwiftHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6846A8C1E8976A50016C0F0 /* SwiftHTTP.framework */; };
 		D68906971E897B8300D51592 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68906961E897B8300D51592 /* SwiftyJSON.framework */; };
@@ -27,7 +28,6 @@
 		D68AD10E1E93289F00B659E3 /* Craft.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10D1E93289F00B659E3 /* Craft.swift */; };
 		D68AD1101E9328D700B659E3 /* Apps.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD10F1E9328D700B659E3 /* Apps.swift */; };
 		D68AD1121E932B0E00B659E3 /* FormulaInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1111E932B0E00B659E3 /* FormulaInterface.swift */; };
-		D68AD1141E93993A00B659E3 /* HomebaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1131E93993A00B659E3 /* HomebaseView.swift */; };
 		D68AD1161E93AC8000B659E3 /* HomebaseInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1151E93AC8000B659E3 /* HomebaseInterface.swift */; };
 		D68AD1181E93ACDD00B659E3 /* AppsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1171E93ACDD00B659E3 /* AppsInterface.swift */; };
 		D68AD11F1E93F2DB00B659E3 /* HomebaseInstallInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD11E1E93F2DB00B659E3 /* HomebaseInstallInterface.swift */; };
@@ -56,6 +56,7 @@
 		D635109B1E9509EA00193100 /* QRCodeInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeInterface.swift; sourceTree = "<group>"; };
 		D635109D1E9534A500193100 /* World3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = World3D.swift; sourceTree = "<group>"; };
 		D63510A11E95369000193100 /* MapTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
+		D63510A31E96673600193100 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
 		D6846A8A1E8964800016C0F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D6846A8C1E8976A50016C0F0 /* SwiftHTTP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftHTTP.framework; path = Carthage/Build/iOS/SwiftHTTP.framework; sourceTree = "<group>"; };
 		D68906961E897B8300D51592 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
@@ -69,7 +70,6 @@
 		D68AD10D1E93289F00B659E3 /* Craft.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Craft.swift; sourceTree = "<group>"; };
 		D68AD10F1E9328D700B659E3 /* Apps.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Apps.swift; sourceTree = "<group>"; };
 		D68AD1111E932B0E00B659E3 /* FormulaInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FormulaInterface.swift; sourceTree = "<group>"; };
-		D68AD1131E93993A00B659E3 /* HomebaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebaseView.swift; sourceTree = "<group>"; };
 		D68AD1151E93AC8000B659E3 /* HomebaseInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomebaseInterface.swift; sourceTree = "<group>"; };
 		D68AD1171E93ACDD00B659E3 /* AppsInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppsInterface.swift; sourceTree = "<group>"; };
 		D68AD1191E93AEA600B659E3 /* SocketIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketIO.framework; path = Carthage/Build/iOS/SocketIO.framework; sourceTree = "<group>"; };
@@ -134,6 +134,7 @@
 				D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */,
 				D6EA44F31E8A26EC00658CAF /* Constants.swift */,
 				D6EA44F51E8A281F00658CAF /* API.swift */,
+				D63510A31E96673600193100 /* Logging.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -165,7 +166,6 @@
 		D68AD11B1E93F18F00B659E3 /* Homebase */ = {
 			isa = PBXGroup;
 			children = (
-				D68AD1131E93993A00B659E3 /* HomebaseView.swift */,
 				D68AD1151E93AC8000B659E3 /* HomebaseInterface.swift */,
 				D68AD11E1E93F2DB00B659E3 /* HomebaseInstallInterface.swift */,
 			);
@@ -203,6 +203,7 @@
 		D68AD1271E944AE600B659E3 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
+				D68AD1001E930C8B00B659E3 /* GUIMaster.swift */,
 				D68AD1241E9438D500B659E3 /* CardinalInterface.swift */,
 				D68AD1071E931C9E00B659E3 /* DropInterface.swift */,
 				D68AD1091E93272C00B659E3 /* InventoryInterface.swift */,
@@ -255,7 +256,6 @@
 				D691820B1E895D1500DC038E /* LaunchScreen.storyboard */,
 				D69181FF1E895D1500DC038E /* AppDelegate.swift */,
 				D68AD0FE1E93048000B659E3 /* AuthViewController.swift */,
-				D68AD1001E930C8B00B659E3 /* GUIMaster.swift */,
 				D68AD1021E93190400B659E3 /* Helpers */,
 				D68AD1031E93191F00B659E3 /* World */,
 				D68AD1041E93193300B659E3 /* Player */,
@@ -359,12 +359,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				D617BCAC1E89E76C008556B9 /* VectorMath.swift in Sources */,
+				D63510A41E96673600193100 /* Logging.swift in Sources */,
 				D68AD1011E930C8B00B659E3 /* GUIMaster.swift in Sources */,
 				D689069B1E8993E200D51592 /* Utils.swift in Sources */,
 				D617C4251E89FD43001D2DAD /* GridPoint.swift in Sources */,
 				D69182081E895D1500DC038E /* HW.xcdatamodeld in Sources */,
 				D68AD10C1E93282B00B659E3 /* CraftInterface.swift in Sources */,
-				D68AD1141E93993A00B659E3 /* HomebaseView.swift in Sources */,
 				D6EA44FA1E8A5DF100658CAF /* Player.swift in Sources */,
 				D68AD1121E932B0E00B659E3 /* FormulaInterface.swift in Sources */,
 				D635109C1E9509EA00193100 /* QRCodeInterface.swift in Sources */,

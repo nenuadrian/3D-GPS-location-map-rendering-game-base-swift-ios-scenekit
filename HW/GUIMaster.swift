@@ -53,27 +53,28 @@ class GUIMaster: UIViewController, QRCodeReaderViewControllerDelegate {
     }
     
     private func setupGUI() {
-        let invButton = UIButton(frame: CGRect(x: 10, y: 600, width: 70, height:30))
+     
+        let invButton = UIButton(frame: CGRect(x: 10, y: 620, width: 70, height:30))
         invButton.setTitle("inv", for: .normal)
         invButton.addTarget(self, action: #selector(inventory), for: .touchDown)
         view.addSubview(invButton)
         
-        let craftButton = UIButton(frame: CGRect(x: 90, y: 600, width: 70, height:30))
+        let craftButton = UIButton(frame: CGRect(x: 90, y: 620, width: 70, height:30))
         craftButton.setTitle("craft", for: .normal)
         craftButton.addTarget(self, action: #selector(craft), for: .touchDown)
         view.addSubview(craftButton)
         
-        let appsButton = UIButton(frame: CGRect(x: 170, y: 600, width: 70, height:30))
+        let appsButton = UIButton(frame: CGRect(x: 170, y: 620, width: 70, height:30))
         appsButton.setTitle("apps", for: .normal)
         appsButton.addTarget(self, action: #selector(apps), for: .touchDown)
         view.addSubview(appsButton)
         
-        let qrButton = UIButton(frame: CGRect(x: 230, y: 600, width: 70, height:30))
+        let qrButton = UIButton(frame: CGRect(x: 230, y: 620, width: 70, height:30))
         qrButton.setTitle("qr", for: .normal)
         qrButton.addTarget(self, action: #selector(qr), for: .touchDown)
         view.addSubview(qrButton)
         
-        let myQrButton = UIButton(frame: CGRect(x: 280, y: 600, width: 70, height:30))
+        let myQrButton = UIButton(frame: CGRect(x: 280, y: 620, width: 70, height:30))
         myQrButton.setTitle("myqr", for: .normal)
         myQrButton.addTarget(self, action: #selector(myQr), for: .touchDown)
         view.addSubview(myQrButton)

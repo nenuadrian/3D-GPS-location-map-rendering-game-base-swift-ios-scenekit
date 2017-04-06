@@ -24,7 +24,6 @@ class World3D: UIViewController {
     
     var sceneView: SCNView!
     var mapScene: SCNScene!
-    var cameraNode: SCNNode!
     var cameraOrbit: SCNNode!
 
     override func viewDidAppear(_ animated: Bool) {
@@ -35,69 +34,49 @@ class World3D: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView = SCNView(frame: view.frame)
-       // sceneView.allowsCameraControl = true
         view.addSubview(sceneView)
         sceneSetup()
 
         locationMaster = LocationMaster()
         Timer.scheduledTimer(timeInterval: TimeInterval(1), target: self, selector: #selector(self.computeTiles), userInfo: nil, repeats: true)
         
-         let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-        sceneView.addGestureRecognizer(gestureRecognizer)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         sceneView.addGestureRecognizer(tapGesture)
     }
     
-    func sceneSetup() {
-        mapScene = SCNScene()
-
+    func cameraSetup() {
+        let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        sceneView.addGestureRecognizer(gestureRecognizer)
+        
         let camera = SCNCamera()
         camera.zNear = 1
-        camera.zFar = 1000
-        cameraNode = SCNNode()
+        camera.zFar = 10000
+        let cameraNode = SCNNode()
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 300)
         cameraNode.camera = camera
         cameraOrbit = SCNNode()
         cameraOrbit.addChildNode(cameraNode)
-        
         self.cameraOrbit.eulerAngles.x = 1.06447
-        
+        World3D.playerNode.addChildNode(cameraOrbit)
+        let constraint = SCNLookAtConstraint(target: World3D.playerNode)
+        cameraNode.constraints = [constraint]
+    }
+    
+    func sceneSetup() {
+        mapScene = SCNScene()
+        mapScene.background.contents = UIColor(red:0.82, green:0.82, blue:0.82, alpha:1.0)
+        sceneView.scene = mapScene
+        sceneView.autoenablesDefaultLighting = true
+
         let player = SCNSphere(radius: 5.20)
         player.firstMaterial!.diffuse.contents = UIColor.red
         player.firstMaterial!.specular.contents = UIColor.white
-        
         World3D.playerNode = SCNNode(geometry: player)
         World3D.playerNode.name = "P"
         mapScene.rootNode.addChildNode(World3D.playerNode)
         
-        let constraint = SCNLookAtConstraint(target: World3D.playerNode)
-        cameraNode.constraints = [constraint]
-        
-        World3D.playerNode.addChildNode(cameraOrbit)
-        
-        
-        // 2
-       /* let boxGeometry = SCNBox(width: 10.0, height: 10.0, length: 10.0, chamferRadius: 1.0)
-        let boxNode = SCNNode(geometry: boxGeometry)
-        scene.rootNode.addChildNode(boxNode)*/
-        
-        let ground = SCNPlane(width: 10000, height: 10000)
-        ground.firstMaterial!.diffuse.contents          = UIColor.black
-        ground.firstMaterial!.specular.contents          = UIColor.black
-        let groundNode = SCNNode(geometry: ground)
-        groundNode.position = SCNVector3(x: 0, y: 0, z: 0)
-
-        //scene.rootNode.addChildNode(groundNode)
-        
-        
-        //silverMaterial.diffuse.contents = [UIImage imageNamed:@"art.scnassets/silver-background.png"];
-
-               // 3
-        sceneView.scene = mapScene
-        sceneView.autoenablesDefaultLighting = true
-        
-
+        cameraSetup()
     }
     
     func npcsStatus(timer: Timer) {
@@ -115,21 +94,13 @@ class World3D: UIViewController {
     }
     
     func computeTiles(timer: Timer) {
-        let locMeters = Utils.latLonToMeters(coord: LocationMaster.getLast())
-        let currentTile = Utils.latLonToTile(coord: LocationMaster.getLast())
-        let currentTileLatLon = Utils.tileToLatLon(tile: currentTile)
-        let currentTileMeters = Utils.latLonToMeters(coord: currentTileLatLon)
-        
-        var playerOffsetInsideTile = locMeters - currentTileMeters
-        playerOffsetInsideTile = Vector2(abs(playerOffsetInsideTile.x), 611 - abs(playerOffsetInsideTile.y))
-        
+        let playerLatLon = LocationMaster.getLast()
+        let currentTile = Utils.latLonToTile(coord: playerLatLon)
+
         if World3D.primordialTile == nil {
             World3D.primordialTile = currentTile
         }
         
-        let playerOffset = (currentTile - World3D.primordialTile) * 611 + playerOffsetInsideTile
-        World3D.playerNode.position = SCNVector3(x: playerOffset.x, y: playerOffset.y, z: 10)
-
         for i in -Constants.TILE_RANGE...Constants.TILE_RANGE {
             for j in -Constants.TILE_RANGE...Constants.TILE_RANGE {
                 let tileKey = currentTile + Vector2(Float(i), Float(j))
@@ -139,6 +110,12 @@ class World3D: UIViewController {
             }
         }
         
+        
+        let playerOffsetInsideTile = Utils.distanceInMetersBetween(latLon1: Utils.tileToLatLon(tile: currentTile), latLon2: playerLatLon) - Vector2(611, 611)/2
+        let playerPosition = World3D.mapTiles[currentTile]!.position + playerOffsetInsideTile * Vector2(1, -1)
+        World3D.playerNode.position = SCNVector3(x: playerPosition.x, y: playerPosition.y, z: 10)
+        
+        Logging.info(data: "Player @ P\(playerPosition) OIT\(playerOffsetInsideTile)")
     }
     
     var lastWidthRatio: Float = 0
@@ -150,9 +127,9 @@ class World3D: UIViewController {
         let widthRatio = Float(translation.x) / Float(360) + lastWidthRatio
         let heightRatio = Float(translation.y) / Float(sender.view!.frame.size.height) + lastHeightRatio
         
-        self.cameraOrbit.eulerAngles.z = -Float.pi*1.5 * widthRatio
+        self.cameraOrbit.eulerAngles.z = -Float.pi*2 * widthRatio
         self.cameraOrbit.eulerAngles.x = max(0.412028, min(1.40134, Float.pi * heightRatio))
-        
+
         if (sender.state == .ended) {
             lastWidthRatio = widthRatio.remainder(dividingBy: 1)
             lastHeightRatio = heightRatio.remainder(dividingBy: 1)
@@ -163,9 +140,8 @@ class World3D: UIViewController {
         
         let p = gestureRecognize.location(in: sceneView)
         let hitResults = sceneView.hitTest(p, options: [:])
-        // check that we clicked on at least one object
 
-        for result in hitResults {
+        if let result = hitResults.first {
             if let name = result.node.name {
                 switch name {
                     case "NPC":
@@ -179,16 +155,25 @@ class World3D: UIViewController {
                             }
                         }
                         break;
-                    case "GP":
-                        for t in World3D.mapTiles {
-                            if result.node == t.value.gridPoint.node {
-                                print("FOUND GP")
-                                GridPointInterface.init().show(gridPoint: t.value.gridPoint)
-                            }
+                case "GP":
+                    for t in World3D.mapTiles {
+                        if result.node == t.value.gridPoint.node {
+                            print("FOUND GP")
+                            GridPointInterface.init().show(gridPoint: t.value.gridPoint)
                         }
-                        break;
-                    default:
-                        break;
+                    }
+                    break;
+                case "HB":
+                   GUIMaster.homebase()
+                    break;
+                case "P":
+                    API.put(endpoint: "tasks/homebase", callback: { (data) in
+                        if data["code"].int! == 200 {
+                        }
+                    })
+                    break;
+                default:
+                    break;
                 }
             }
         }

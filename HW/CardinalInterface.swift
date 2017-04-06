@@ -19,13 +19,23 @@ class CardinalInterface: UIView {
         backgroundColor = UIColor.black
         alpha = 0.8
 
-        scrollView = UIScrollView(frame: CGRect(x: 40, y: 40, width: frame.width - 80, height: frame.height - 80))
+        scrollView = UIScrollView(frame: CGRect(x: 40, y: 40, width: frame.width - 80, height: frame.height - 120))
         
         addSubview(scrollView)
+        
+        
+        let done = UIButton(frame: CGRect(x: 40, y: frame.height - 40, width: 100, height: 30))
+        done.setTitle("done", for: .normal)
+        done.addTarget(self, action: #selector(doneCall), for: .touchDown)
+        addSubview(done)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func doneCall(_ sender: AnyObject?) {
+        close()
     }
     
     func addSubview(v: UIView) {

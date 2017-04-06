@@ -28,11 +28,7 @@ class HomebaseInterface: CardinalInterface {
             let app = AppBitView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), app: app)
             addSubview(v: app)
         }
-        
-        let done = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
-        done.setTitle("done", for: .normal)
-        done.addTarget(self, action: #selector(self.doneCall), for: .touchDown)
-        addSubview(v: done)
+ 
         
         let install = UIButton(frame: CGRect(x: 200, y: 200, width: 100, height:30))
         install.setTitle("install", for: .normal)
@@ -45,7 +41,4 @@ class HomebaseInterface: CardinalInterface {
         close()
     }
 
-    @objc func doneCall(_ sender: AnyObject?) {
-        close()
-    }
 }

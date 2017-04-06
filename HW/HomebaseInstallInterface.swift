@@ -20,6 +20,7 @@ class InstallAppBitView: UIView, UIGestureRecognizerDelegate {
         
         let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 100, height: 20))
         nameLabel.text = "App \(app.type)"
+        nameLabel.textColor = UIColor.white
         addSubview(nameLabel)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: nil)
@@ -50,14 +51,6 @@ class HomebaseInstallInterface: CardinalInterface {
             let appBtiView = InstallAppBitView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), app: app)
             addSubview(v: appBtiView)
         }
-        
-        let done = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
-        done.setTitle("done", for: .normal)
-        done.addTarget(self, action: #selector(doneCall), for: .touchDown)
-        addSubview(v: done)
-    }
-    
-    @objc func doneCall(_ sender: AnyObject?) {
-        close()
+
     }
 }
