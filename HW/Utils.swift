@@ -50,4 +50,8 @@ class Utils {
     static func deg2rad(angle: Float) -> Float {
         return (Float.pi / 180) * angle;
     }
+    
+    static func timestamp() -> IntMax {
+        return IntMax(NSDate().timeIntervalSince1970)
+    }
 }

@@ -19,9 +19,9 @@ class MapTile {
     var npcs: [NPC] = []
     var node: SCNNode!
     
-    init(tileKey: Vector2, mapNode: SCNNode) {
+    init(tileKey: Vector2, mapNode: SCNNode, primordialTile: Vector2) {
         self.tileKey = tileKey
-        self.position = Vector2(tileKey.x - World3D.primordialTile.x, World3D.primordialTile.y - tileKey.y) * 611
+        self.position = Vector2(tileKey.x - primordialTile.x, primordialTile.y - tileKey.y) * 611
         
         Logging.info(data: "TILE \(tileKey) @ \(self.position)")
         
@@ -30,6 +30,7 @@ class MapTile {
         mapNode.addChildNode(node)
         
         if World3D.tilesDataCache[tileKey] != nil {
+            Logging.info(data: "Using cached data for \(tileKey)")
             self.data = World3D.tilesDataCache[tileKey]!
             render()
         } else {
@@ -107,7 +108,7 @@ class MapTile {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 611, height: 611), false, scale)
         let context = UIGraphicsGetCurrentContext()!
         
-        context.setFillColor(UIColor(red:0.32, green:0.28, blue:0.28, alpha:1.0).cgColor)
+        context.setFillColor(UIColor(red:0.11, green:0.11, blue:0.13, alpha:1.0).cgColor)
         context.setLineWidth(0)
         context.addRect(CGRect(x: 0, y: 0, width: 611, height: 611))
         context.drawPath(using: .fillStroke)

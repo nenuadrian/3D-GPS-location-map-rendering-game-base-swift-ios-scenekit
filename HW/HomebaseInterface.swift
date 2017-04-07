@@ -37,7 +37,7 @@ class HomebaseInterface: CardinalInterface {
     }
     
     @objc func installCall(_ sender: AnyObject?) {
-        GUIMaster.homebaseInstallApp()
+        Cardinal.homebaseInstallApp()
         close()
     }
 

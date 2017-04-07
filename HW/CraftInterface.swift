@@ -22,19 +22,14 @@ class FormulaBitView: UIView, UIGestureRecognizerDelegate {
         self.formula = formula
         super.init(frame: frame)
         
-        let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 100, height: 20))
-        nameLabel.text = "Craft \(formula.item) \(formula.app)"
-        nameLabel.textColor = UIColor.white
-        addSubview(nameLabel)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: nil)
-        tapGesture.delegate = self
-        addGestureRecognizer(tapGesture)
+        let formulaBtn = Btn(title: "Craft \(formula.item) \(formula.app)", position: CGPoint(x: 0, y: 0))
+        formulaBtn.titleLabel?.textAlignment = .left
+        addSubview(formulaBtn)
+        formulaBtn.addTarget(self, action: #selector(doFormula), for: .touchDown)
     }
     
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        GUIMaster.formula(formula: formula)
-        return false
+    func doFormula(_ sender: AnyObject?) {
+        Cardinal.formula(formula: formula)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,7 +43,7 @@ class CraftInterface: CardinalInterface {
         var index = 0
         for formula in Craft.formulas {
             index += 1
-            let formulaView = FormulaBitView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), formula: formula)
+            let formulaView = FormulaBitView(frame: CGRect(x: 10, y: 40 * index, width: 200, height: 30), formula: formula)
             addSubview(v: formulaView)
         }
     }

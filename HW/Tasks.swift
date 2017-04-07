@@ -72,7 +72,7 @@ class TasksManager {
     
     static func addTask(task: Task) {
         TasksManager.tasks[task.id] = task
-        GUIMaster.addTask(task: task)
+        Cardinal.addTask(task: task)
     }
     
     static func done(task: Task) {
@@ -80,7 +80,7 @@ class TasksManager {
         
         switch task.type! {
         case Task.TYPE.HOME_BASE:
-            Player.homebase = Homebase(coords: Vector2(x: task.data["coords"][0].float!, y: task.data["coords"][1].float!))
+            Player.current.homebase = Homebase(coords: Vector2(x: task.data["coords"][0].float!, y: task.data["coords"][1].float!))
             break
         case Task.TYPE.CRAFT:
             break
@@ -89,6 +89,6 @@ class TasksManager {
         }
         print("Finished task")
         print(task.type)
-        GUIMaster.removeTask(task: task)
+        Cardinal.removeTask(task: task)
     }
 }

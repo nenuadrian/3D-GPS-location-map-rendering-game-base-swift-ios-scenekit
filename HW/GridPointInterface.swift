@@ -43,6 +43,7 @@ class GridPointInterface: CardinalInterface {
                     let tile = Vector2(tileData[0].float!, tileData[1].float!)
                     if let mapTile = World3D.mapTiles[tile] {
                         mapTile.gridPoint.setState(state: 3, remaining: data["data"]["s"].int!)
+                        Player.surgeGridPoint(tile: self.gridPoint.tileKey, remaining: data["data"]["s"].int!)
                     }
                 }
             } else if data["code"].int! == 418 {
@@ -55,6 +56,7 @@ class GridPointInterface: CardinalInterface {
         API.post(endpoint: "gridPoint/\(Int(gridPoint.tileKey.x))/\(Int(gridPoint.tileKey.y))/hack", callback: { (data) in
             if data["code"].int! == 200 {
                 self.gridPoint.setState(state: 2, remaining: data["data"]["s"].int!)
+                Player.hackGridPoint(tile: self.gridPoint.tileKey, remaining: data["data"]["s"].int!)
             }
         })
 

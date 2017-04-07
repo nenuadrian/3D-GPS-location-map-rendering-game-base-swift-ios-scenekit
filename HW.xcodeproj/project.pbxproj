@@ -15,12 +15,28 @@
 		D635109E1E9534A500193100 /* World3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635109D1E9534A500193100 /* World3D.swift */; };
 		D63510A21E95369000193100 /* MapTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63510A11E95369000193100 /* MapTile.swift */; };
 		D63510A41E96673600193100 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63510A31E96673600193100 /* Logging.swift */; };
+		D66AF2F31E96B905003E00AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D66AF2F21E96B905003E00AB /* Images.xcassets */; };
+		D66AF2F51E96BAC6003E00AB /* SettingsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66AF2F41E96BAC6003E00AB /* SettingsInterface.swift */; };
+		D66AF2F81E96BEAD003E00AB /* AugmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66AF2F71E96BEAD003E00AB /* AugmentedViewController.swift */; };
+		D66AF2FA1E96C732003E00AB /* CMDeviceMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66AF2F91E96C732003E00AB /* CMDeviceMotion.swift */; };
+		D66AF2FC1E96EBBF003E00AB /* sha256.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66AF2FB1E96EBBF003E00AB /* sha256.swift */; };
+		D66AF2FF1E97009B003E00AB /* QRReadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66AF2FE1E97009B003E00AB /* QRReadViewController.swift */; };
+		D66AF30C1E970AD5003E00AB /* JosefinSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF3021E970AC2003E00AB /* JosefinSans-Bold.ttf */; };
+		D66AF30D1E970AD5003E00AB /* JosefinSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF3031E970AC2003E00AB /* JosefinSans-BoldItalic.ttf */; };
+		D66AF30E1E970AD5003E00AB /* JosefinSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF3041E970AC2003E00AB /* JosefinSans-Italic.ttf */; };
+		D66AF30F1E970AD5003E00AB /* JosefinSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF3051E970AC2003E00AB /* JosefinSans-Light.ttf */; };
+		D66AF3101E970AD5003E00AB /* JosefinSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF3061E970AC2003E00AB /* JosefinSans-LightItalic.ttf */; };
+		D66AF3111E970AD5003E00AB /* JosefinSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF3071E970AC2003E00AB /* JosefinSans-Regular.ttf */; };
+		D66AF3121E970AD5003E00AB /* JosefinSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF3081E970AC2003E00AB /* JosefinSans-SemiBold.ttf */; };
+		D66AF3131E970AD5003E00AB /* JosefinSans-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF3091E970AC2003E00AB /* JosefinSans-SemiBoldItalic.ttf */; };
+		D66AF3141E970AD5003E00AB /* JosefinSans-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF30A1E970AC2003E00AB /* JosefinSans-Thin.ttf */; };
+		D66AF3151E970AD5003E00AB /* JosefinSans-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D66AF30B1E970AC2003E00AB /* JosefinSans-ThinItalic.ttf */; };
 		D6846A8B1E8964800016C0F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6846A8A1E8964800016C0F0 /* CoreLocation.framework */; };
 		D6846A8D1E8976A60016C0F0 /* SwiftHTTP.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6846A8C1E8976A50016C0F0 /* SwiftHTTP.framework */; };
 		D68906971E897B8300D51592 /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D68906961E897B8300D51592 /* SwiftyJSON.framework */; };
 		D689069B1E8993E200D51592 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = D689069A1E8993E200D51592 /* Utils.swift */; };
 		D68AD0FF1E93048000B659E3 /* AuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD0FE1E93048000B659E3 /* AuthViewController.swift */; };
-		D68AD1011E930C8B00B659E3 /* GUIMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1001E930C8B00B659E3 /* GUIMaster.swift */; };
+		D68AD1011E930C8B00B659E3 /* Cardinal.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1001E930C8B00B659E3 /* Cardinal.swift */; };
 		D68AD1061E93195F00B659E3 /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1051E93195F00B659E3 /* Inventory.swift */; };
 		D68AD1081E931C9E00B659E3 /* DropInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1071E931C9E00B659E3 /* DropInterface.swift */; };
 		D68AD10A1E93272C00B659E3 /* InventoryInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D68AD1091E93272C00B659E3 /* InventoryInterface.swift */; };
@@ -57,12 +73,29 @@
 		D635109D1E9534A500193100 /* World3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = World3D.swift; sourceTree = "<group>"; };
 		D63510A11E95369000193100 /* MapTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
 		D63510A31E96673600193100 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		D66AF2F21E96B905003E00AB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D66AF2F41E96BAC6003E00AB /* SettingsInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsInterface.swift; sourceTree = "<group>"; };
+		D66AF2F71E96BEAD003E00AB /* AugmentedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentedViewController.swift; sourceTree = "<group>"; };
+		D66AF2F91E96C732003E00AB /* CMDeviceMotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CMDeviceMotion.swift; sourceTree = "<group>"; };
+		D66AF2FB1E96EBBF003E00AB /* sha256.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = sha256.swift; sourceTree = "<group>"; };
+		D66AF2FD1E96ECFD003E00AB /* Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		D66AF2FE1E97009B003E00AB /* QRReadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRReadViewController.swift; sourceTree = "<group>"; };
+		D66AF3021E970AC2003E00AB /* JosefinSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Bold.ttf"; sourceTree = "<group>"; };
+		D66AF3031E970AC2003E00AB /* JosefinSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-BoldItalic.ttf"; sourceTree = "<group>"; };
+		D66AF3041E970AC2003E00AB /* JosefinSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Italic.ttf"; sourceTree = "<group>"; };
+		D66AF3051E970AC2003E00AB /* JosefinSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Light.ttf"; sourceTree = "<group>"; };
+		D66AF3061E970AC2003E00AB /* JosefinSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-LightItalic.ttf"; sourceTree = "<group>"; };
+		D66AF3071E970AC2003E00AB /* JosefinSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Regular.ttf"; sourceTree = "<group>"; };
+		D66AF3081E970AC2003E00AB /* JosefinSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-SemiBold.ttf"; sourceTree = "<group>"; };
+		D66AF3091E970AC2003E00AB /* JosefinSans-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		D66AF30A1E970AC2003E00AB /* JosefinSans-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-Thin.ttf"; sourceTree = "<group>"; };
+		D66AF30B1E970AC2003E00AB /* JosefinSans-ThinItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "JosefinSans-ThinItalic.ttf"; sourceTree = "<group>"; };
 		D6846A8A1E8964800016C0F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		D6846A8C1E8976A50016C0F0 /* SwiftHTTP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftHTTP.framework; path = Carthage/Build/iOS/SwiftHTTP.framework; sourceTree = "<group>"; };
 		D68906961E897B8300D51592 /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyJSON.framework; path = Carthage/Build/iOS/SwiftyJSON.framework; sourceTree = "<group>"; };
 		D689069A1E8993E200D51592 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		D68AD0FE1E93048000B659E3 /* AuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthViewController.swift; sourceTree = "<group>"; };
-		D68AD1001E930C8B00B659E3 /* GUIMaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GUIMaster.swift; sourceTree = "<group>"; };
+		D68AD1001E930C8B00B659E3 /* Cardinal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cardinal.swift; sourceTree = "<group>"; };
 		D68AD1051E93195F00B659E3 /* Inventory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		D68AD1071E931C9E00B659E3 /* DropInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropInterface.swift; sourceTree = "<group>"; };
 		D68AD1091E93272C00B659E3 /* InventoryInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InventoryInterface.swift; sourceTree = "<group>"; };
@@ -111,6 +144,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D66AF2F61E96BE9E003E00AB /* Augumented */ = {
+			isa = PBXGroup;
+			children = (
+				D66AF2F71E96BEAD003E00AB /* AugmentedViewController.swift */,
+				D66AF2F91E96C732003E00AB /* CMDeviceMotion.swift */,
+			);
+			name = Augumented;
+			sourceTree = "<group>";
+		};
+		D66AF3001E9700DB003E00AB /* QR */ = {
+			isa = PBXGroup;
+			children = (
+				D635109B1E9509EA00193100 /* QRCodeInterface.swift */,
+				D66AF2FE1E97009B003E00AB /* QRReadViewController.swift */,
+			);
+			name = QR;
+			sourceTree = "<group>";
+		};
+		D66AF3011E970A90003E00AB /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				D66AF3021E970AC2003E00AB /* JosefinSans-Bold.ttf */,
+				D66AF3031E970AC2003E00AB /* JosefinSans-BoldItalic.ttf */,
+				D66AF3041E970AC2003E00AB /* JosefinSans-Italic.ttf */,
+				D66AF3051E970AC2003E00AB /* JosefinSans-Light.ttf */,
+				D66AF3061E970AC2003E00AB /* JosefinSans-LightItalic.ttf */,
+				D66AF3071E970AC2003E00AB /* JosefinSans-Regular.ttf */,
+				D66AF3081E970AC2003E00AB /* JosefinSans-SemiBold.ttf */,
+				D66AF3091E970AC2003E00AB /* JosefinSans-SemiBoldItalic.ttf */,
+				D66AF30A1E970AC2003E00AB /* JosefinSans-Thin.ttf */,
+				D66AF30B1E970AC2003E00AB /* JosefinSans-ThinItalic.ttf */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
 		D6846A841E8960120016C0F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,6 +203,7 @@
 				D6EA44F31E8A26EC00658CAF /* Constants.swift */,
 				D6EA44F51E8A281F00658CAF /* API.swift */,
 				D63510A31E96673600193100 /* Logging.swift */,
+				D66AF2FB1E96EBBF003E00AB /* sha256.swift */,
 			);
 			name = Helpers;
 			sourceTree = "<group>";
@@ -142,6 +211,8 @@
 		D68AD1031E93191F00B659E3 /* World */ = {
 			isa = PBXGroup;
 			children = (
+				D66AF3001E9700DB003E00AB /* QR */,
+				D66AF2F61E96BE9E003E00AB /* Augumented */,
 				D68AD12B1E945C6D00B659E3 /* GridPoint */,
 				D68AD11B1E93F18F00B659E3 /* Homebase */,
 				D68AD1281E944AFD00B659E3 /* Map */,
@@ -203,11 +274,11 @@
 		D68AD1271E944AE600B659E3 /* GUI */ = {
 			isa = PBXGroup;
 			children = (
-				D68AD1001E930C8B00B659E3 /* GUIMaster.swift */,
+				D68AD1001E930C8B00B659E3 /* Cardinal.swift */,
 				D68AD1241E9438D500B659E3 /* CardinalInterface.swift */,
 				D68AD1071E931C9E00B659E3 /* DropInterface.swift */,
 				D68AD1091E93272C00B659E3 /* InventoryInterface.swift */,
-				D635109B1E9509EA00193100 /* QRCodeInterface.swift */,
+				D66AF2F41E96BAC6003E00AB /* SettingsInterface.swift */,
 			);
 			name = GUI;
 			sourceTree = "<group>";
@@ -250,8 +321,10 @@
 		D69181FE1E895D1500DC038E /* HW */ = {
 			isa = PBXGroup;
 			children = (
+				D66AF3011E970A90003E00AB /* Assets */,
 				D69182061E895D1500DC038E /* HW.xcdatamodeld */,
 				D69182091E895D1500DC038E /* Assets.xcassets */,
+				D66AF2F21E96B905003E00AB /* Images.xcassets */,
 				D691820E1E895D1500DC038E /* Info.plist */,
 				D691820B1E895D1500DC038E /* LaunchScreen.storyboard */,
 				D69181FF1E895D1500DC038E /* AppDelegate.swift */,
@@ -259,6 +332,7 @@
 				D68AD1021E93190400B659E3 /* Helpers */,
 				D68AD1031E93191F00B659E3 /* World */,
 				D68AD1041E93193300B659E3 /* Player */,
+				D66AF2FD1E96ECFD003E00AB /* Bridging-Header.h */,
 			);
 			path = HW;
 			sourceTree = "<group>";
@@ -324,6 +398,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D66AF30C1E970AD5003E00AB /* JosefinSans-Bold.ttf in Resources */,
+				D66AF30D1E970AD5003E00AB /* JosefinSans-BoldItalic.ttf in Resources */,
+				D66AF30E1E970AD5003E00AB /* JosefinSans-Italic.ttf in Resources */,
+				D66AF30F1E970AD5003E00AB /* JosefinSans-Light.ttf in Resources */,
+				D66AF3101E970AD5003E00AB /* JosefinSans-LightItalic.ttf in Resources */,
+				D66AF3111E970AD5003E00AB /* JosefinSans-Regular.ttf in Resources */,
+				D66AF3121E970AD5003E00AB /* JosefinSans-SemiBold.ttf in Resources */,
+				D66AF3131E970AD5003E00AB /* JosefinSans-SemiBoldItalic.ttf in Resources */,
+				D66AF3141E970AD5003E00AB /* JosefinSans-Thin.ttf in Resources */,
+				D66AF3151E970AD5003E00AB /* JosefinSans-ThinItalic.ttf in Resources */,
+				D66AF2F31E96B905003E00AB /* Images.xcassets in Resources */,
 				D691820D1E895D1500DC038E /* LaunchScreen.storyboard in Resources */,
 				D691820A1E895D1500DC038E /* Assets.xcassets in Resources */,
 			);
@@ -360,11 +445,12 @@
 			files = (
 				D617BCAC1E89E76C008556B9 /* VectorMath.swift in Sources */,
 				D63510A41E96673600193100 /* Logging.swift in Sources */,
-				D68AD1011E930C8B00B659E3 /* GUIMaster.swift in Sources */,
+				D68AD1011E930C8B00B659E3 /* Cardinal.swift in Sources */,
 				D689069B1E8993E200D51592 /* Utils.swift in Sources */,
 				D617C4251E89FD43001D2DAD /* GridPoint.swift in Sources */,
 				D69182081E895D1500DC038E /* HW.xcdatamodeld in Sources */,
 				D68AD10C1E93282B00B659E3 /* CraftInterface.swift in Sources */,
+				D66AF2F81E96BEAD003E00AB /* AugmentedViewController.swift in Sources */,
 				D6EA44FA1E8A5DF100658CAF /* Player.swift in Sources */,
 				D68AD1121E932B0E00B659E3 /* FormulaInterface.swift in Sources */,
 				D635109C1E9509EA00193100 /* QRCodeInterface.swift in Sources */,
@@ -375,14 +461,18 @@
 				D68AD1081E931C9E00B659E3 /* DropInterface.swift in Sources */,
 				D68AD0FF1E93048000B659E3 /* AuthViewController.swift in Sources */,
 				D69182001E895D1500DC038E /* AppDelegate.swift in Sources */,
+				D66AF2FF1E97009B003E00AB /* QRReadViewController.swift in Sources */,
 				D68AD1181E93ACDD00B659E3 /* AppsInterface.swift in Sources */,
 				D63510A21E95369000193100 /* MapTile.swift in Sources */,
 				D68AD10E1E93289F00B659E3 /* Craft.swift in Sources */,
+				D66AF2F51E96BAC6003E00AB /* SettingsInterface.swift in Sources */,
+				D66AF2FA1E96C732003E00AB /* CMDeviceMotion.swift in Sources */,
 				D68AD1061E93195F00B659E3 /* Inventory.swift in Sources */,
 				D68AD1211E94225200B659E3 /* NPC.swift in Sources */,
 				D68AD11F1E93F2DB00B659E3 /* HomebaseInstallInterface.swift in Sources */,
 				D635109E1E9534A500193100 /* World3D.swift in Sources */,
 				D68AD10A1E93272C00B659E3 /* InventoryInterface.swift in Sources */,
+				D66AF2FC1E96EBBF003E00AB /* sha256.swift in Sources */,
 				D68AD1101E9328D700B659E3 /* Apps.swift in Sources */,
 				D6EA44FC1E8AC81D00658CAF /* LocationMaster.swift in Sources */,
 				D68AD12D1E945D2300B659E3 /* GridPointInterface.swift in Sources */,
@@ -512,6 +602,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Adrian-Nenu.HW";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "HW/Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -532,6 +623,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Adrian-Nenu.HW";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "HW/Bridging-Header.h";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

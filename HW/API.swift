@@ -16,8 +16,17 @@ class API {
     
     static func setToken(token: String) {
         API.token = token.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)!
+        UserDefaults.standard.setValue(token, forKey: "token")
+        UserDefaults.standard.synchronize()
     }
     
+    static func deleteToken() {
+        setToken(token: "")
+        UserDefaults.standard.removeObject(forKey: "token")
+        UserDefaults.standard.synchronize()
+    }
+    
+    // TODO on auth error logout
     static func request(method: HTTPVerb, params: [String : Any], endpoint: String, callback: @escaping (_: JSON) -> Void) {
         do {
             print(endpoint)
@@ -33,13 +42,19 @@ class API {
                 }
                 
                 let json = JSON(data: response.data)
+                
+                if json["code"].int! == 402 {
+                    print("ATH ERROR")
+                    return
+                }
+                
                 if json["data"]["action"] != JSON.null {
                     if json["data"]["action"]["task"] != JSON.null {
                         TasksManager.addTask(task: Task(task: json["data"]["action"]["task"]))
                     }
                     
                     if json["data"]["action"]["drop"] != JSON.null {
-                        GUIMaster.drop(data: json["data"]["action"]["drop"])
+                        Cardinal.drop(data: json["data"]["action"]["drop"])
                     }
                 
                     if json["data"]["action"]["item"] != JSON.null {

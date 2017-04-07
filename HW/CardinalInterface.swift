@@ -15,9 +15,10 @@ class CardinalInterface: UIView {
     
     init() {
         super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
-        GUIMaster.myInstance.view.addSubview(self)
-        backgroundColor = UIColor.black
-        alpha = 0.8
+        Cardinal.myInstance.view.addSubview(self)
+
+        backgroundColor = UIColor(patternImage: UIImage(named: "padded")!)
+        alpha = 0.97
 
         scrollView = UIScrollView(frame: CGRect(x: 40, y: 40, width: frame.width - 80, height: frame.height - 120))
         

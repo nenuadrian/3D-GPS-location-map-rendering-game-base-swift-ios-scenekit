@@ -18,13 +18,14 @@ class World3D: UIViewController {
     static var mapTiles = [Vector2: MapTile]()
     static var tilesDataCache = [Vector2: JSON]()
     
-    static var primordialTile: Vector2!
-    static var playerNode: SCNNode!
-    var locationMaster: LocationMaster!
+    private var primordialTile: Vector2!
+    private var playerNode: SCNNode!
+    private var locationMaster: LocationMaster!
+    private var locationTimer: Timer!
     
     var sceneView: SCNView!
     var mapScene: SCNScene!
-    var cameraOrbit: SCNNode!
+    private var cameraOrbit: SCNNode!
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -38,7 +39,7 @@ class World3D: UIViewController {
         sceneSetup()
 
         locationMaster = LocationMaster()
-        Timer.scheduledTimer(timeInterval: TimeInterval(1), target: self, selector: #selector(self.computeTiles), userInfo: nil, repeats: true)
+        locationTimer = Timer.scheduledTimer(timeInterval: TimeInterval(1), target: self, selector: #selector(self.computeTiles), userInfo: nil, repeats: true)
         
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -58,8 +59,8 @@ class World3D: UIViewController {
         cameraOrbit = SCNNode()
         cameraOrbit.addChildNode(cameraNode)
         self.cameraOrbit.eulerAngles.x = 1.06447
-        World3D.playerNode.addChildNode(cameraOrbit)
-        let constraint = SCNLookAtConstraint(target: World3D.playerNode)
+        self.playerNode.addChildNode(cameraOrbit)
+        let constraint = SCNLookAtConstraint(target: self.playerNode)
         cameraNode.constraints = [constraint]
     }
     
@@ -72,9 +73,9 @@ class World3D: UIViewController {
         let player = SCNSphere(radius: 5.20)
         player.firstMaterial!.diffuse.contents = UIColor.red
         player.firstMaterial!.specular.contents = UIColor.white
-        World3D.playerNode = SCNNode(geometry: player)
-        World3D.playerNode.name = "P"
-        mapScene.rootNode.addChildNode(World3D.playerNode)
+        self.playerNode = SCNNode(geometry: player)
+        self.playerNode.name = "P"
+        mapScene.rootNode.addChildNode(self.playerNode)
         
         cameraSetup()
     }
@@ -97,15 +98,15 @@ class World3D: UIViewController {
         let playerLatLon = LocationMaster.getLast()
         let currentTile = Utils.latLonToTile(coord: playerLatLon)
 
-        if World3D.primordialTile == nil {
-            World3D.primordialTile = currentTile
+        if primordialTile == nil {
+            primordialTile = currentTile
         }
         
         for i in -Constants.TILE_RANGE...Constants.TILE_RANGE {
             for j in -Constants.TILE_RANGE...Constants.TILE_RANGE {
                 let tileKey = currentTile + Vector2(Float(i), Float(j))
                 if World3D.mapTiles[tileKey] == nil {
-                    World3D.mapTiles[tileKey] = MapTile(tileKey: tileKey, mapNode: mapScene.rootNode)
+                    World3D.mapTiles[tileKey] = MapTile(tileKey: tileKey, mapNode: mapScene.rootNode, primordialTile: primordialTile)
                 }
             }
         }
@@ -113,9 +114,9 @@ class World3D: UIViewController {
         
         let playerOffsetInsideTile = Utils.distanceInMetersBetween(latLon1: Utils.tileToLatLon(tile: currentTile), latLon2: playerLatLon) - Vector2(611, 611)/2
         let playerPosition = World3D.mapTiles[currentTile]!.position + playerOffsetInsideTile * Vector2(1, -1)
-        World3D.playerNode.position = SCNVector3(x: playerPosition.x, y: playerPosition.y, z: 10)
+        self.playerNode.position = SCNVector3(x: playerPosition.x, y: playerPosition.y, z: 10)
         
-        Logging.info(data: "Player @ P\(playerPosition) OIT\(playerOffsetInsideTile)")
+        // Logging.info(data: "Player @ P\(playerPosition) OIT\(playerOffsetInsideTile)")
     }
     
     var lastWidthRatio: Float = 0
@@ -149,7 +150,7 @@ class World3D: UIViewController {
                             for n in t.value.npcs {
                                 if n.node == result.node {
                                     print("FOUND NPC")
-                                    GUIMaster.npc(npc: n)
+                                    Cardinal.npc(npc: n)
 
                                 }
                             }
@@ -164,7 +165,7 @@ class World3D: UIViewController {
                     }
                     break;
                 case "HB":
-                   GUIMaster.homebase()
+                   Cardinal.homebase()
                     break;
                 case "P":
                     API.put(endpoint: "tasks/homebase", callback: { (data) in
@@ -177,6 +178,13 @@ class World3D: UIViewController {
                 }
             }
         }
+    }
+    
+    func shutdown() {
+        locationTimer.invalidate()
+        World3D.tilesDataCache.removeAll()
+        World3D.mapTiles.removeAll()
+        removeFromParentViewController()
     }
 }
 

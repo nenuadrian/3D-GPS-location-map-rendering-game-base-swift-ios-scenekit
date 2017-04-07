@@ -78,7 +78,6 @@ function userIntro(player) {
 function authHandler(req, res, next) {
   req.answer = function(code, data) {
     var answer = { code: code, data: data }
-    console.log(answer)
     res.send(answer)
     return next()
   }
@@ -199,15 +198,15 @@ server.post('/drop', authLock, (req, res, next) => {
 })
 
 server.post('/gridPoint/:tileX/:tileY/hack', authLock, (req, res, next) => {
-  var grid_point_id = req.params.tileX + '-' + req.params.tileY
-  mongoDB.collection('grid_points').findOne({ user_id: req.user.data._id, grid_point: grid_point_id }).then((r) =>  {
-    var notHackedBefore = new Date()
-    if (r && r.last_hack > notHackedBefore) { return req.answer(418) }
-    mongoDB.collection('grid_points').update(
-      { user_id: req.user.data._id, grid_point: grid_point_id },
-      { '$set': { last_hack: new Date } },
-      { upsert: true, safe: false }, (err, data) => {
-        if (err) { console.log(err); return req.answer(500) }
+  var tile = [parseInt(req.params.tileX), parseInt(req.params.tileY)]
+  var notHackedBefore = new Date()
+  notHackedBefore.setSeconds(notHackedBefore.getSeconds() - config.GP_HACK_WAIT)
+  mongoDB.collection('grid_points').findOne({ user_id: req.user.data._id, tile: tile, last_hack: { $gt: notHackedBefore } }).then(r =>  {
+    if (r) { return req.answer(418) }
+    mongoDB.collection('grid_points').updateOne(
+      { user_id: req.user.data._id, tile: tile },
+      { '$set': { last_hack: new Date() } },
+      { upsert: true }, (err, data) => {
         var drop = [{ type: 1 }, { type: 2 }]
         req.user.data.last_drop = drop
         req.user.addExp(10)
@@ -218,28 +217,36 @@ server.post('/gridPoint/:tileX/:tileY/hack', authLock, (req, res, next) => {
 })
 
 server.post('/gridPoint/:tileX/:tileY/surge', authLock, (req, res, next) => {
+  var tile = [parseInt(req.params.tileX), parseInt(req.params.tileY)]
   var hackedBefore = new Date()
   hackedBefore.setSeconds(hackedBefore.getSeconds() - config.GP_HACK_WAIT)
-  mongoDB.collection('grid_points').find({ user_id: req.user.data._id, 'last_hack': {'$gt': hackedBefore }  }).toArray((err, r) => {
-    if (!r.length) { return req.answer(418) }
-    var activeNodes = r.map(r => r.grid_point.split('-')).map(r => new Vector2(r[0], r[1]))
-    var networkNodes = [new Vector2(parseInt(req.params.tileX), parseInt(req.params.tileY))]
+  mongoDB.collection('grid_points').find({ user_id: req.user.data._id, last_hack: {'$gte': hackedBefore }  }).toArray((err, r) => {
+    var node = new Vector2(parseInt(req.params.tileX), parseInt(req.params.tileY))
+    if (r.find(n => n.tile == [node.x, node.y])) { return req.answer(418) }
+
+    var activeNodes = r.map(n => { return new Vector2(n.tile[0], n.tile[1]) })
+    var networkNodes = [ node ]
 
     buildNeuralNetwork(activeNodes, networkNodes)
     networkNodes = networkNodes.map(n => [n.x, n.y])
 
     var npcFilter = networkNodes.map(n => { return { tile: n } })
     var hbFilter = networkNodes.map(n => { return { home_base: { tile: n } } })
+    mongoDB.collection('grid_points').updateMany(
+      { user_id: req.user.data._id, $or: npcFilter },
+      { $set: { last_surge: new Date } }
+    ).then((err, npcs) => { })
+
     mongoDB.collection('npcs').find({ $or: npcFilter }).toArray((err, npcs) => {
       mongoDB.collection('users').find({ _id : { $ne: req.user.data._id }, $or: hbFilter }).toArray((err, users) => {
-        req.answer(200, { s: config.GP_SURGE_WAIT, network: networkNodes, npcs: npcs, homeBases: users.length })
+        var data = { s: config.GP_SURGE_WAIT, network: networkNodes, npcs: npcs, homeBases: users.length }
+        req.answer(200, data)
       })
     })
   })
 })
 
 server.get('/tile/:x/:y', authLock, (req, res, next) => {
-  if (!req.user.data) { return req.answer(401) }
   var data = JSON.parse(fs.readFileSync('./tiles/' + parseInt(req.params.x) + '/' + parseInt(req.params.y) + '.json', 'utf8'))
   mongoDB.collection('npcs').find({ "tile": [parseInt(req.params.x), parseInt(req.params.y)] }).toArray((err, npcs) => {
     data.npcs = npcs
@@ -302,36 +309,46 @@ server.get('/task/:task_id', authLock, (req, res, next) => {
 server.get('/player', authLock, (req, res, next) => {
   var notHackedBefore = new Date()
   notHackedBefore.setSeconds(notHackedBefore.getSeconds() - config.GP_HACK_WAIT)
-  req.user.data.tasks.forEach(t => {
-    t.s = Math.floor((t.finishes_at.getTime() - new Date().getTime()) / 1000)
-    delete t.created_at
-    delete t.finishes_at
-  })
-  req.answer(200, {
-    player: req.user.basic(),
-    tasks: req.user.data.tasks,
+  mongoDB.collection('grid_points').find({ user_id: req.user.data._id, last_hack: { $gte: notHackedBefore } }).toArray((err, gps) =>  {
+    var tasks = req.user.data.tasks.map(t => {
+      t.s = Math.floor((t.finishes_at.getTime() - new Date().getTime()) / 1000)
+      delete t.created_at
+      delete t.finishes_at
+      return t
+    })
+    console.log(gps)
+    gps.forEach(gp => {
+      gp.hack_s = Math.floor(Math.max(0, (gp.last_hack.getTime() + config.GP_HACK_WAIT * 1000 - new Date().getTime()) / 1000))
+      gp.surge_s = Math.floor(Math.max(0, gp.last_surge ? ((gp.last_surge.getTime() + config.GP_SURGE_WAIT * 1000) - new Date().getTime()) / 1000 : 0))
+    })
+    req.answer(200, {
+      player: req.user.basic(),
+      tasks: tasks,
+      grid_points: gps
+    })
   })
 })
 
 server.post('/auth', (req, res, next) => {
   mongoDB.collection('users').findOne({ username: req.params.username }).then(function(user) {
     if (!user || !bcrypt.compareSync(req.params.password, user.password)) {
-      return req.answer(401)
+      return req.answer(403)
     }
     var authToken = bcrypt.hashSync(uuidV4() + (new Date).getTime + req.params.username)
-    req.user.data.token = authToken
-    req.user.save().then(function(){
+
+    mongoDB.collection('users').updateOne({ _id: user._id }, { $set: { token: authToken } }).then(function(){
       req.answer(200, { token: authToken })
     })
   })
 })
 
 server.post('/join', (req, res, next) => {
-  if (!emailValidator.validate(req.params.email)) { return req.answer(418) }
+  if (!emailValidator.validate(req.params.email)) { return req.answer(403) }
+  console.log(req.params)
   mongoDB.collection('users').findOne({ email: req.params.email }).then( result => {
-    if (result) { return req.answer(401) }
+    if (result) { return req.answer(403, { 'field': 'email' }) }
     mongoDB.collection('users').findOne({ username: req.params.username }).then( result => {
-      if (result) { return req.answer(401) }
+      if (result) { return req.answer(403, { 'field': 'username' }) }
       var authToken = bcrypt.hashSync(uuidV4() + (new Date).getTime + req.params.username)
       mongoDB.collection('users').insert({
         email: req.params.email,
