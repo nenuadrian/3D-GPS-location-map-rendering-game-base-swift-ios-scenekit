@@ -35,8 +35,7 @@ class GridPoint {
         obj.firstMaterial!.specular.contents = UIColor.green
         node.geometry = obj
         
-        
-        if let gp = Player.current.grid_nodes.first(where: { $0.tile == tileKey }) {
+        if let gp = Cardinal.player.grid_nodes.first(where: { $0.tile == tileKey }) {
             if gp.surge_wait > Utils.timestamp() {
                 setState(state: 3, remaining: Int(gp.surge_wait - Utils.timestamp()))
             } else if gp.hack_wait > Utils.timestamp() {

@@ -16,7 +16,6 @@ import SceneKit
 // TODO when too far send to auth
 class World3D: UIViewController {
     static var mapTiles = [Vector2: MapTile]()
-    static var tilesDataCache = [Vector2: JSON]()
     
     private var primordialTile: Vector2!
     private var playerNode: SCNNode!
@@ -52,9 +51,9 @@ class World3D: UIViewController {
         
         let camera = SCNCamera()
         camera.zNear = 1
-        camera.zFar = 10000
+        camera.zFar = 1200
         let cameraNode = SCNNode()
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 300)
+        cameraNode.position = SCNVector3(x: 0, y: 0, z: 200)
         cameraNode.camera = camera
         cameraOrbit = SCNNode()
         cameraOrbit.addChildNode(cameraNode)
@@ -66,6 +65,7 @@ class World3D: UIViewController {
     
     func sceneSetup() {
         mapScene = SCNScene()
+      
         mapScene.background.contents = UIColor(red:0.82, green:0.82, blue:0.82, alpha:1.0)
         sceneView.scene = mapScene
         sceneView.autoenablesDefaultLighting = true
@@ -78,6 +78,9 @@ class World3D: UIViewController {
         mapScene.rootNode.addChildNode(self.playerNode)
         
         cameraSetup()
+        mapScene.fogStartDistance = 900
+        mapScene.fogEndDistance = 1100
+        mapScene.fogColor = UIColor.black
     }
     
     func npcsStatus(timer: Timer) {
@@ -182,7 +185,6 @@ class World3D: UIViewController {
     
     func shutdown() {
         locationTimer.invalidate()
-        World3D.tilesDataCache.removeAll()
         World3D.mapTiles.removeAll()
         removeFromParentViewController()
     }

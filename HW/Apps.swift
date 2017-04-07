@@ -33,10 +33,20 @@ class App {
 }
 
 class Apps {
-    static var apps: [App] = []
+    private static var myApps: [App] = []
+    
+    static func apps() -> [App] {
+        return myApps
+    }
     
     static func add(app: App) {
-        Apps.apps.append(app)
+        Apps.myApps.append(app)
+    }
+    
+    static func remove(id: String) {
+        if let index = myApps.index(where: { $0.id == id }) {
+            myApps.remove(at: index)
+        }
     }
     
     static func initApps(apps: JSON) {

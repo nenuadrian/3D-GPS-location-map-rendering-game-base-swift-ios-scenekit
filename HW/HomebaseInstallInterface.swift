@@ -30,9 +30,6 @@ class InstallAppBitView: UIView, UIGestureRecognizerDelegate {
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         API.post(endpoint: "homebase/install/\(app.id)") { (data) in
-            Apps.apps.remove(at: Apps.apps.index(where: { $0.id == self.app.id })!)
-            self.removeFromSuperview()
-
         }
         return false
     }
@@ -46,7 +43,7 @@ class HomebaseInstallInterface: CardinalInterface {
     
     func show() {
         var index = 0
-        for app in Apps.apps {
+        for app in Apps.apps() {
             index += 1
             let appBtiView = InstallAppBitView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), app: app)
             addSubview(v: appBtiView)

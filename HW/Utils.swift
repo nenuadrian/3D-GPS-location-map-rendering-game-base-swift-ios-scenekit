@@ -7,8 +7,14 @@
 //
 
 import Foundation
+import SwiftyJSON
 
 class Utils {
+    
+    static func vectorFrom(json: JSON) -> Vector2 {
+        return Vector2(x: json[0].float!, y: json[1].float!)
+    }
+    
     static func distanceInMetersBetween(latLon1: Vector2, latLon2: Vector2) -> Vector2 {
         return latLonToMeters(coord: latLon1) - latLonToMeters(coord: latLon2)
     }

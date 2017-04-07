@@ -12,35 +12,33 @@ import SwiftyJSON
 import QRCode
 
 
-class TaskView: UIView {
-    let task: Task
-    init(task: Task) {
-        self.task = task
-        super.init(frame: CGRect(x: Int(UIScreen.main.bounds.width - 50), y: 50 * (Cardinal.taskViews.count + 1), width: 30, height: 30))
-        backgroundColor = UIColor.red
+
+class Cardinal: UIViewController {
+    static var player: Player!
+    private var world: World3D
+    static var myInstance: Cardinal!
+     
+    init(data: JSON) {
+        world = World3D()
+        super.init(nibName: nil, bundle: nil)
+        Cardinal.myInstance = self
+
+        Cardinal.player = Player(data: data["player"])
+        Cardinal.player.initGridPoints(data: data["grid_points"])
+        TasksManager.initTasks(tasks: data["tasks"])
+        Inventory.initInventory(items: data["player"]["inventory"])
+        Apps.initApps(apps: data["player"]["apps"])
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
-
-class Cardinal: UIViewController {
-    private let player: Player! = nil
-    private var world: World3D!
-    static var taskViews: [TaskView] = []
-    static var myInstance: Cardinal!
-    let lat = UITextField(frame: CGRect(x: 260, y:400, width:100, height:30))
-    let lon = UITextField(frame: CGRect(x: 260, y:450, width:100, height:30))
     
     override func viewDidLoad() {
-        Cardinal.myInstance = self
-        world = World3D()
         addChildViewController(world)
         world.view.frame = self.view.frame
         view.addSubview(world.view)
         world.didMove(toParentViewController: self)
-
         setupGUI()
     }
     
@@ -77,28 +75,15 @@ class Cardinal: UIViewController {
         aug.setTitle("aug", for: .normal)
         aug.addTarget(self, action: #selector(augumentedCall), for: .touchDown)
         view.addSubview(aug)
-
-        TasksManager.tasks.forEach({ Cardinal.addTask(task: $0.value) })
-        
         
         if Constants.DEBUG {
-            lat.text = "\(LocationMaster.debugLast.x)"
-            
-            lon.text = "\(LocationMaster.debugLast.y)"
-            view.addSubview(lat)
-            view.addSubview(lon)
-            
-            let move = UIButton(frame: CGRect(x: 260, y: 500, width: 70, height:30))
-            move.setTitle("move", for: .normal)
-            move.addTarget(self, action: #selector(moveCall), for: .touchDown)
-            view.addSubview(move)
+            let debug = Btn(title: "debug", position: CGPoint(x: 260, y: 500))
+            debug.addTarget(self, action: #selector(debugCall), for: .touchDown)
+            view.addSubview(debug)
         }
     }
     
-    @objc func moveCall() {
-        LocationMaster.debugLast = Vector2(Float(lat.text!)!, Float(lon.text!)!)
-    }
-    
+   
     @objc func augumentedCall() {
         let augumented = AugmentedViewController()
         addChildViewController(augumented)
@@ -111,21 +96,8 @@ class Cardinal: UIViewController {
         SettingsInterface().show()
     }
     
-    static func addTask(task: Task) {
-         DispatchQueue.main.async {
-            taskViews.append(TaskView(task : task))
-            myInstance.view.addSubview(taskViews.last!)
-        }
-    }
-    
-    static func removeTask(task: Task) {
-        if let t = taskViews.first(where: { $0.task.id == task.id }) {
-             DispatchQueue.main.async {
-                t.removeFromSuperview()
-                taskViews.remove(at: taskViews.index(where: { $0 == t })!)
-            }
-
-        }
+    @objc func debugCall() {
+        DebugInterface().show()
     }
     
     @objc func qr() {
@@ -171,12 +143,20 @@ class Cardinal: UIViewController {
     }
     
     static func logout() {
-        API.deleteToken()
-        Cardinal.myInstance.world.shutdown()
-        Cardinal.myInstance.present(AuthViewController(), animated: true, completion: nil)
-        Player.current = nil
-        Cardinal.myInstance.removeFromParentViewController()
+        let cardinal = Cardinal.myInstance!
         Cardinal.myInstance = nil
+
+        Cardinal.player = nil
+        API.deleteToken()
+        NotificationCenter.default.removeObserver(cardinal)
+        cardinal.world.shutdown()
+        cardinal.removeFromParentViewController()
+        cardinal.present(AuthViewController(), animated: true, completion: nil)
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
 }
 

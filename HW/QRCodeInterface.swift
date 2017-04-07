@@ -13,6 +13,6 @@ class QRCodeInterface: CardinalInterface {
     func show(data: String) {
         let qrCode = QRCode(data)
         let imageView = UIImageView(qrCode: qrCode!)
-        addSubview(imageView)
+        addSubview(v: imageView)
     }
 }

@@ -15,15 +15,19 @@ class GridPointInterface: CardinalInterface {
     func show(gridPoint: GridPoint) {
         self.gridPoint = gridPoint
         
-        let surgeButton = UIButton(frame: CGRect(x: 50, y: 200, width: 100, height:30))
-        surgeButton.setTitle("surgeButton", for: .normal)
-        surgeButton.addTarget(self, action: #selector(self.surgeCall), for: .touchDown)
-        addSubview(v: surgeButton)
+        if gridPoint.state == 2 {
+            let surgeButton = UIButton(frame: CGRect(x: 50, y: 200, width: 100, height:30))
+            surgeButton.setTitle("surge", for: .normal)
+            surgeButton.addTarget(self, action: #selector(self.surgeCall), for: .touchDown)
+            addSubview(v: surgeButton)
+        }
         
-        let hackButton = UIButton(frame: CGRect(x: 150, y: 200, width: 100, height:30))
-        hackButton.setTitle("hackButton", for: .normal)
-        hackButton.addTarget(self, action: #selector(self.hackCall), for: .touchDown)
-        addSubview(v: hackButton)
+        if gridPoint.state == 1 {
+            let hackButton = UIButton(frame: CGRect(x: 150, y: 200, width: 100, height:30))
+            hackButton.setTitle("hack", for: .normal)
+            hackButton.addTarget(self, action: #selector(self.hackCall), for: .touchDown)
+            addSubview(v: hackButton)
+        }
     }
     
     @objc func surgeCall(_ sender: AnyObject?) {
@@ -43,7 +47,7 @@ class GridPointInterface: CardinalInterface {
                     let tile = Vector2(tileData[0].float!, tileData[1].float!)
                     if let mapTile = World3D.mapTiles[tile] {
                         mapTile.gridPoint.setState(state: 3, remaining: data["data"]["s"].int!)
-                        Player.surgeGridPoint(tile: self.gridPoint.tileKey, remaining: data["data"]["s"].int!)
+                        Cardinal.player.surgeGridPoint(tile: self.gridPoint.tileKey, remaining: data["data"]["s"].int!)
                     }
                 }
             } else if data["code"].int! == 418 {
@@ -56,7 +60,7 @@ class GridPointInterface: CardinalInterface {
         API.post(endpoint: "gridPoint/\(Int(gridPoint.tileKey.x))/\(Int(gridPoint.tileKey.y))/hack", callback: { (data) in
             if data["code"].int! == 200 {
                 self.gridPoint.setState(state: 2, remaining: data["data"]["s"].int!)
-                Player.hackGridPoint(tile: self.gridPoint.tileKey, remaining: data["data"]["s"].int!)
+                Cardinal.player.hackGridPoint(tile: self.gridPoint.tileKey, remaining: data["data"]["s"].int!)
             }
         })
 

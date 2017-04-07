@@ -11,39 +11,42 @@ import SwiftyJSON
 import Starscream
 
 class NPCInterface: CardinalInterface {
-    private var socket: WebSocket!
+    private var npc: NPC!
     
     func show(npc: NPC) {
-        API.get(endpoint: "npc/\(npc.id)") { (data) in
-            print(data)
-        }
+        self.npc = npc
+        let occupy = Btn(title: "Occupy", position: CGPoint(x: 50, y: 300))
+        occupy.addTarget(self, action: #selector(self.doOccupy), for: .touchDown)
         
+        let attack = Btn(title: "Attack", position: CGPoint(x: 50, y: 300))
+        attack.addTarget(self, action: #selector(self.doAttack), for: .touchDown)
+        
+        API.get(endpoint: "npc/\(npc.id)") { (data) in
+            npc.update(data: data["data"]["npc"])
+            if npc.type == 2 {
+                DispatchQueue.main.async {
+                    if npc.occupy == nil {
+                        attack.removeFromSuperview()
+                        self.addSubview(v: occupy)
+                    } else {
+                        self.addSubview(v: attack)
+                        occupy.removeFromSuperview()
+                    }
+                }
+            }
+        }
     }
     
-    func connect() {
-        socket = WebSocket(url: URL(string: "ws://localhost:3005/")!)
-        socket.headers["Sec-WebSocket-Protocol"] = "someother protocols"
-        
-        //websocketDidConnect
-        socket.onConnect = {
-            print("websocket is connected")
-            self.socket.write(string: "Hi Server!")
+    @objc func doOccupy(_ sender: AnyObject?) {
+        let apps = [ Apps.apps()[0].id ]
+        API.post(endpoint: "npc/\(npc.id)/occupy", params: [ "apps": apps ]) { (data) in
         }
-        //websocketDidDisconnect
-        socket.onDisconnect = { (error: NSError?) in
-            print("websocket is disconnected: \(String(describing: error?.localizedDescription))")
-        }
-        //websocketDidReceiveMessage
-        socket.onText = { (text: String) in
-            print("got some text: \(text)")
-        }
-        //websocketDidReceiveData
-        socket.onData = { (data: Data) in
-            print("got some data: \(data.count)")
-        }
-        //you could do onPong as well.
-        socket.connect()
-
     }
+    
+    @objc func doAttack(_ sender: AnyObject?) {
+        NPCBattle().show(npc: npc)
+        close()
+    }
+
     
 }

@@ -50,14 +50,14 @@ class DropInterface: CardinalInterface {
             index += 1
             let itemView = DropItemView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), item: Item(data: item))
             self.items.append(itemView)
-            addSubview(itemView)
+            addSubview(v: itemView)
         }
         
         let done = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
         done.setTitle("pick items", for: .normal)
         done.addTarget(self, action: #selector(pickCall), for: .touchDown)
 
-        addSubview(done)
+        addSubview(v: done)
     }
     
     func pickCall(_ sender: AnyObject?) {

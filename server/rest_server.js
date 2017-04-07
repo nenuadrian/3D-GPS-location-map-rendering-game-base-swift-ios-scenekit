@@ -46,8 +46,14 @@ class Player {
     }
   }
 
-  save() {
-    return mongoDB.collection('users').updateOne({ _id: this.data._id }, { $set: this.data })
+  save(field) {
+    if (field) {
+      var update = {}
+      update[field] = this.data[field]
+      return mongoDB.collection('users').updateOne({ _id: this.data._id }, { $set: update })
+    } else {
+      return mongoDB.collection('users').updateOne({ _id: this.data._id }, { $set: this.data })
+    }
   }
 }
 
@@ -117,6 +123,9 @@ server.opts(/\.*/, (req, res, next) => {
 
 server.use(authHandler)
 
+/***********
+  HOMEBASE
+  **********/
 
 server.get('/homebase', authLock, (req, res, next) => {
   req.answer(200, { home_base: req.user.data.home_base })
@@ -127,15 +136,16 @@ server.post('/homebase/install/:app', authLock, (req, res, next) => {
   req.user.data.apps.splice(req.user.data.apps.indexOf(app), 1)
   req.user.data.home_base.apps.push(app)
   req.user.save()
-  req.answer(200)
+  req.answer(200, { action: { remove: { apps: [ app._id ] } } })
 })
 
 server.post('/homebase/uninstall/:app', authLock, (req, res, next) => {
   var app = req.user.data.home_base.apps.find(a => a._id == req.params.app)
+  if (!app) { return req.answer(404) }
   req.user.data.home_base.apps.splice(req.user.data.home_base.apps.indexOf(app), 1)
   req.user.data.apps.push(app)
   req.user.save()
-  req.answer(200)
+  req.answer(200, { action: { add: { apps: [ app ] } } })
 })
 
 server.get('/server/info', authLock, (req, res, next) => {
@@ -148,9 +158,34 @@ server.get('/npcs', authLock, (req, res, next) => {
   })
 })
 
+function getNPC(id) {
+  return mongoDB.collection('npcs').findOne({ "_id": ObjectID(id) })
+}
 server.get('/npc/:npc', authLock, (req, res, next) => {
-  mongoDB.collection('npcs').findOne({ "_id": ObjectID(req.params.npc) }).then((r) =>  {
+  getNPC(req.params.npc).then((r) =>  {
     req.answer(200, { npc: r })
+  })
+})
+
+
+server.post('/npc/:npc/occupy', authLock, (req, res, next) => {
+  var apps = req.params.apps.map(a => a)
+  var userApps = req.user.data.apps.filter(a => apps.indexOf(a._id.toString()) != -1)
+
+  getNPC(req.params.npc).then((npc) =>  {
+    var occupy = {
+      user_id: req.user.data._id,
+      apps: userApps,
+      created_at: new Date
+    }
+    userApps.forEach(a => {
+      req.user.data.apps.slice(req.user.data.apps.indexOf(a), 1)
+    })
+    mongoDB.collection('npcs').updateOne({ _id: npc._id }, { $set: { occupy: occupy }}).then(() => {
+      req.user.save('apps').then(() => {
+        req.answer(200, { action: { remove: { apps: apps } } })
+      })
+    })
   })
 })
 
@@ -182,19 +217,22 @@ server.post('/tasks/craft/:id', authLock, (req, res, next) => {
   } else req.answer(418)
 })
 
-server.post('/drop', authLock, (req, res, next) => {
+server.post('/drop', authLock, req => {
   if (!req.user.data.last_drop) { return req.answer(418) }
   var last_drop = req.user.data.last_drop
-  req.params.items.forEach((type) => {
+  let pickedItems = req.params.items.map(type => {
     var inDrop = last_drop.find(i => i.type == type)
     if (inDrop) {
-      req.user.inventory.add({ type: type, q: 1 })
+      let item = { type: type, q: 1 }
+      req.user.inventory.add(item)
       last_drop.splice(last_drop.indexOf(inDrop), 1)
+      return item
     }
-  })
+    return false
+  }).filter(i => { return i })
   req.user.data.last_drop = null
   req.user.save()
-  req.answer(200)
+  req.answer(200, { action: { add: { items: pickedItems } } })
 })
 
 server.post('/gridPoint/:tileX/:tileY/hack', authLock, (req, res, next) => {
@@ -205,7 +243,7 @@ server.post('/gridPoint/:tileX/:tileY/hack', authLock, (req, res, next) => {
     if (r) { return req.answer(418) }
     mongoDB.collection('grid_points').updateOne(
       { user_id: req.user.data._id, tile: tile },
-      { '$set': { last_hack: new Date() } },
+      { $set: { last_hack: new Date() } },
       { upsert: true }, (err, data) => {
         var drop = [{ type: 1 }, { type: 2 }]
         req.user.data.last_drop = drop
@@ -274,35 +312,43 @@ server.put('/tasks/homebase', authLock, (req, res, next) => {
   }
 })
 
+server.post('/task/:task_id/claim', authLock, req => {
+  var task = req.user.data.tasks.find(t => t._id == req.params.task_id && t.done)
+  if (!task) { return req.answer(404) }
+  var data = {}
+  if (task.type == TASK.TYPES.CRAFT) {
+    var formula = craft.formulas.find(f => f.id == task.data.formula)
+    if (formula.item) {
+      req.user.inventory.add(formula.item)
+      data.action = { items: [ formula.item ] }
+    } else {
+      var app = {
+        type: formula.app.type,
+        _id: new ObjectID()
+      }
+      req.user.data.apps.push(app)
+      data.action = { apps: [ app ] }
+    }
+  }
+  req.user.data.tasks.splice(req.user.data.tasks.findIndex(t => t._id == task._id ), 1)
+  req.user.save().then(() => {
+    req.answer(200, data)
+  })
+})
+
 server.get('/task/:task_id', authLock, (req, res, next) => {
   var task = req.user.data.tasks.find(t => t._id == req.params.task_id)
-  if (!task) { req.answer(404) } else {
-    var s = task.finishes_at.getTime() - new Date().getTime()
-    if (s > 1000) {
-      req.answer(518, { s: s })
-    } else {
-      req.user.data.tasks.splice(req.user.data.tasks.findIndex(t => t._id == task._id ), 1)
-      mongoDB.collection('users').updateOne({ _id: req.user.data._id }, { $set: { 'tasks': req.user.data.tasks }})
-      var data = {}
-      if (task.type == TASK.TYPES.HOME_BASE_PLACE) {
-        req.user.data.home_base = { x: task.data.coords[0], y: task.data.coords[1], level: 1, tile: utils.latLonToTile(task.data.coords[0], task.data.coords[1]), apps: [] }
-      } else if (task.type == TASK.TYPES.CRAFT) {
-        var formula = craft.formulas.find(f => f.id == task.data.formula)
-        if (formula.item) {
-          req.user.inventory.add(formula.item)
-          data.action = { item: formula.item }
-        } else {
-          var app = {
-            type: formula.app.type,
-            _id: new ObjectID()
-          }
-          req.user.data.apps.push(app)
-          data.action = { app: app }
-        }
-      }
-      req.user.save()
-      req.answer(200, data)
+  if (!task) { return req.answer(404) }
+  var s = task.finishes_at.getTime() - new Date().getTime()
+  if (s > 1000) {
+    req.answer(518, { s: s })
+  } else {
+    task.done = true
+    if (task.type == TASK.TYPES.HOME_BASE_PLACE) {
+      req.user.data.home_base = { x: task.data.coords[0], y: task.data.coords[1], level: 1, tile: utils.latLonToTile(task.data.coords[0], task.data.coords[1]), apps: [] }
     }
+    req.user.save()
+    req.answer(200)
   }
 })
 

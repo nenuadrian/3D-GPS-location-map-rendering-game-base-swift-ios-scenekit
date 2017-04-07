@@ -11,7 +11,6 @@ import SwiftHTTP
 import SwiftyJSON
 
 class API {
-    static let host = "http://192.168.0.103:3001/"
     private static var token: String = ""
     
     static func setToken(token: String) {
@@ -26,12 +25,16 @@ class API {
         UserDefaults.standard.synchronize()
     }
     
+    static func getToken() -> String {
+        return token
+    }
+    
     // TODO on auth error logout
     static func request(method: HTTPVerb, params: [String : Any], endpoint: String, callback: @escaping (_: JSON) -> Void) {
         do {
-            print(endpoint)
+            Logging.info(data: "REQUEST: \(endpoint)")
 
-            let url = "\(host)\(endpoint)?token=\(token)&lat=\(LocationMaster.getLast().x)&lon=\(LocationMaster.getLast().y)"
+            let url = "\(Constants.REST_HOST)\(endpoint)?token=\(token)&lat=\(LocationMaster.getLast().x)&lon=\(LocationMaster.getLast().y)"
 
             let opt = try HTTP.New(url, method: method, parameters: params, requestSerializer: JSONParameterSerializer(), isDownload: false)
           
@@ -48,21 +51,34 @@ class API {
                     return
                 }
                 
-                if json["data"]["action"] != JSON.null {
-                    if json["data"]["action"]["task"] != JSON.null {
-                        TasksManager.addTask(task: Task(task: json["data"]["action"]["task"]))
+                let action = json["data"]["action"]
+                if !action.isEmpty {
+                    if !action["task"].isEmpty {
+                        TasksManager.addTask(task: Task(task: action["task"]))
                     }
                     
-                    if json["data"]["action"]["drop"] != JSON.null {
-                        Cardinal.drop(data: json["data"]["action"]["drop"])
+                    if !action["drop"].isEmpty {
+                        Cardinal.drop(data: action["drop"])
                     }
-                
-                    if json["data"]["action"]["item"] != JSON.null {
-                        Inventory.add(item: Item(data: json["data"]["action"]["item"]))
+           
+                    if let add = json["data"]["action"]["add"].dictionary {
+                        if let apps = add["apps"]?.array {
+                            apps.forEach { (a) in Apps.add(app: App(data: a))  }
+                        }
+                        
+                        if let items = add["items"]?.array {
+                            items.forEach { (i) in Inventory.add(item: Item(data: i)) }
+                        }
                     }
                     
-                    if json["data"]["action"]["app"] != JSON.null {
-                        Apps.apps.append(App(data: json["data"]["action"]["app"]))
+                    if let remove = json["data"]["action"]["remove"].dictionary {
+                        if let apps = remove["apps"]?.array {
+                            apps.forEach { (a) in Apps.remove(id: a.string!) }
+                        }
+                        
+                        if let items = remove["items"]?.array {
+                            items.forEach { (i) in Inventory.remove(item: Item(data: i)) }
+                        }
                     }
                 }
                 

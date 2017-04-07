@@ -13,10 +13,10 @@ import SocketIO
 class SettingsInterface: CardinalInterface {
     
     func show() {
-        let logout = UIButton(frame: CGRect(x: frame.width/2-40, y: 300, width: 80, height: 30))
+        let logout = UIButton(frame: CGRect(x: view.frame.width/2-40, y: 300, width: 80, height: 30))
         logout.setTitle("logout", for: .normal)
         logout.addTarget(self, action: #selector(doLogout), for: .touchDown)
-        addSubview(logout)
+        addSubview(v: logout)
     }
     
     func doLogout(_ sender: AnyObject?) {

@@ -33,10 +33,10 @@ class AppsInterface: CardinalInterface {
     
     func show() {
         var index = 0
-        for app in Apps.apps {
+        for app in Apps.apps() {
             index += 1
             let appBtiView = AppBitView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), app: app)
-            addSubview(appBtiView)
+            addSubview(v: appBtiView)
         }
         
       

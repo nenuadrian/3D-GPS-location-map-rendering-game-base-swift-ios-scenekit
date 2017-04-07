@@ -10,25 +10,29 @@ import Foundation
 import UIKit
 
 
-class CardinalInterface: UIView {
+class CardinalInterface: UIViewController {
     private var scrollView: UIScrollView!
     
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height ))
-        Cardinal.myInstance.view.addSubview(self)
+        super.init(nibName: nil, bundle: nil)
+        self.view.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+        //Cardinal.myInstance.view.addSubview(self)
 
-        backgroundColor = UIColor(patternImage: UIImage(named: "padded")!)
-        alpha = 0.97
+        view.backgroundColor = UIColor(patternImage: UIImage(named: "padded")!)
+        view.alpha = 0.97
 
-        scrollView = UIScrollView(frame: CGRect(x: 40, y: 40, width: frame.width - 80, height: frame.height - 120))
+        scrollView = UIScrollView(frame: CGRect(x: 40, y: 40, width: view.frame.width - 80, height: view.frame.height - 120))
         
-        addSubview(scrollView)
+        view.addSubview(scrollView)
         
-        
-        let done = UIButton(frame: CGRect(x: 40, y: frame.height - 40, width: 100, height: 30))
-        done.setTitle("done", for: .normal)
+        let done = Btn(title: "OK", position: CGPoint(x: 40, y: view.frame.height - 70))
         done.addTarget(self, action: #selector(doneCall), for: .touchDown)
-        addSubview(done)
+        view.addSubview(done)
+        done.centerInParent()
+        
+        Cardinal.myInstance.addChildViewController(self)
+        Cardinal.myInstance.view.addSubview(self.view)
+        self.didMove(toParentViewController: Cardinal.myInstance)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,16 +45,10 @@ class CardinalInterface: UIView {
     
     func addSubview(v: UIView) {
         self.scrollView.addSubview(v)
-       /* var contentRect = CGRect.zero
-        for view in self.scrollView.subviews {
-            contentRect = contentRect.union(view.frame)
-        }
-        self.scrollView.contentSize = CGSize(width: 1000, height: 1000)
-        print(self.scrollView.contentSize)*/
     }
     
     @objc func close() {
-        removeFromSuperview()
-        scrollView.removeFromSuperview()
+        view.removeFromSuperview()
+        removeFromParentViewController()
     }
 }

@@ -49,7 +49,7 @@ class InventoryInterface: CardinalInterface {
         for item in Inventory.items {
             index += 1
             let itemView = ItemView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), item: item)
-            addSubview(itemView)
+            addSubview(v: itemView)
         }
   
     }

@@ -8,17 +8,24 @@
 
 import Foundation
 import UIKit
-import SwiftyJSON
 import SceneKit
+import Cache
+import SwiftyJSON
 
 class MapTile {
-    var data: JSON = JSON.null
+    var data: SwiftyJSON.JSON = JSON.null
     let tileKey: Vector2
     let position: Vector2
     var gridPoint: GridPoint!
     var npcs: [NPC] = []
     var node: SCNNode!
     
+    let cache = HybridCache(name: "Tiles", config: Config(
+        frontKind: .memory,
+        backKind: .disk,
+        expiry: .date(Date().addingTimeInterval(100000)),
+        maxSize: 10000))
+
     init(tileKey: Vector2, mapNode: SCNNode, primordialTile: Vector2) {
         self.tileKey = tileKey
         self.position = Vector2(tileKey.x - primordialTile.x, primordialTile.y - tileKey.y) * 611
@@ -29,24 +36,29 @@ class MapTile {
         node.position = SCNVector3(x: position.x, y: position.y, z: 0)
         mapNode.addChildNode(node)
         
-        if World3D.tilesDataCache[tileKey] != nil {
-            Logging.info(data: "Using cached data for \(tileKey)")
-            self.data = World3D.tilesDataCache[tileKey]!
-            render()
-        } else {
-            World3D.tilesDataCache[tileKey] = JSON.null
-            API.get(endpoint: "tile/\(Int(tileKey.x))/\(Int(tileKey.y))", callback: { (data) in
-                World3D.tilesDataCache[tileKey] = data["data"]
-                self.data = data["data"]
-                DispatchQueue.main.async {
-                    self.render()
-                }
-            })
+        cache.object("\(tileKey.x)-\(tileKey.y)") { (cachedTileData: String?) in
+            if let tileData = cachedTileData {
+                self.data = SwiftyJSON.JSON.parse(tileData)
+                self.render()
+            } else {
+                API.get(endpoint: "tile/\(Int(tileKey.x))/\(Int(tileKey.y))", callback: { (data) in
+                    self.data = data["data"]
+                    self.cache.add("\(tileKey.x)-\(tileKey.y)", object: self.data.rawString()!)
+                    DispatchQueue.main.async {
+                        self.render()
+                    }
+                })
+            }
         }
-        
+       
         gridPoint = GridPoint(tile: self)
         
-        Homebase.placeIfOn(mapTile: self)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleHomebaseNotification), name: NSNotification.Name(rawValue: "new-homebase"), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "check-tile-homebase"), object: self)
+    }
+    
+    @objc func handleHomebaseNotification(note: NSNotification) {
+      (note.object as! Homebase).placeHomebaseIfOn(mapTile: self)
     }
     
     func render() {

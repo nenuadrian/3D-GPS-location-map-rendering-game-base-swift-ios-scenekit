@@ -40,7 +40,6 @@ class FormulaInterface: CardinalInterface {
     
     @objc func craftCall(_ sender: AnyObject?) {
         if formula.canCraft() {
-            formula.items.forEach({ Inventory.remove(item: $0 )})
             API.post(endpoint: "tasks/craft/\(formula.id!)", callback: { (data) in
                 
             })
