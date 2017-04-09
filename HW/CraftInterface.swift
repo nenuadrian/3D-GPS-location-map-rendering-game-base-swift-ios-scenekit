@@ -13,23 +13,36 @@ import SwiftyJSON
 
 class FormulaBitView: UIView, UIGestureRecognizerDelegate {
     var formula: CraftFormula!
+    static let height = 100
+    private let onTap: Selector?
+    private let onTapTarget: NSObject?
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    init(frame: CGRect, formula: CraftFormula) {
+    init(position: CGPoint, formula: CraftFormula, onTapTarget: NSObject?, onTap: Selector?) {
+        self.onTap = onTap
+        self.onTapTarget = onTapTarget
         self.formula = formula
-        super.init(frame: frame)
+        super.init(frame: CGRect(x: position.x, y: position.y, width: CardinalInterface.subviewWidth, height: CGFloat(FormulaBitView.height)))
         
-        let formulaBtn = Btn(title: "Craft \(formula.item) \(formula.app)", position: CGPoint(x: 0, y: 0))
-        formulaBtn.titleLabel?.textAlignment = .left
-        addSubview(formulaBtn)
-        formulaBtn.addTarget(self, action: #selector(doFormula), for: .touchDown)
+        if formula.item != nil {
+            let itemView = ItemBitView(position: CGPoint(x: 0, y: 0), item: formula.item)
+            addSubview(itemView)
+        } else {
+            let appView = AppBitView(position: CGPoint(x: 0, y: 0), app: formula.app)
+            addSubview(appView)
+        }
+        
+        if self.onTap != nil {
+            let tapGesture = UITapGestureRecognizer(target: self, action: nil)
+            tapGesture.delegate = self
+            addGestureRecognizer(tapGesture)
+        }
     }
     
-    func doFormula(_ sender: AnyObject?) {
-        Cardinal.formula(formula: formula)
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if let onTap = self.onTap {
+            let _ = onTapTarget?.perform(onTap, with: formula, with: self)
+        }
+        return false
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -40,11 +53,17 @@ class FormulaBitView: UIView, UIGestureRecognizerDelegate {
 class CraftInterface: CardinalInterface {
     
     func show() {
-        var index = 0
+        var index = -1
         for formula in Craft.formulas {
             index += 1
-            let formulaView = FormulaBitView(frame: CGRect(x: 10, y: 40 * index, width: 200, height: 30), formula: formula)
+            let formulaView = FormulaBitView(position: CGPoint(x: 0, y: (FormulaBitView.height + 10) * index), formula: formula, onTapTarget: self, onTap: #selector(onFormulaTap))
             addSubview(v: formulaView)
         }
+    }
+    
+    @objc func onFormulaTap(obj: Any, formula: FormulaBitView) {
+        let formula = obj as! CraftFormula
+        FormulaInterface().show(formula: formula)
+        self.close()
     }
 }

@@ -8,6 +8,20 @@
 
 import Foundation
 import SwiftyJSON
+import SceneKit
+
+extension SCNNode {
+    func parentOf<T>(type: T.Type) -> T? {
+        var parent: SCNNode? = self
+        repeat {
+            if let node = parent as? T {
+                return node
+            }
+            parent = parent?.parent
+        } while parent != nil
+        return nil
+    }
+}
 
 class Utils {
     

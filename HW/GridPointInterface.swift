@@ -15,18 +15,23 @@ class GridPointInterface: CardinalInterface {
     func show(gridPoint: GridPoint) {
         self.gridPoint = gridPoint
         
+        let name = Label(text: "GRID POINT", frame: CGRect(x: 0, y: 20, width: CardinalInterface.subviewWidth, height: 30))
+        name.textAlignment = .center
+        name.font = name.font.withSize(20)
+        addSubview(v: name)
+        
         if gridPoint.state == 2 {
-            let surgeButton = UIButton(frame: CGRect(x: 50, y: 200, width: 100, height:30))
-            surgeButton.setTitle("surge", for: .normal)
+            let surgeButton = Btn(title: "surge", position: CGPoint(x: 50, y: 200))
             surgeButton.addTarget(self, action: #selector(self.surgeCall), for: .touchDown)
             addSubview(v: surgeButton)
+            surgeButton.centerInParent()
         }
         
         if gridPoint.state == 1 {
-            let hackButton = UIButton(frame: CGRect(x: 150, y: 200, width: 100, height:30))
-            hackButton.setTitle("hack", for: .normal)
+            let hackButton = Btn(title: "hack", position: CGPoint(x: 150, y: 200))
             hackButton.addTarget(self, action: #selector(self.hackCall), for: .touchDown)
             addSubview(v: hackButton)
+            hackButton.centerInParent()
         }
     }
     

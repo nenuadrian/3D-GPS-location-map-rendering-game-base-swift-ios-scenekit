@@ -10,37 +10,6 @@ import Foundation
 import SwiftyJSON
 import UIKit
 
-class TaskView: UIView, UIGestureRecognizerDelegate {
-    let task: Task
-    init(task: Task) {
-        self.task = task
-        let index = TasksManager.tasks.count
-        super.init(frame: CGRect(x: Int(UIScreen.main.bounds.width - 50), y: 50 * (index + 1), width: 30, height: 30))
-        backgroundColor = UIColor.red
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: nil)
-        tapGesture.delegate = self
-        addGestureRecognizer(tapGesture)
-        
-        DispatchQueue.main.async {
-            Cardinal.myInstance.view.addSubview(self)
-        }
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        if task.state == .DONE_SERVER {
-            task.claim()
-        } else {
-            print("not done server")
-        }
-        return false
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 class Task {
     enum TYPE: Int {
         case NONE
@@ -61,9 +30,11 @@ class Task {
     var data: JSON = JSON.null
     var view: TaskView!
     var remainingSeconds: Int = 0
+    var totalSeconds: Int = 0
     
-    init(id: String, type: TYPE, remainingSeconds: Int, data: JSON = JSON.null) {
-        self.remainingSeconds = remainingSeconds
+    init(id: String, type: TYPE, totalSeconds: Int, remainingSeconds: Int, data: JSON = JSON.null) {
+        self.remainingSeconds = max(0, remainingSeconds)
+        self.totalSeconds = totalSeconds
         self.id = id
         self.type = type
         self.data = data
@@ -72,7 +43,7 @@ class Task {
     }
     
     convenience init(task: JSON) {
-        self.init(id: task["_id"].string!, type: TYPE(rawValue: task["type"].int!)!, remainingSeconds: task["s"].int!, data: task["data"])
+        self.init(id: task["_id"].string!, type: TYPE(rawValue: task["type"].int!)!, totalSeconds: task["ts"].int!, remainingSeconds: task["s"].int!, data: task["data"])
     }
     
     func startClock() {
@@ -88,6 +59,8 @@ class Task {
         remainingSeconds = remainingSeconds - 1
         Logging.info(data: "Task \(self.id) \(self.remainingSeconds)")
         if remainingSeconds <= 0 {
+            view.set(progress: CGFloat(1))
+
             self.timer.invalidate()
             state = .DONE_CLIENT
             API.get(endpoint: "task/\(id)") { (data) in
@@ -102,6 +75,9 @@ class Task {
                     self.state = .DONE_SERVER
                 }
             }
+        } else {
+            let progress: Float = (100.0 - (Float(remainingSeconds) / (Float(totalSeconds) / 100.0))) / 100.0
+            view.set(progress: CGFloat(progress))
         }
     }
     

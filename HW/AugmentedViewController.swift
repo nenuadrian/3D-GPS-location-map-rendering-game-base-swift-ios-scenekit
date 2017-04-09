@@ -18,30 +18,39 @@ class AugmentedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        Cardinal.myInstance.addChildViewController(self)
+        self.view.frame = Cardinal.myInstance.view.frame
+        Cardinal.myInstance.view.addSubview(self.view)
+        self.didMove(toParentViewController: Cardinal.myInstance)
+        
         view.backgroundColor = UIColor.black
         // Do any additional setup after loading the view, typically from a nib.
         captureSession.sessionPreset = AVCaptureSessionPresetHigh
         
         let devices = AVCaptureDevice.devices()
         do {
-        // Loop through all the capture devices on this phone
-        for device in devices! {
-            // Make sure this particular device supports video
-            if ((device as AnyObject).hasMediaType(AVMediaTypeVideo)) {
-                // Finally check the position and confirm we've got the back camera
-                if((device as AnyObject).position == AVCaptureDevicePosition.back) {
-                    captureDevice = device as? AVCaptureDevice
-                    if captureDevice != nil {
-                        print("Capture device found")
-                        try captureDevice?.lockForConfiguration()
-                        beginSession()
+            // Loop through all the capture devices on this phone
+            for device in devices! {
+                // Make sure this particular device supports video
+                if ((device as AnyObject).hasMediaType(AVMediaTypeVideo)) {
+                    // Finally check the position and confirm we've got the back camera
+                    if((device as AnyObject).position == AVCaptureDevicePosition.back) {
+                        captureDevice = device as? AVCaptureDevice
+                        if captureDevice != nil {
+                            print("Capture device found")
+                            try captureDevice?.lockForConfiguration()
+                            beginSession()
+                        }
                     }
                 }
             }
-        }
         } catch {
-            
         }
+        
+        if captureDevice == nil {
+            self.close()
+        }
+
         sceneView = SCNView(frame: view.frame)
         view.addSubview(sceneView)
         
@@ -74,8 +83,6 @@ class AugmentedViewController: UIViewController {
                         
                         self.cameraNode.orientation = motion.gaze(atOrientation: UIApplication.shared.statusBarOrientation)
                     }
-
-                    
             })
             
             }
@@ -116,4 +123,10 @@ class AugmentedViewController: UIViewController {
         captureSession.startRunning()
     }
     
+    func close() {
+        DispatchQueue.main.async {
+            self.view.removeFromSuperview()
+            self.removeFromParentViewController()
+        }
+    }
 }

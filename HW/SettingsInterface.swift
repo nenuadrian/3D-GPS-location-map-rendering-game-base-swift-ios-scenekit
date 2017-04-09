@@ -9,14 +9,17 @@ import Foundation
 import UIKit
 import SwiftyJSON
 import SocketIO
+import FontAwesome
 
 class SettingsInterface: CardinalInterface {
     
     func show() {
-        let logout = UIButton(frame: CGRect(x: view.frame.width/2-40, y: 300, width: 80, height: 30))
-        logout.setTitle("logout", for: .normal)
+        let logout = Btn(title: "", position: CGPoint(x: 0, y: 500))
         logout.addTarget(self, action: #selector(doLogout), for: .touchDown)
         addSubview(v: logout)
+        logout.titleLabel?.font = UIFont.fontAwesome(ofSize: 30)
+        logout.setTitle(String.fontAwesomeIcon(name: .powerOff), for: .normal)
+        logout.centerInParent()
     }
     
     func doLogout(_ sender: AnyObject?) {

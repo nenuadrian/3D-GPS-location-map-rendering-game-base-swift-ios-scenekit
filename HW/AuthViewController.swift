@@ -13,7 +13,7 @@ import SwiftyJSON
 class AuthViewController: UIViewController {
     let username = FormUITextField(frame: CGRect(x: UIScreen.main.bounds.width / 2 - 125, y: 200, width:250, height: 40))
     let password = FormUITextField(frame: CGRect(x: UIScreen.main.bounds.width / 2 - 125, y: 250, width:250, height: 40))
-    let email = FormUITextField(frame: CGRect(x: UIScreen.main.bounds.width / 2 - 125, y: 320, width:250, height: 40))
+    let email = FormUITextField(frame: CGRect(x: UIScreen.main.bounds.width / 2 - 125, y: 350, width:250, height: 40))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,12 +32,12 @@ class AuthViewController: UIViewController {
         view.addSubview(email)
         view.addSubview(password)
         
-        let auth = Btn(title: "connect", position: CGPoint(x: 0, y: 290))
+        let auth = Btn(title: "connect", position: CGPoint(x: 0, y: 305))
         view.addSubview(auth)
         auth.centerInParent()
         auth.addTarget(self, action: #selector(authCall), for: .touchDown)
     
-        let register = Btn(title: "register", position: CGPoint(x: 0, y: 370))
+        let register = Btn(title: "register", position: CGPoint(x: 0, y: 410))
         view.addSubview(register)
         register.centerInParent()
         register.addTarget(self, action: #selector(registerCall), for: .touchDown)

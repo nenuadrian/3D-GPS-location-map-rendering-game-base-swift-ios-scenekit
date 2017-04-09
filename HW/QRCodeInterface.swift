@@ -14,5 +14,6 @@ class QRCodeInterface: CardinalInterface {
         let qrCode = QRCode(data)
         let imageView = UIImageView(qrCode: qrCode!)
         addSubview(v: imageView)
+        imageView.centerInParent()
     }
 }

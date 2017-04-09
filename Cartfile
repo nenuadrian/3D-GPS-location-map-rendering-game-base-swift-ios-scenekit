@@ -12,3 +12,6 @@ github "yannickl/QRCodeReader.swift" >= 7.4.0
 
 github "hyperoslo/Cache"
 
+github "kaandedeoglu/KDCircularProgress"
+
+github "dmsurti/AssimpKit"

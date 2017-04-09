@@ -11,42 +11,84 @@ import SwiftyJSON
 import Starscream
 
 class NPCInterface: CardinalInterface {
-    private var npc: NPC!
+    private let npc: NPC
+    private let occupy: Btn
+    private let attack: Btn
     
-    func show(npc: NPC) {
+    init(npc: NPC) {
+        occupy = Btn(title: "Occupy", position: CGPoint(x: 50, y: 300))
+        attack = Btn(title: "Attack", position: CGPoint(x: 50, y: 300))
         self.npc = npc
-        let occupy = Btn(title: "Occupy", position: CGPoint(x: 50, y: 300))
+        super.init()
+        attack.centerInParent()
+        occupy.centerInParent()
         occupy.addTarget(self, action: #selector(self.doOccupy), for: .touchDown)
-        
-        let attack = Btn(title: "Attack", position: CGPoint(x: 50, y: 300))
         attack.addTarget(self, action: #selector(self.doAttack), for: .touchDown)
         
-        API.get(endpoint: "npc/\(npc.id)") { (data) in
-            npc.update(data: data["data"]["npc"])
-            if npc.type == 2 {
-                DispatchQueue.main.async {
-                    if npc.occupy == nil {
-                        attack.removeFromSuperview()
-                        self.addSubview(v: occupy)
-                    } else {
-                        self.addSubview(v: attack)
-                        occupy.removeFromSuperview()
-                    }
+        update()
+        
+        let name = Label(text: npc.name, frame: CGRect(x: 0, y: 20, width: CardinalInterface.subviewWidth, height: 30))
+        name.textAlignment = .center
+        name.font = name.font.withSize(20)
+        addSubview(v: name)
+        
+        if npc.type == 1 {
+            let aug = Btn(title: "aug", position: CGPoint(x: 0, y: 200))
+            aug.addTarget(self, action: #selector(augmentedCall), for: .touchDown)
+            view.addSubview(aug)
+            aug.centerInParent()
+        }
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(npcUpdateNotification), name: NSNotification.Name(rawValue: "npc-\(npc.id)"), object: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func augmentedCall() {
+        let _ = AugmentedViewController()
+    }
+    
+    @objc func npcUpdateNotification(note: NSNotification) {
+        //(note.object as! Homebase).placeHomebaseIfOn(mapTile: self)
+        update()
+    }
+    
+    func update() {
+        if npc.type == 2 {
+            DispatchQueue.main.async {
+                if self.npc.occupy == nil {
+                    self.attack.removeFromSuperview()
+                    self.addSubview(v: self.occupy)
+                } else {
+                    self.addSubview(v: self.attack)
+                    self.occupy.removeFromSuperview()
                 }
             }
         }
     }
     
     @objc func doOccupy(_ sender: AnyObject?) {
-        let apps = [ Apps.apps()[0].id ]
+        AppPickingInterface().show(onPickTarget: self, onPick: #selector(appsPicked))
+    }
+
+    func appsPicked(apps: [String]) {
         API.post(endpoint: "npc/\(npc.id)/occupy", params: [ "apps": apps ]) { (data) in
         }
     }
+
     
-    @objc func doAttack(_ sender: AnyObject?) {
+    func doAttack(_ sender: AnyObject?) {
         NPCBattle().show(npc: npc)
+
         close()
     }
 
+
+    deinit {
+        print("deinit")
+        NotificationCenter.default.removeObserver(self)
+    }
     
 }

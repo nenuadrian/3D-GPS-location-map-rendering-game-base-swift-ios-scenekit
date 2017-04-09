@@ -11,60 +11,35 @@ import Foundation
 import UIKit
 import SwiftyJSON
 
-class DropItemView: UIView, UIGestureRecognizerDelegate {
-    var item: Item!
-    var selected: Bool = false
-
-    init(frame: CGRect, item: Item) {
-        self.item = item
-        super.init(frame: frame)
-        
-        let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 100, height: 20))
-        nameLabel.text = "Item \(item.type)"
-        addSubview(nameLabel)
-        
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: nil)
-        tapGesture.delegate = self
-        addGestureRecognizer(tapGesture)
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        selected = !selected
-        backgroundColor = selected ? UIColor.red : UIColor.clear
-        return false
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
 
 class DropInterface: CardinalInterface {
-    private var items: [DropItemView] = []
     
     func show(items: JSON) {
-
-        var index = 0
-        for item in items.array! {
+        hideClose()
+        let parsedItems = items.array!.map({ Item(data: $0) })
+        var index = -1
+        for item in parsedItems {
             index += 1
-            let itemView = DropItemView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), item: Item(data: item))
-            self.items.append(itemView)
+            let itemView = ItemBitView(position: CGPoint(x: 0, y: (ItemBitView.height + 10) * index), item: item, onTapTarget: self, onTap: #selector(onItemTap))
             addSubview(v: itemView)
         }
         
-        let done = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
-        done.setTitle("pick items", for: .normal)
+        let done = Btn(title: "PICK UP", position: CGPoint(x: 10, y: UIScreen.main.bounds.height - 50))
         done.addTarget(self, action: #selector(pickCall), for: .touchDown)
+        view.addSubview(done)
+        done.centerInParent()
 
-        addSubview(v: done)
+    }
+    
+    @objc func onItemTap(obj: Any, itemBitView: ItemBitView) {
+        //let item = obj as! Item
+        itemBitView.selectToggle()
     }
     
     func pickCall(_ sender: AnyObject?) {
-        var params: [String : Any] = [:]
-        params["items"] = items.filter({ $0.selected }).map({ $0.item.type })
+        let params = [ "items" : scrollView.subviews.flatMap { $0 as? ItemBitView }.filter { $0.isSelected() }.map { $0.item }.map({ $0.type }) ]
+        print(params)
         API.post(endpoint: "drop", params: params, callback: { (data) in
-            self.items.filter({ $0.selected }).forEach({ Inventory.add(item: $0.item) })
         })
         
         close()

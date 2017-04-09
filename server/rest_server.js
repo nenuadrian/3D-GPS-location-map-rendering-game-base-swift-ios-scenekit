@@ -1,5 +1,3 @@
-"use strict";
-
 var restify = require('restify'),
   request = require('request'),
   config = require('./config'),
@@ -12,7 +10,10 @@ var restify = require('restify'),
   uuidV4 = require('uuid/v4'),
   Vector2 = require('vector2-node'),
   craft = require('./craft'),
-  Inventory = require('./inventory')
+  Inventory = require('./inventory'),
+  winston = require('winston'),
+  email = require('./email')
+
 
 var TASK = { TYPES: { HOME_BASE_PLACE: 1, CRAFT: 2 } }
 
@@ -73,14 +74,6 @@ function buildNeuralNetwork(activeNodes, networkNodes) {
   }
 }
 
-function userIntro(player) {
-  return {
-    username: player.username,
-    _id: player._id
-  }
-}
-
-
 function authHandler(req, res, next) {
   req.answer = function(code, data) {
     var answer = { code: code, data: data }
@@ -98,6 +91,12 @@ function authHandler(req, res, next) {
   } else {
     return next()
   }
+}
+
+function latLonHandler(req, res, next) {
+  req.params.lat
+  req.params.lon
+  return next()
 }
 
 function authLock(req, res, next) {
@@ -122,6 +121,7 @@ server.opts(/\.*/, (req, res, next) => {
 })
 
 server.use(authHandler)
+server.use(latLonHandler)
 
 /***********
   HOMEBASE
@@ -208,11 +208,12 @@ server.post('/tasks/craft/:id', authLock, (req, res, next) => {
       type: TASK.TYPES.CRAFT,
       finishes_at: finishes_at,
       created_at: new Date,
-      data: { formula: id }
+      data: { formula: id },
+      ts: 10
     }
-    task.s = 10
     req.user.data.tasks.push(task)
     req.user.save()
+    task.s = task.ts
     req.answer(200, { action: { task: task } })
   } else req.answer(418)
 })
@@ -285,11 +286,16 @@ server.post('/gridPoint/:tileX/:tileY/surge', authLock, (req, res, next) => {
 })
 
 server.get('/tile/:x/:y', authLock, (req, res, next) => {
-  var data = JSON.parse(fs.readFileSync('./tiles/' + parseInt(req.params.x) + '/' + parseInt(req.params.y) + '.json', 'utf8'))
-  mongoDB.collection('npcs').find({ "tile": [parseInt(req.params.x), parseInt(req.params.y)] }).toArray((err, npcs) => {
-    data.npcs = npcs
-    req.answer(200, data)
-  })
+  var path = './tiles/' + parseInt(req.params.x) + '/' + parseInt(req.params.y) + '.json'
+  if (fs.existsSync(path)) {
+    var data = JSON.parse(fs.readFileSync(path, 'utf8'))
+    mongoDB.collection('npcs').find({ "tile": [parseInt(req.params.x), parseInt(req.params.y)] }).toArray((err, npcs) => {
+      data.npcs = npcs
+      req.answer(200, data)
+    })
+  } else {
+    req.answer(404)
+  }
 })
 
 
@@ -303,11 +309,12 @@ server.put('/tasks/homebase', authLock, (req, res, next) => {
       type: TASK.TYPES.HOME_BASE_PLACE,
       finishes_at: finishes_at,
       created_at: new Date,
-      data: { coords: [parseFloat(req.params.lat), parseFloat(req.params.lon)]}
+      data: { coords: [parseFloat(req.params.lat), parseFloat(req.params.lon)]},
+      ts: config.TASK_HB_DURATION
     }
     req.user.data.tasks.push(task)
     req.user.save()
-    task.s = config.TASK_HB_DURATION
+    task.s = task.ts
     req.answer(200, { action: { task: task } })
   }
 })
@@ -362,7 +369,7 @@ server.get('/player', authLock, (req, res, next) => {
       delete t.finishes_at
       return t
     })
-    console.log(gps)
+    winston.info(gps)
     gps.forEach(gp => {
       gp.hack_s = Math.floor(Math.max(0, (gp.last_hack.getTime() + config.GP_HACK_WAIT * 1000 - new Date().getTime()) / 1000))
       gp.surge_s = Math.floor(Math.max(0, gp.last_surge ? ((gp.last_surge.getTime() + config.GP_SURGE_WAIT * 1000) - new Date().getTime()) / 1000 : 0))
@@ -390,7 +397,6 @@ server.post('/auth', (req, res, next) => {
 
 server.post('/join', (req, res, next) => {
   if (!emailValidator.validate(req.params.email)) { return req.answer(403) }
-  console.log(req.params)
   mongoDB.collection('users').findOne({ email: req.params.email }).then( result => {
     if (result) { return req.answer(403, { 'field': 'email' }) }
     mongoDB.collection('users').findOne({ username: req.params.username }).then( result => {
@@ -409,6 +415,7 @@ server.post('/join', (req, res, next) => {
         group: 0,
         created_at: new Date
       }).then(function(result) {
+        email.sendByTemplate(req.params.email, 'welcome', [])
         req.answer(200, { token: authToken })
       })
     })
@@ -417,10 +424,10 @@ server.post('/join', (req, res, next) => {
 
 var mongoDB = false
 MongoClient.connect(config.MONGO, (err, db) => {
-  if (err) { console.log(err) } else {
+  if (err) { winston.info(err) } else {
     mongoDB = db
     server.listen(config.PORT, '0.0.0.0', function() {
-      console.log('Listening on *:' + config['PORT'])
+      winston.info('Listening on *:' + config['PORT'])
     })
   }
 })

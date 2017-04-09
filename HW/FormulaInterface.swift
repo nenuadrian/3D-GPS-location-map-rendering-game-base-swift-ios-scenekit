@@ -15,37 +15,37 @@ class FormulaInterface: CardinalInterface {
     
     func show(formula: CraftFormula) {
         self.formula = formula
-        let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 300, height: 20))
-        nameLabel.text = "Craft \(formula.item) \(formula.app)"
-        nameLabel.textColor = UIColor.white
+        let nameLabel = Label(text: "FORMULA", frame: CGRect(x: 0, y: 0, width: 300, height: 20))
+        nameLabel.textAlignment = .center
+        nameLabel.font = nameLabel.font.withSize(20)
+        addSubview(v: nameLabel)
         
-        var index = 0
-        for item in formula.items {
-            index += 1
-            let itemLabel = UILabel(frame: CGRect(x: 5, y: 30 * index, width: 300, height: 20))
-            itemLabel.text = "Needs item \(item.type) x \(item.q)"
-            itemLabel.textColor = UIColor.white
+        if formula.item != nil {
+            let itemLabel = ItemBitView(position: CGPoint(x: 0, y: 40), item: formula.item)
             addSubview(v: itemLabel)
-
+        } else {
+            let appLabel = AppBitView(position: CGPoint(x: 0, y: 40), app: formula.app)
+            addSubview(v: appLabel)
         }
         
-        let craft = UIButton(frame: CGRect(x: 10, y: 200, width: 100, height:30))
-        craft.setTitle("craft", for: .normal)
-
-        craft.addTarget(self, action: #selector(craftCall), for: .touchDown)
+        var index = -1
+        for item in formula.items {
+            index += 1
+            let itemLabel = ItemBitView(position: CGPoint(x: 0, y: 200 + ItemBitView.height * index), item: item)
+            addSubview(v: itemLabel)
+        }
         
-        addSubview(v: nameLabel)
-        addSubview(v: craft)
+        if formula.canCraft() {
+            let craft = Btn(title: "craft", position: CGPoint(x: 0, y: 140))
+            craft.addTarget(self, action: #selector(craftCall), for: .touchDown)
+            addSubview(v: craft)
+            craft.centerInParent()
+        }
     }
     
     @objc func craftCall(_ sender: AnyObject?) {
-        if formula.canCraft() {
-            API.post(endpoint: "tasks/craft/\(formula.id!)", callback: { (data) in
-                
-            })
-            close()
-        } else {
-            print("Cannot craft")
-        }
+        API.post(endpoint: "tasks/craft/\(formula.id!)", callback: { (data) in
+            self.close()
+        })
     }
 }

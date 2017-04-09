@@ -42,8 +42,10 @@ class MapTile {
                 self.render()
             } else {
                 API.get(endpoint: "tile/\(Int(tileKey.x))/\(Int(tileKey.y))", callback: { (data) in
-                    self.data = data["data"]
-                    self.cache.add("\(tileKey.x)-\(tileKey.y)", object: self.data.rawString()!)
+                    if data["code"].int! == 200 {
+                        self.data = data["data"]
+                        self.cache.add("\(tileKey.x)-\(tileKey.y)", object: self.data.rawString()!)
+                    }
                     DispatchQueue.main.async {
                         self.render()
                     }
@@ -67,9 +69,11 @@ class MapTile {
         let features = SCNNode(geometry: mapTile)
         node.addChildNode(features)
         
-        data["npcs"].array!.forEach { (npcData) in
-            let npc = NPC(data: npcData, tileNode: node)
-            self.npcs.append(npc)
+        if self.data != JSON.null {
+            data["npcs"].array!.forEach { (npcData) in
+                let npc = NPC(data: npcData, tileNode: node)
+                self.npcs.append(npc)
+            }
         }
     }
     
@@ -125,7 +129,9 @@ class MapTile {
         context.addRect(CGRect(x: 0, y: 0, width: 611, height: 611))
         context.drawPath(using: .fillStroke)
         
-        drawShapes(context: context, field: "roads")
+        if self.data != JSON.null {
+            drawShapes(context: context, field: "roads")
+        }
         
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()

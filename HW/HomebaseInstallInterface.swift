@@ -11,43 +11,22 @@ import Foundation
 import UIKit
 import SwiftyJSON
 
-class InstallAppBitView: UIView, UIGestureRecognizerDelegate {
-    var app: App!
-    
-    init(frame: CGRect, app: App) {
-        self.app = app
-        super.init(frame: frame)
-        
-        let nameLabel = UILabel(frame: CGRect(x: 5, y: 5, width: 100, height: 20))
-        nameLabel.text = "App \(app.type)"
-        nameLabel.textColor = UIColor.white
-        addSubview(nameLabel)
-        
-        let tapGesture = UITapGestureRecognizer(target: self, action: nil)
-        tapGesture.delegate = self
-        addGestureRecognizer(tapGesture)
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        API.post(endpoint: "homebase/install/\(app.id)") { (data) in
-        }
-        return false
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 class HomebaseInstallInterface: CardinalInterface {
     
     func show() {
-        var index = 0
+        var index = -1
         for app in Apps.apps() {
             index += 1
-            let appBtiView = InstallAppBitView(frame: CGRect(x: 10, y: 40 * index, width: 100, height: 30), app: app)
+            let appBtiView = AppBitView(position: CGPoint(x: 0, y: (AppBitView.height + 10) * index), app: app, onTapTarget: self, onTap: #selector(onAppTap))
             addSubview(v: appBtiView)
         }
 
+    }
+    
+    @objc func onAppTap(obj: Any, appBitView: AppBitView) {
+        let app = obj as! App
+        API.post(endpoint: "homebase/install/\(app.id)") { (data) in
+            self.close()
+        }
     }
 }
