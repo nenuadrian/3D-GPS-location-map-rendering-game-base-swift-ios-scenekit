@@ -13,7 +13,6 @@
 		D60A0BB31E9AC27700A78878 /* Homebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60A0BB21E9AC27700A78878 /* Homebase.swift */; };
 		D60A0BB51E9AD27300A78878 /* PlayerInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60A0BB41E9AD27300A78878 /* PlayerInterface.swift */; };
 		D60A0BB71E9AF1D400A78878 /* TaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60A0BB61E9AF1D400A78878 /* TaskView.swift */; };
-		D616A3E21E9A54C300A13B24 /* KDCircularProgress.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D616A3E11E9A54C300A13B24 /* KDCircularProgress.framework */; };
 		D616A3E41E9A585000A13B24 /* NPCNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D616A3E31E9A585000A13B24 /* NPCNode.swift */; };
 		D617BCAC1E89E76C008556B9 /* VectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = D617BCAB1E89E76C008556B9 /* VectorMath.swift */; };
 		D617C4251E89FD43001D2DAD /* GridPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D617C4241E89FD43001D2DAD /* GridPoint.swift */; };
@@ -23,6 +22,7 @@
 		D635109E1E9534A500193100 /* World3D.swift in Sources */ = {isa = PBXBuildFile; fileRef = D635109D1E9534A500193100 /* World3D.swift */; };
 		D63510A21E95369000193100 /* MapTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63510A11E95369000193100 /* MapTile.swift */; };
 		D63510A41E96673600193100 /* Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = D63510A31E96673600193100 /* Logging.swift */; };
+		D66555381E9B8FF0008D1761 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66555371E9B8FF0008D1761 /* Task.swift */; };
 		D66AF2F31E96B905003E00AB /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D66AF2F21E96B905003E00AB /* Images.xcassets */; };
 		D66AF2F51E96BAC6003E00AB /* SettingsInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66AF2F41E96BAC6003E00AB /* SettingsInterface.swift */; };
 		D66AF2F81E96BEAD003E00AB /* AugmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D66AF2F71E96BEAD003E00AB /* AugmentedViewController.swift */; };
@@ -74,7 +74,7 @@
 		D691820D1E895D1500DC038E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D691820B1E895D1500DC038E /* LaunchScreen.storyboard */; };
 		D6EA44F41E8A26EC00658CAF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44F31E8A26EC00658CAF /* Constants.swift */; };
 		D6EA44F61E8A281F00658CAF /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44F51E8A281F00658CAF /* API.swift */; };
-		D6EA44F81E8A536800658CAF /* Tasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44F71E8A536800658CAF /* Tasks.swift */; };
+		D6EA44F81E8A536800658CAF /* TaskManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44F71E8A536800658CAF /* TaskManager.swift */; };
 		D6EA44FA1E8A5DF100658CAF /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44F91E8A5DF100658CAF /* Player.swift */; };
 		D6EA44FC1E8AC81D00658CAF /* LocationMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */; };
 		D6EA44FE1E8B342700658CAF /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6EA44FD1E8B342700658CAF /* CoreMotion.framework */; };
@@ -97,6 +97,7 @@
 		D635109D1E9534A500193100 /* World3D.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = World3D.swift; sourceTree = "<group>"; };
 		D63510A11E95369000193100 /* MapTile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapTile.swift; sourceTree = "<group>"; };
 		D63510A31E96673600193100 /* Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logging.swift; sourceTree = "<group>"; };
+		D66555371E9B8FF0008D1761 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
 		D66AF2F21E96B905003E00AB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D66AF2F41E96BAC6003E00AB /* SettingsInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsInterface.swift; sourceTree = "<group>"; };
 		D66AF2F71E96BEAD003E00AB /* AugmentedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AugmentedViewController.swift; sourceTree = "<group>"; };
@@ -150,9 +151,10 @@
 		D69182091E895D1500DC038E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D691820C1E895D1500DC038E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D691820E1E895D1500DC038E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6AF3F241E9D19D900592AD2 /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = Carthage/Build/iOS/Spring.framework; sourceTree = "<group>"; };
 		D6EA44F31E8A26EC00658CAF /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		D6EA44F51E8A281F00658CAF /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
-		D6EA44F71E8A536800658CAF /* Tasks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tasks.swift; sourceTree = "<group>"; };
+		D6EA44F71E8A536800658CAF /* TaskManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaskManager.swift; sourceTree = "<group>"; };
 		D6EA44F91E8A5DF100658CAF /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		D6EA44FB1E8AC81D00658CAF /* LocationMaster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationMaster.swift; sourceTree = "<group>"; };
 		D6EA44FD1E8B342700658CAF /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -164,7 +166,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D60A0BAD1E9A9EA400A78878 /* FontAwesome.framework in Frameworks */,
-				D616A3E21E9A54C300A13B24 /* KDCircularProgress.framework in Frameworks */,
 				D66AF3191E97C551003E00AB /* CryptoSwift.framework in Frameworks */,
 				D66AF3171E97BB0A003E00AB /* Cache.framework in Frameworks */,
 				D635109A1E95030400193100 /* QRCodeReader.framework in Frameworks */,
@@ -188,6 +189,16 @@
 				D60A0BB41E9AD27300A78878 /* PlayerInterface.swift */,
 			);
 			name = Player;
+			sourceTree = "<group>";
+		};
+		D66555361E9B8FDE008D1761 /* Tasks */ = {
+			isa = PBXGroup;
+			children = (
+				D6EA44F71E8A536800658CAF /* TaskManager.swift */,
+				D66555371E9B8FF0008D1761 /* Task.swift */,
+				D60A0BB61E9AF1D400A78878 /* TaskView.swift */,
+			);
+			name = Tasks;
 			sourceTree = "<group>";
 		};
 		D66AF2F61E96BE9E003E00AB /* Augumented */ = {
@@ -229,8 +240,6 @@
 			isa = PBXGroup;
 			children = (
 				D68AD1001E930C8B00B659E3 /* Cardinal.swift */,
-				D6EA44F71E8A536800658CAF /* Tasks.swift */,
-				D60A0BB61E9AF1D400A78878 /* TaskView.swift */,
 			);
 			name = Cardinal;
 			sourceTree = "<group>";
@@ -247,6 +256,7 @@
 		D6846A841E8960120016C0F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D6AF3F241E9D19D900592AD2 /* Spring.framework */,
 				D60A0BAC1E9A9EA400A78878 /* FontAwesome.framework */,
 				D616A3E11E9A54C300A13B24 /* KDCircularProgress.framework */,
 				D66AF3181E97C551003E00AB /* CryptoSwift.framework */,
@@ -282,6 +292,7 @@
 		D68AD1031E93191F00B659E3 /* World */ = {
 			isa = PBXGroup;
 			children = (
+				D66555361E9B8FDE008D1761 /* Tasks */,
 				D616A3E51E9A588900A13B24 /* Player */,
 				D66AF31E1E97DA4C003E00AB /* Cardinal */,
 				D66AF3001E9700DB003E00AB /* QR */,
@@ -499,7 +510,6 @@
 				"$(SRCROOT)/Carthage/Build/iOS/QRCodeReader.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/CryptoSwift.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Cache.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/KDCircularProgress.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/FontAwesome.framework",
 			);
 			name = "Run Script";
@@ -533,7 +543,7 @@
 				D68AD1231E942E0700B659E3 /* NPCInterface.swift in Sources */,
 				D60A0BAF1E9ABE4500A78878 /* GridPointNode.swift in Sources */,
 				D6EA44F61E8A281F00658CAF /* API.swift in Sources */,
-				D6EA44F81E8A536800658CAF /* Tasks.swift in Sources */,
+				D6EA44F81E8A536800658CAF /* TaskManager.swift in Sources */,
 				D616A3E41E9A585000A13B24 /* NPCNode.swift in Sources */,
 				D60A0BB11E9AC26000A78878 /* HomebaseNode.swift in Sources */,
 				D68AD1081E931C9E00B659E3 /* DropInterface.swift in Sources */,
@@ -556,6 +566,7 @@
 				D68AD10A1E93272C00B659E3 /* InventoryInterface.swift in Sources */,
 				D66AF31B1E97C9DC003E00AB /* UI.swift in Sources */,
 				D66AF2FC1E96EBBF003E00AB /* sha256.swift in Sources */,
+				D66555381E9B8FF0008D1761 /* Task.swift in Sources */,
 				D68AD1101E9328D700B659E3 /* Apps.swift in Sources */,
 				D6EA44FC1E8AC81D00658CAF /* LocationMaster.swift in Sources */,
 				D68AD12D1E945D2300B659E3 /* GridPointInterface.swift in Sources */,

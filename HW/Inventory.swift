@@ -25,17 +25,17 @@ class Item {
 }
 
 class Inventory {
-    static var items: [Item] = []
+    var items: [Item] = []
     
-    static func add(item: Item) {
+    func add(item: Item) {
         if let i = items.first(where: { $0.type == item.type }) {
             i.q += item.q
         } else {
-            Inventory.items.append(item)
+            items.append(item)
         }
     }
     
-    static func remove(item: Item) {
+    func remove(item: Item) {
         if let i = items.first(where: { $0.type == item.type }) {
             i.q -= item.q
             if let index = items.index(where: { $0.q == 0 }) {
@@ -44,13 +44,13 @@ class Inventory {
         }
     }
     
-    static func initInventory(items: JSON) {
+    func initInventory(items: JSON) {
         for item in items.array! {
             add(item: Item(data: item))
         }
     }
     
-    static func has(item: Item) -> Bool {
+    func has(item: Item) -> Bool {
         if let i = items.first(where: { $0.type == item.type }) {
             return i.q >= item.q
         }

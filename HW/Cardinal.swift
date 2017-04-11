@@ -25,9 +25,9 @@ class Cardinal: UIViewController {
 
         Cardinal.player = Player(data: data["player"])
         Cardinal.player.initGridPoints(data: data["grid_points"])
-        TasksManager.initTasks(tasks: data["tasks"])
-        Inventory.initInventory(items: data["player"]["inventory"])
-        Apps.initApps(apps: data["player"]["apps"])
+        Cardinal.player.taskManager.initTasks(tasks: data["tasks"])
+        Cardinal.player.inventory.initInventory(items: data["player"]["inventory"])
+        Cardinal.player.apps.initApps(apps: data["player"]["apps"])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,7 +43,9 @@ class Cardinal: UIViewController {
     }
     
     private func setupGUI() {
-        let appsButton = Btn(title: "apps", position: CGPoint(x: 170, y: 620))
+        let appsButton = Btn(title: "apps", position: CGPoint(x: 170, y: 600))
+        appsButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 30)
+        appsButton.setTitle(String.fontAwesomeIcon(name: .bolt), for: .normal)
         appsButton.addTarget(self, action: #selector(apps), for: .touchDown)
         view.addSubview(appsButton)
                 
@@ -62,25 +64,21 @@ class Cardinal: UIViewController {
         AppsInterface().show()
     }
     
-    static func drop(data: JSON) {
-        DispatchQueue.main.async {
-            DropInterface().show(items: data)
-        }
-    }
-    
     static func logout() {
         let cardinal = Cardinal.myInstance!
+        Cardinal.myInstance = nil
         cardinal.world.shutdown()
         API.deleteToken()
-        Cardinal.player = nil
-        Cardinal.myInstance = nil
-        NotificationCenter.default.removeObserver(self)
-        cardinal.removeFromParentViewController()
-        cardinal.present(AuthViewController(), animated: false, completion: nil)
-        cardinal.view.removeFromSuperview()
+        cardinal.navigationController?.pushViewController(AuthViewController(), animated: true)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.navigationController?.viewControllers = [(self.navigationController?.viewControllers.last)!]
     }
     
     deinit {
+        Cardinal.player = nil
+        NotificationCenter.default.removeObserver(self)
         Logging.info(data: "Deiniting Cardinal")
     }
     

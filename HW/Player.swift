@@ -22,15 +22,34 @@ class GridPointInfo {
     }
 }
 
+class PlayerInfo {
+    let username: String
+    let id: String
+    
+    init(id: String, username: String) {
+        self.id = id
+        self.username = username
+    }
+    
+    convenience init(data: JSON) {
+        self.init(id: data["id"].string!, username: data["username"].string!)
+    }
+}
+
 class Player {
+    let id: String
     var level: Int = 1
     var exp: Int = 0
     var group: Int = 0
     var username: String = ""
     private var homebase: Homebase!
     var grid_nodes: [GridPointInfo] = []
+    let taskManager = TaskManager()
+    let inventory = Inventory()
+    let apps = Apps()
     
     init(data: JSON) {
+        id = data["_id"].string!
         level = data["level"].int!
         exp = data["exp"].int!
         group = data["group"].int!
@@ -74,4 +93,7 @@ class Player {
         NotificationCenter.default.post(name: Notification.Name(rawValue: "new-homebase"), object: self.homebase)
     }
     
+    deinit {
+        Logging.info(data: "Player deinit")
+    }
 }

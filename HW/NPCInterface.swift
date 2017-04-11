@@ -16,12 +16,11 @@ class NPCInterface: CardinalInterface {
     private let attack: Btn
     
     init(npc: NPC) {
-        occupy = Btn(title: "Occupy", position: CGPoint(x: 50, y: 300))
-        attack = Btn(title: "Attack", position: CGPoint(x: 50, y: 300))
+        occupy = Btn(title: "Occupy", position: CGPoint(x: 50, y: 60))
+        attack = Btn(title: "Attack", position: CGPoint(x: 50, y: 60))
         self.npc = npc
         super.init()
-        attack.centerInParent()
-        occupy.centerInParent()
+        
         occupy.addTarget(self, action: #selector(self.doOccupy), for: .touchDown)
         attack.addTarget(self, action: #selector(self.doAttack), for: .touchDown)
         
@@ -51,19 +50,28 @@ class NPCInterface: CardinalInterface {
     }
     
     @objc func npcUpdateNotification(note: NSNotification) {
-        //(note.object as! Homebase).placeHomebaseIfOn(mapTile: self)
         update()
     }
     
     func update() {
         if npc.type == 2 {
             DispatchQueue.main.async {
+                self.scrollView.subviews.flatMap { $0 as? AppBitView }.forEach { $0.removeFromSuperview() }
                 if self.npc.occupy == nil {
                     self.attack.removeFromSuperview()
                     self.addSubview(v: self.occupy)
+                    self.occupy.centerInParent()
                 } else {
-                    self.addSubview(v: self.attack)
                     self.occupy.removeFromSuperview()
+                    if self.npc.occupy!.player.id != Cardinal.player.id {
+                        self.addSubview(v: self.attack)
+                        self.attack.centerInParent()
+                    }
+                    var index = -1
+                    self.npc.occupy.apps.forEach {
+                        index = index + 1
+                        self.addSubview(v: AppBitView(position: CGPoint(x: 0, y: 100 + index * AppBitView.height), app: $0))
+                    }
                 }
             }
         }
@@ -74,17 +82,20 @@ class NPCInterface: CardinalInterface {
     }
 
     func appsPicked(apps: [String]) {
+        let myApps = Cardinal.player.apps.apps().filter { apps.contains($0.id) }
         API.post(endpoint: "npc/\(npc.id)/occupy", params: [ "apps": apps ]) { (data) in
+            if data["code"].int! == 200 {
+                self.npc.occupy = OccupyInfo(apps: myApps, playerInfo: PlayerInfo(id: Cardinal.player.id, username: Cardinal.player.username))
+                self.update()
+            }
         }
     }
 
     
     func doAttack(_ sender: AnyObject?) {
         NPCBattle().show(npc: npc)
-
         close()
     }
-
 
     deinit {
         print("deinit")

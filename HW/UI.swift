@@ -8,8 +8,19 @@
 
 import Foundation
 import UIKit
+import Spring
 
 extension UIView {
+    
+    func centerXYInParent() {
+        centerInParent()
+        centerVerticallyInParent()
+    }
+    
+    func centerVerticallyInParent() {
+        frame = CGRect(x: frame.origin.x, y: superview!.frame.height / 2 - frame.height / 2, width: frame.width, height: frame.height)
+    }
+    
     func centerInParent() {
         frame = CGRect(x: superview!.frame.width / 2 - frame.width / 2, y: frame.origin.y, width: frame.width, height: frame.height)
     }
@@ -116,7 +127,7 @@ class CardinalInterface: UIViewController {
         closeBtn.setTitle(String.fontAwesomeIcon(name: .close), for: .normal)
 
         super.init(nibName: nil, bundle: nil)
-        self.view.frame = CGRect(x: 0, y: 0, width:size.width, height: size.height)
+        self.view.frame = CGRect(x: size.width, y: 0, width:size.width, height: size.height)
         
         view.backgroundColor = UIColor(patternImage: UIImage(named: "padded")!)
         view.alpha = 0.97
@@ -133,6 +144,11 @@ class CardinalInterface: UIViewController {
         Cardinal.myInstance.addChildViewController(self)
         Cardinal.myInstance.view.addSubview(self.view)
         self.didMove(toParentViewController: Cardinal.myInstance)
+        
+        UIView.animate(withDuration: 0.4, delay: 0.0, options: UIViewAnimationOptions.curveEaseIn, animations: {
+            self.view.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {

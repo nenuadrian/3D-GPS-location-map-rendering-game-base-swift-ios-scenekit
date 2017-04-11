@@ -24,7 +24,6 @@ class AuthViewController: UIViewController {
         }
 
         password.isSecureTextEntry = true
-        
         username.setPlaceholder(string: "username")
         password.setPlaceholder(string: "password")
         email.setPlaceholder(string: "e-mail")
@@ -78,10 +77,18 @@ class AuthViewController: UIViewController {
         API.get(endpoint: "player", callback: { data in
             if data["code"].int! == 200 {
                 DispatchQueue.main.async {
-                    self.present(Cardinal(data: data["data"]), animated: true, completion: nil)
+                    self.navigationController?.pushViewController(Cardinal(data: data["data"]), animated: true)
                 }
             }
             
         })
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        self.navigationController?.viewControllers = [(self.navigationController?.viewControllers.last)!]
+    }
+    
+    deinit {
+        Logging.info(data: "Deiniting Auth")
     }
 }

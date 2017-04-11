@@ -30,12 +30,11 @@ class API {
     }
     
     // TODO on auth error logout
-    static func request(method: HTTPVerb, params: [String : Any], endpoint: String, callback: @escaping (_: JSON) -> Void) {
+    static func request(method: HTTPVerb, params: [String : Any]? = nil, endpoint: String, callback: @escaping (_: JSON) -> Void) {
         do {
-            Logging.info(data: "REQUEST: \(endpoint)")
+            Logging.info(data: "REQUEST: \(endpoint) \(String(describing: params))")
 
-            let url = "\(Constants.REST_HOST)\(endpoint)?token=\(token)&lat=\(LocationMaster.getLast().x)&lon=\(LocationMaster.getLast().y)"
-
+            let url = "\(Constants.REST_HOST)\(endpoint)?token=\(token)&lat=\(LocationMaster.getLast().x)&lon=\(LocationMaster.getLast().y)&c=\(Utils.timestamp())"
             let opt = try HTTP.New(url, method: method, parameters: params, requestSerializer: JSONParameterSerializer(), isDownload: false)
           
             opt.start { response in
@@ -54,30 +53,34 @@ class API {
                 let action = json["data"]["action"]
                 if !action.isEmpty {
                     if !action["task"].isEmpty {
-                        TasksManager.addTask(task: Task(task: action["task"]))
+                        DispatchQueue.main.async {
+                            Cardinal.player.taskManager.addTask(task: Task(task: action["task"]))
+                        }
                     }
                     
                     if !action["drop"].isEmpty {
-                        Cardinal.drop(data: action["drop"])
+                        DispatchQueue.main.async {
+                            DropInterface().show(items: action["drop"])
+                        }
                     }
            
                     if let add = json["data"]["action"]["add"].dictionary {
                         if let apps = add["apps"]?.array {
-                            apps.forEach { (a) in Apps.add(app: App(data: a))  }
+                            apps.forEach { (a) in Cardinal.player.apps.add(app: App(data: a))  }
                         }
                         
                         if let items = add["items"]?.array {
-                            items.forEach { (i) in Inventory.add(item: Item(data: i)) }
+                            items.forEach { (i) in Cardinal.player.inventory.add(item: Item(data: i)) }
                         }
                     }
                     
                     if let remove = json["data"]["action"]["remove"].dictionary {
                         if let apps = remove["apps"]?.array {
-                            apps.forEach { (a) in Apps.remove(id: a.string!) }
+                            apps.forEach { (a) in Cardinal.player.apps.remove(id: a.string!) }
                         }
                         
                         if let items = remove["items"]?.array {
-                            items.forEach { (i) in Inventory.remove(item: Item(data: i)) }
+                            items.forEach { (i) in Cardinal.player.inventory.remove(item: Item(data: i)) }
                         }
                     }
                 }
@@ -98,11 +101,7 @@ class API {
         request(method: .PUT, params: [:], endpoint: endpoint, callback: callback)
     }
     
-    static func post(endpoint: String, callback: @escaping (_: JSON) -> Void) {
-        request(method: .POST, params: [:], endpoint: endpoint, callback: callback)
-    }
-    
-    static func post(endpoint: String, params: [String : Any], callback: @escaping (_: JSON) -> Void) {
+    static func post(endpoint: String, params: [String : Any]? = nil, callback: @escaping (_: JSON) -> Void) {
         request(method: .POST, params: params, endpoint: endpoint, callback: callback)
     }
 }

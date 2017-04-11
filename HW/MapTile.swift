@@ -20,8 +20,8 @@ class MapTile {
     var npcs: [NPC] = []
     var node: SCNNode!
     
-    let cache = HybridCache(name: "Tiles", config: Config(
-        frontKind: .memory,
+    static let cache = HybridCache(name: "map-tiles", config: Config(
+        frontKind: .disk,
         backKind: .disk,
         expiry: .date(Date().addingTimeInterval(100000)),
         maxSize: 10000))
@@ -36,7 +36,7 @@ class MapTile {
         node.position = SCNVector3(x: position.x, y: position.y, z: 0)
         mapNode.addChildNode(node)
         
-        cache.object("\(tileKey.x)-\(tileKey.y)") { (cachedTileData: String?) in
+        MapTile.cache.object("\(tileKey.x)-\(tileKey.y)") { (cachedTileData: String?) in
             if let tileData = cachedTileData {
                 self.data = SwiftyJSON.JSON.parse(tileData)
                 self.render()
@@ -44,7 +44,7 @@ class MapTile {
                 API.get(endpoint: "tile/\(Int(tileKey.x))/\(Int(tileKey.y))", callback: { (data) in
                     if data["code"].int! == 200 {
                         self.data = data["data"]
-                        self.cache.add("\(tileKey.x)-\(tileKey.y)", object: self.data.rawString()!)
+                        MapTile.cache.add("\(tileKey.x)-\(tileKey.y)", object: self.data.rawString()!)
                     }
                     DispatchQueue.main.async {
                         self.render()
@@ -65,16 +65,10 @@ class MapTile {
     
     func render() {
         let mapTile = SCNPlane(width: 611, height: 611)
-        mapTile.firstMaterial!.diffuse.contents = texture()
+        let txt = texture()
+        mapTile.firstMaterial!.diffuse.contents = txt
         let features = SCNNode(geometry: mapTile)
         node.addChildNode(features)
-        
-        if self.data != JSON.null {
-            data["npcs"].array!.forEach { (npcData) in
-                let npc = NPC(data: npcData, tileNode: node)
-                self.npcs.append(npc)
-            }
-        }
     }
     
     func drawShapes(context: CGContext, field: String) {
@@ -137,5 +131,11 @@ class MapTile {
         UIGraphicsEndImageContext()
         return image!
     }
-
+    
+    func newNPC(data: SwiftyJSON.JSON) {
+        if node != nil {
+            let npc = NPC(data: data, tileNode: node)
+            self.npcs.append(npc)
+        }
+    }
 }

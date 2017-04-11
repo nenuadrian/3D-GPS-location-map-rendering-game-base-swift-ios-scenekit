@@ -13,17 +13,17 @@ class App {
     let id: String
     let type: Int
     let broken: Int
+    let attributes: [Int]
     
-    init(type: Int, broken: Int = 0) {
-        self.id = ""
-        self.type = type
-        self.broken = broken
+    convenience init(type: Int, broken: Int = 0) {
+        self.init(id: "", type: type, broken: broken)
     }
     
     init(id: String, type: Int, broken: Int = 0) {
         self.id = id
         self.type = type
         self.broken = broken
+        self.attributes = (Constants.APPS[type]?.attributes)!
     }
     
     convenience init(data: JSON) {
@@ -33,23 +33,23 @@ class App {
 }
 
 class Apps {
-    private static var myApps: [App] = []
+    private var myApps: [App] = []
     
-    static func apps() -> [App] {
+    func apps() -> [App] {
         return myApps
     }
     
-    static func add(app: App) {
-        Apps.myApps.append(app)
+    func add(app: App) {
+        myApps.append(app)
     }
     
-    static func remove(id: String) {
+    func remove(id: String) {
         if let index = myApps.index(where: { $0.id == id }) {
             myApps.remove(at: index)
         }
     }
     
-    static func initApps(apps: JSON) {
+    func initApps(apps: JSON) {
         for a in apps.array! {
             add(app: App(data: a))
         }

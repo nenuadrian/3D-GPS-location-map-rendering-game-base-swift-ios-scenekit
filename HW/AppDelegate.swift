@@ -11,18 +11,14 @@ import CoreData
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-    var window: UIWindow?
+    private let window: UIWindow = UIWindow(frame: UIScreen.main.bounds)
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        let initialViewController  = AuthViewController()
-        
-        let frame = UIScreen.main.bounds
-        window = UIWindow(frame: frame)
-        
-        window!.rootViewController = initialViewController
-        window!.makeKeyAndVisible()
-        
+        let nav1 = UINavigationController()
+        nav1.viewControllers = [AuthViewController()]
+        nav1.isNavigationBarHidden = true
+        self.window.rootViewController = nav1
+        self.window.makeKeyAndVisible()
         return true
     }
 

@@ -10,10 +10,10 @@ var restify = require('restify'),
   uuidV4 = require('uuid/v4'),
   Vector2 = require('vector2-node'),
   craft = require('./craft'),
+  apps = require('./apps'),
   Inventory = require('./inventory'),
   winston = require('winston'),
   email = require('./email')
-
 
 var TASK = { TYPES: { HOME_BASE_PLACE: 1, CRAFT: 2 } }
 
@@ -174,7 +174,7 @@ server.post('/npc/:npc/occupy', authLock, (req, res, next) => {
 
   getNPC(req.params.npc).then((npc) =>  {
     var occupy = {
-      user_id: req.user.data._id,
+      user: { id: req.user.data._id, username: req.user.data.username },
       apps: userApps,
       created_at: new Date
     }
@@ -214,7 +214,7 @@ server.post('/tasks/craft/:id', authLock, (req, res, next) => {
     req.user.data.tasks.push(task)
     req.user.save()
     task.s = task.ts
-    req.answer(200, { action: { task: task } })
+    req.answer(200, { action: { task: task, remove: { items: formula.items } } })
   } else req.answer(418)
 })
 
@@ -289,10 +289,7 @@ server.get('/tile/:x/:y', authLock, (req, res, next) => {
   var path = './tiles/' + parseInt(req.params.x) + '/' + parseInt(req.params.y) + '.json'
   if (fs.existsSync(path)) {
     var data = JSON.parse(fs.readFileSync(path, 'utf8'))
-    mongoDB.collection('npcs').find({ "tile": [parseInt(req.params.x), parseInt(req.params.y)] }).toArray((err, npcs) => {
-      data.npcs = npcs
-      req.answer(200, data)
-    })
+    req.answer(200, data)
   } else {
     req.answer(404)
   }
@@ -327,7 +324,7 @@ server.post('/task/:task_id/claim', authLock, req => {
     var formula = craft.formulas.find(f => f.id == task.data.formula)
     if (formula.item) {
       req.user.inventory.add(formula.item)
-      data.action = { items: [ formula.item ] }
+      data.action = { add: { items: [ formula.item ] } }
     } else {
       var app = {
         type: formula.app.type,

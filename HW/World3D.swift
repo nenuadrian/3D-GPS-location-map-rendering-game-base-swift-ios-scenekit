@@ -53,6 +53,8 @@ class World3D: UIViewController {
                     let id = npc["_id"].string!
                     if let myNPC = myTile.npcs.first(where: {  $0.id == id }) {
                         myNPC.update(data: npc)
+                    } else {
+                        myTile.newNPC(data: npc)
                     }
                 }
             })
@@ -86,8 +88,11 @@ class World3D: UIViewController {
     func shutdown() {
         locationTimer?.invalidate()
         npcTimer?.invalidate()
+    }
+    
+    deinit {
         World3D.mapTiles.removeAll()
-        removeFromParentViewController()
+        Logging.info(data: "Deinit World Controller")
     }
 }
 

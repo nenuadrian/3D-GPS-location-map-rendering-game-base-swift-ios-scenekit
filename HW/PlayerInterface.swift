@@ -30,12 +30,16 @@ class PlayerInterface: CardinalInterface {
         addSubview(v: homebase)
         homebase.centerInParent()
         
-        let qrButton = Btn(title: "qr", position: CGPoint(x: 0, y: 200))
+        let qrButton = Btn(title: "qr scan", position: CGPoint(x: 0, y: 200))
+        qrButton.titleLabel?.font = UIFont.fontAwesome(ofSize: 30)
+        qrButton.setTitle(String.fontAwesomeIcon(name: .qrcode), for: .normal)
         qrButton.addTarget(self, action: #selector(qr), for: .touchDown)
         addSubview(v: qrButton)
         qrButton.centerInParent()
         
-        let settings = Btn(title: "set", position: CGPoint(x: 0, y: 240))
+        let settings = Btn(title: "settings", position: CGPoint(x: 0, y: 240))
+        settings.titleLabel?.font = UIFont.fontAwesome(ofSize: 30)
+        settings.setTitle(String.fontAwesomeIcon(name: .cog), for: .normal)
         settings.addTarget(self, action: #selector(settingsCall), for: .touchDown)
         addSubview(v: settings)
         settings.centerInParent()

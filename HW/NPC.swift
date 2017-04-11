@@ -13,15 +13,15 @@ import SceneKit
 
 class OccupyInfo {
     let apps: [App]
-    let user: String
+    let player: PlayerInfo
     
-    init(apps: [App], user: String) {
+    init(apps: [App], playerInfo: PlayerInfo) {
         self.apps = apps
-        self.user = user
+        self.player = playerInfo
     }
     
     convenience init(data: JSON) {
-        self.init(apps: data["apps"].array!.map({ return App(data: $0) }), user: data["user_id"].string!)
+        self.init(apps: data["apps"].array!.map({ return App(data: $0) }), playerInfo: PlayerInfo(data: data["user"]))
     }
 }
 
@@ -48,9 +48,7 @@ class NPC {
         node = NPCNode(relativePosition: relativePosition, npc: self)
         tileNode.addChildNode(node)
         update(data: data)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "npc-\(self.id)"), object: self)
     }
- 
     
     func update(data: JSON) {
         if !data["occupy"].isEmpty {
@@ -60,9 +58,9 @@ class NPC {
             self.occupy = nil
             self.node.set(occupied: false)
         }
+        NotificationCenter.default.post(name: Notification.Name(rawValue: "npc-\(self.id)"), object: self)
     }
     
     deinit {
-        NotificationCenter.default.removeObserver(self)
     }
 }

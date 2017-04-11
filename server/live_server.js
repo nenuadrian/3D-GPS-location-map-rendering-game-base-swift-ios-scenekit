@@ -52,13 +52,13 @@ wss.on('connection', function connection(ws) {
           ws.channel = msg.npc_id
           getBattle(ws.channel, (battle) => {
             ws.apps = ws.user.apps.filter(a => msg.apps.indexOf(a._id.toString()) != -1)
-            wss.broadcast(ws.channel, JSON.stringify({ action: 'joined_battle', user: { username: ws.user.username, apps: ws.apps } }))
+            wss.broadcast(ws.channel, JSON.stringify({ action: 'joined_battle', user: { id: ws.user._id.toString(), username: ws.user.username, apps: ws.apps } }))
             ws.send(JSON.stringify({ action: 'battle', data: battle }))
           })
         }
 
         if (msg.action == 'attack') {
-          wss.broadcast(ws.channel, JSON.stringify({ action: 'damage', value: 20 }))
+          wss.broadcast(ws.channel, JSON.stringify({ action: 'damage', value: 20, user: ws.user._id.toString() }))
           battles[ws.channel].health -= 20
           if (battles[ws.channel].health <= 0) {
             mongoDB.collection('npcs').updateOne({ _id: ObjectID(ws.channel) }, { $unset: { occupy: null }}).then(() => {

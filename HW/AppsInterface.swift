@@ -33,6 +33,11 @@ class AppBitView: UIView, UIGestureRecognizerDelegate {
             addSubview(corLabel)
         }
         
+        for i in 0...2 {
+            let attrLabel = Label(text: "attr\(i): \(app.attributes[i])", frame: CGRect(x: 15 + 75 * i, y: 40, width: 70, height: 20))
+            addSubview(attrLabel)
+        }
+        
         layer.borderWidth = 0.5
         layer.borderColor = UIColor(red:0.00, green:0.49, blue:0.86, alpha: 0.5).cgColor
         
@@ -81,8 +86,8 @@ class AppsInterface: CardinalInterface {
         addSubview(v: invButton)
         invButton.rightInParent()
         
-        for app in Apps.apps() {
-            let appBtiView = AppBitView(position: CGPoint(x: 0, y: 60 + (AppBitView.height + 10) * Apps.apps().index(where: { $0.id == app.id })!), app: app)
+        for app in Cardinal.player.apps.apps() {
+            let appBtiView = AppBitView(position: CGPoint(x: 0, y: 60 + (AppBitView.height + 10) * Cardinal.player.apps.apps().index(where: { $0.id == app.id })!), app: app)
             addSubview(v: appBtiView)
         }
     }

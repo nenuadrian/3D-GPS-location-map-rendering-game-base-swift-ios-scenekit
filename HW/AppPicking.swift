@@ -21,7 +21,7 @@ class AppPickingInterface: CardinalInterface {
         self.onPick = onPick
         self.onPickTarget = onPickTarget
         var index = 0
-        for app in Apps.apps() {
+        for app in Cardinal.player.apps.apps() {
             index += 1
             let appBtiView = AppBitView(position: CGPoint(x: 0, y: (AppBitView.height + 10) * index), app: app, onTapTarget: self, onTap: #selector(onAppTap))
             addSubview(v: appBtiView)

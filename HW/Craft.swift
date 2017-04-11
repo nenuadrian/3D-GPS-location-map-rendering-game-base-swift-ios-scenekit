@@ -27,7 +27,7 @@ class CraftFormula {
     
     func canCraft() -> Bool {
         for item in items {
-            if !Inventory.has(item: item) {
+            if !Cardinal.player.inventory.has(item: item) {
                 return false
             }
         }

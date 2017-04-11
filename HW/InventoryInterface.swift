@@ -78,8 +78,8 @@ class InventoryInterface: CardinalInterface {
         craftButton.centerInParent()
 
     
-        for item in Inventory.items {
-            let itemView = ItemBitView(position: CGPoint(x: 0, y: 60 + (ItemBitView.height + 10) * Inventory.items.index(where: { $0.type == item.type })!), item: item)
+        for item in Cardinal.player.inventory.items {
+            let itemView = ItemBitView(position: CGPoint(x: 0, y: 60 + (ItemBitView.height + 10) * Cardinal.player.inventory.items.index(where: { $0.type == item.type })!), item: item)
             addSubview(v: itemView)
         }
 
