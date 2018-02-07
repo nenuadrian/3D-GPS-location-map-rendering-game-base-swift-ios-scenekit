@@ -11,10 +11,10 @@ import SceneKit
 
 
 class CameraNode: SCNNode {
-    var lastWidthRatio: Float = 0
-    var lastHeightRatio: Float = 1.06447 / Float.pi
+    @objc var lastWidthRatio: Float = 0
+    @objc var lastHeightRatio: Float = 1.06447 / Float.pi
     
-    init(playerNode: SCNNode, sceneView: SCNView) {
+    @objc init(playerNode: SCNNode, sceneView: SCNView) {
         super.init()
         
         let camera = SCNCamera()
@@ -34,7 +34,7 @@ class CameraNode: SCNNode {
         sceneView.addGestureRecognizer(gestureRecognizer)
     }
     
-    func handlePanGesture(sender: UIPanGestureRecognizer) {
+    @objc func handlePanGesture(sender: UIPanGestureRecognizer) {
         let translation = sender.translation(in: sender.view!)
         
         let widthRatio = Float(translation.x) / Float(360) + lastWidthRatio

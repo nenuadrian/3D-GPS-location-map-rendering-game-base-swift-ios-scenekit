@@ -25,6 +25,19 @@ import CoreText
 
 // MARK: - Public
 
+/// A configuration namespace for FontAwesome.
+public struct FontAwesomeConfig {
+    
+    // Marked private to prevent initialization of this struct.
+    private init(){}
+    
+    /// A static member that holds the FontAwesome font name.
+    static let name = "FontAwesome"
+    
+    /// Taken from FontAwesome.io's Fixed Width Icon CSS.
+    public static let fontAspectRatio: CGFloat = 1.28571429
+}
+
 /// A FontAwesome extension to UIFont.
 public extension UIFont {
 
@@ -33,12 +46,19 @@ public extension UIFont {
     /// - parameter ofSize: The preferred font size.
     /// - returns: A UIFont object of FontAwesome.
     public class func fontAwesome(ofSize fontSize: CGFloat) -> UIFont {
-        let name = "FontAwesome"
-        if UIFont.fontNames(forFamilyName: name).isEmpty {
-            FontLoader.loadFont(name)
+        loadFontAwesome()
+        return UIFont(name: FontAwesomeConfig.name, size: fontSize)!
+    }
+    
+    /// Loads the FontAwesome font in to memory.
+    /// This method should be called when setting icons without using code.
+    public class func loadFontAwesome() {
+        
+        if !UIFont.fontNames(forFamilyName: FontAwesomeConfig.name).isEmpty {
+            return
         }
-
-        return UIFont(name: name, size: fontSize)!
+        
+        FontLoader.loadFont(FontAwesomeConfig.name)
     }
 }
 
@@ -50,7 +70,8 @@ public extension String {
     /// - parameter name: The preferred icon name.
     /// - returns: A string that will appear as icon with FontAwesome.
     public static func fontAwesomeIcon(name: FontAwesome) -> String {
-        return name.rawValue.substring(to: name.rawValue.characters.index(name.rawValue.startIndex, offsetBy: 1))
+        let toIndex = name.rawValue.index(name.rawValue.startIndex, offsetBy: 1)
+        return String(name.rawValue[name.rawValue.startIndex..<toIndex])
     }
 
     /// Get a FontAwesome icon string with the given CSS icon code. Icon code can be found here: http://fontawesome.io/icons/
@@ -63,7 +84,7 @@ public extension String {
             return nil
         }
 
-      return self.fontAwesomeIcon(name: name)
+        return self.fontAwesomeIcon(name: name)
     }
 
     /// Get a FontAwesome icon with the given CSS icon code. Icon code can be found here: http://fontawesome.io/icons/
@@ -71,12 +92,8 @@ public extension String {
     /// - parameter code: The preferred icon name.
     /// - returns: An internal corresponding FontAwesome code.
     public static func fontAwesome(code: String) -> FontAwesome? {
-
-        guard let raw = FontAwesomeIcons[code], let icon = FontAwesome(rawValue: raw) else {
-            return nil
-        }
-
-        return icon
+        guard let raw = FontAwesomeIcons[code] else { return nil }
+        return FontAwesome(rawValue: raw)
     }
 }
 
@@ -90,16 +107,31 @@ public extension UIImage {
     /// - parameter size: The image size.
     /// - parameter backgroundColor: The background color (optional).
     /// - returns: A string that will appear as icon with FontAwesome
-    public static func fontAwesomeIcon(name: FontAwesome, textColor: UIColor, size: CGSize, backgroundColor: UIColor = UIColor.clear) -> UIImage {
+    public static func fontAwesomeIcon(name: FontAwesome, textColor: UIColor, size: CGSize, backgroundColor: UIColor = UIColor.clear, borderWidth: CGFloat = 0, borderColor: UIColor = UIColor.clear) -> UIImage {
+        
+        // Prevent application crash when passing size where width or height is set equal to or less than zero, by clipping width and height to a minimum of 1 pixel.
+        var size = size
+        if size.width <= 0 { size.width = 1 }
+        if size.height <= 0 { size.height = 1 }
+        
         let paragraph = NSMutableParagraphStyle()
         paragraph.alignment = NSTextAlignment.center
 
-        // Taken from FontAwesome.io's Fixed Width Icon CSS
-        let fontAspectRatio: CGFloat = 1.28571429
+        let fontSize = min(size.width / FontAwesomeConfig.fontAspectRatio, size.height)
 
-        let fontSize = min(size.width / fontAspectRatio, size.height)
-        let attributedString = NSAttributedString(string: String.fontAwesomeIcon(name: name), attributes: [NSFontAttributeName: UIFont.fontAwesome(ofSize: fontSize), NSForegroundColorAttributeName: textColor, NSBackgroundColorAttributeName: backgroundColor, NSParagraphStyleAttributeName: paragraph])
-        UIGraphicsBeginImageContextWithOptions(size, false , 0.0)
+        // stroke width expects a whole number percentage of the font size
+        let strokeWidth: CGFloat = fontSize == 0 ? 0 : (-100 * borderWidth / fontSize)
+
+        let attributedString = NSAttributedString(string: String.fontAwesomeIcon(name: name), attributes: [
+            NSAttributedStringKey.font: UIFont.fontAwesome(ofSize: fontSize),
+            NSAttributedStringKey.foregroundColor: textColor,
+            NSAttributedStringKey.backgroundColor: backgroundColor,
+            NSAttributedStringKey.paragraphStyle: paragraph,
+            NSAttributedStringKey.strokeWidth: strokeWidth,
+            NSAttributedStringKey.strokeColor: borderColor
+            ])
+
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
         attributedString.draw(in: CGRect(x: 0, y: (size.height - fontSize) / 2, width: size.width, height: fontSize))
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -113,9 +145,9 @@ public extension UIImage {
     /// - parameter size: The image size.
     /// - parameter backgroundColor: The background color (optional).
     /// - returns: A string that will appear as icon with FontAwesome
-    public static func fontAwesomeIcon(code: String, textColor: UIColor, size: CGSize, backgroundColor: UIColor = UIColor.clear) -> UIImage? {
+    public static func fontAwesomeIcon(code: String, textColor: UIColor, size: CGSize, backgroundColor: UIColor = UIColor.clear, borderWidth: CGFloat = 0, borderColor: UIColor = UIColor.clear) -> UIImage? {
         guard let name = String.fontAwesome(code: code) else { return nil }
-        return fontAwesomeIcon(name: name, textColor: textColor, size: size, backgroundColor: backgroundColor)
+        return fontAwesomeIcon(name: name, textColor: textColor, size: size, backgroundColor: backgroundColor, borderWidth: borderWidth, borderColor: borderColor)
     }
 }
 
@@ -134,15 +166,16 @@ private class FontLoader {
             fontURL = bundle.url(forResource: name, withExtension: "otf")!
         }
 
-        let data = try! Data(contentsOf: fontURL)
-
-        let provider = CGDataProvider(data: data as CFData)
-        let font = CGFont(provider!)
+        guard
+            let data = try? Data(contentsOf: fontURL),
+            let provider = CGDataProvider(data: data as CFData),
+            let font = CGFont(provider)
+            else { return }
 
         var error: Unmanaged<CFError>?
         if !CTFontManagerRegisterGraphicsFont(font, &error) {
             let errorDescription: CFString = CFErrorCopyDescription(error!.takeUnretainedValue())
-            let nsError = error!.takeUnretainedValue() as AnyObject as! NSError
+            guard let nsError = error?.takeUnretainedValue() as AnyObject as? NSError else { return }
             NSException(name: NSExceptionName.internalInconsistencyException, reason: errorDescription as String, userInfo: [NSUnderlyingErrorKey: nsError]).raise()
         }
     }

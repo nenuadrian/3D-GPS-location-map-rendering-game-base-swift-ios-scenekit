@@ -15,10 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         let nav1 = UINavigationController()
-        nav1.viewControllers = [AuthViewController()]
+        nav1.viewControllers = [World3D()]
         nav1.isNavigationBarHidden = true
         self.window.rootViewController = nav1
         self.window.makeKeyAndVisible()
+        UIApplication.shared.statusBarStyle = .lightContent
+
         return true
     }
 

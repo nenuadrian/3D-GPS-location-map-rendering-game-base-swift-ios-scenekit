@@ -9,26 +9,22 @@
 import Foundation
 import UIKit
 import SceneKit
-import Cache
 import SwiftyJSON
 
 class MapTile {
     var data: SwiftyJSON.JSON = JSON.null
     let tileKey: Vector2
     let position: Vector2
-    var gridPoint: GridPoint!
-    var npcs: [NPC] = []
+    let latLon: Vector2
+    let latLonInMeters: Vector2
     var node: SCNNode!
-    
-    static let cache = HybridCache(name: "map-tiles", config: Config(
-        frontKind: .disk,
-        backKind: .disk,
-        expiry: .date(Date().addingTimeInterval(100000)),
-        maxSize: 10000))
+    var lines: [(Double, Double)] = []
 
     init(tileKey: Vector2, mapNode: SCNNode, primordialTile: Vector2) {
         self.tileKey = tileKey
         self.position = Vector2(tileKey.x - primordialTile.x, primordialTile.y - tileKey.y) * 611
+        self.latLon = Utils.tileToLatLon(tile: tileKey)
+        self.latLonInMeters = Utils.latLonToMeters(coord: self.latLon)
         
         Logging.info(data: "TILE \(tileKey) @ \(self.position)")
         
@@ -36,32 +32,18 @@ class MapTile {
         node.position = SCNVector3(x: position.x, y: position.y, z: 0)
         mapNode.addChildNode(node)
         
-        MapTile.cache.object("\(tileKey.x)-\(tileKey.y)") { (cachedTileData: String?) in
-            if let tileData = cachedTileData {
-                self.data = SwiftyJSON.JSON.parse(tileData)
+
+        API.get(endpoint: "http://tile.mapzen.com/mapzen/vector/v1/all/16/\(Int(tileKey.x))/\(Int(tileKey.y)).json?api_key=mapzen-YMzZVyX", callback: { (data) in
+            self.data = data
+            DispatchQueue.main.async {
                 self.render()
-            } else {
-                API.get(endpoint: "tile/\(Int(tileKey.x))/\(Int(tileKey.y))", callback: { (data) in
-                    if data["code"].int! == 200 {
-                        self.data = data["data"]
-                        MapTile.cache.add("\(tileKey.x)-\(tileKey.y)", object: self.data.rawString()!)
-                    }
-                    DispatchQueue.main.async {
-                        self.render()
-                    }
-                })
             }
-        }
-       
-        gridPoint = GridPoint(tile: self)
+        })
+
         
-        NotificationCenter.default.addObserver(self, selector: #selector(handleHomebaseNotification), name: NSNotification.Name(rawValue: "new-homebase"), object: nil)
-        NotificationCenter.default.post(name: Notification.Name(rawValue: "check-tile-homebase"), object: self)
     }
     
-    @objc func handleHomebaseNotification(note: NSNotification) {
-      (note.object as! Homebase).placeHomebaseIfOn(mapTile: self)
-    }
+  
     
     func render() {
         let mapTile = SCNPlane(width: 611, height: 611)
@@ -101,14 +83,19 @@ class MapTile {
  }
  } else*/
         
-        for shape in data[field].array!.filter({ $0["type"].string! == "linestring" }) {
-            let thePoint = CGPoint(x: (shape["coords"].array![0].array![0].double!), y: (shape["coords"].array![0].array![1].double!))
-            context.move(to: thePoint)
-            for point in shape["coords"].array! {
-                let thePoint = CGPoint(x: (point.array![0].double!), y: (point.array![1].double!))
-                context.addLine(to: thePoint)
-                context.move(to: thePoint)
+        for feature in data[field]["features"].array! {
+            if feature["geometry"]["type"].string! == "LineString" {
+                let coords = feature["geometry"]["coordinates"].array!
+                let thePoint = Utils.latLonToMeters(coord: Vector2(x: coords[0].array![1].float!, y: coords[0].array![0].float!)) - latLonInMeters
+                context.move(to: CGPoint(x: Double(abs(thePoint.x)), y: Double(abs(thePoint.y))))
+                for point in coords {
+                    let thePointInMeters = Utils.latLonToMeters(coord: Vector2(x: point.array![1].float!, y: point.array![0].float!)) - latLonInMeters
+                    let thePoint = CGPoint(x: Double(abs(thePointInMeters.x)), y: Double(abs(thePointInMeters.y)))
+                    context.addLine(to: thePoint)
+                    context.move(to: thePoint)
+                }
             }
+            
         }
         context.strokePath()
     }
@@ -132,10 +119,5 @@ class MapTile {
         return image!
     }
     
-    func newNPC(data: SwiftyJSON.JSON) {
-        if node != nil {
-            let npc = NPC(data: data, tileNode: node)
-            self.npcs.append(npc)
-        }
-    }
+    
 }

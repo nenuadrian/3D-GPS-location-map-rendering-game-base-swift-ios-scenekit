@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "SwiftHTTP"
-  s.version      = "2.0.2"
+  s.version      = "3.0.1"
   s.summary      = "Thin wrapper around NSURLSession in Swift. Simplifies HTTP requests."
   s.homepage     = "https://github.com/daltoniam/SwiftHTTP"
   s.license      = 'Apache License, Version 2.0'
@@ -12,5 +12,4 @@ Pod::Spec.new do |s|
   s.watchos.deployment_target = '2.0'
   s.tvos.deployment_target = '9.0'
   s.source_files = 'Source/*.swift'
-  s.requires_arc = 'true'
 end

@@ -20,7 +20,7 @@ class ViewController: UIViewController {
         //getTestInfo(1)
     }
     
-    func removeSocket(_ s: WebSocket) {
+    func removeSocket(_ s: WebSocket?) {
         socketArray = socketArray.filter{$0 != s}
     }
     
@@ -28,15 +28,15 @@ class ViewController: UIViewController {
         
         let s = WebSocket(url: URL(string: "ws://\(host)/getCaseCount")!, protocols: [])
         socketArray.append(s)
-        s.onText = {[unowned self] (text: String) in
+        s.onText = { [weak self]  (text: String) in
             if let c = Int(text) {
                 print("number of cases is: \(c)")
-                self.caseCount = c
+                self?.caseCount = c
             }
         }
-        s.onDisconnect = {[unowned self] (error: NSError?) in
-            self.getTestInfo(1)
-            self.removeSocket(s)
+        s.onDisconnect = { [weak self, weak s]  (error: Error?) in
+            self?.getTestInfo(1)
+            self?.removeSocket(s)
         }
         s.connect()
     }
@@ -44,7 +44,7 @@ class ViewController: UIViewController {
     func getTestInfo(_ caseNum: Int) {
         let s = createSocket("getCaseInfo",caseNum)
         socketArray.append(s)
-        s.onText = {(text: String) in
+        s.onText = { (text: String) in
 //            let data = text.dataUsingEncoding(NSUTF8StringEncoding)
 //            do {
 //                let resp: AnyObject? = try NSJSONSerialization.JSONObjectWithData(data!,
@@ -62,12 +62,12 @@ class ViewController: UIViewController {
 
         }
         var once = false
-        s.onDisconnect = {[unowned self] (error: NSError?) in
+        s.onDisconnect = { [weak self, weak s]  (error: Error?) in
             if !once {
                 once = true
-                self.runTest(caseNum)
+                self?.runTest(caseNum)
             }
-            self.removeSocket(s)
+            self?.removeSocket(s)
         }
         s.connect()
     }
@@ -75,19 +75,26 @@ class ViewController: UIViewController {
     func runTest(_ caseNum: Int) {
         let s = createSocket("runCase",caseNum)
         self.socketArray.append(s)
-        s.onText = {(text: String) in
-            s.write(string: text)
+        s.onText = { [weak s]  (text: String) in
+            s?.write(string: text)
         }
-        s.onData = {(data: Data) in
-            s.write(data: data)
+        s.onData = { [weak s]  (data: Data) in
+            s?.write(data: data)
         }
         var once = false
-        s.onDisconnect = {[unowned self] (error: NSError?) in
+        s.onDisconnect = {[weak self, weak s] (error: Error?) in
             if !once {
                 once = true
                 print("case:\(caseNum) finished")
-                self.verifyTest(caseNum)
-                self.removeSocket(s)
+                //self?.verifyTest(caseNum) //disabled since it slows down the tests
+                let nextCase = caseNum+1
+                if nextCase <= (self?.caseCount)! {
+                    self?.runTest(nextCase)
+                    //self?.getTestInfo(nextCase) //disabled since it slows down the tests
+                } else {
+                    self?.finishReports()
+                }
+                self?.removeSocket(s)
             }
         }
         s.connect()
@@ -96,7 +103,7 @@ class ViewController: UIViewController {
     func verifyTest(_ caseNum: Int) {
         let s = createSocket("getCaseStatus",caseNum)
         self.socketArray.append(s)
-        s.onText = {(text: String) in
+        s.onText = { (text: String) in
             let data = text.data(using: String.Encoding.utf8)
             do {
                 let resp: Any? = try JSONSerialization.jsonObject(with: data!,
@@ -115,17 +122,18 @@ class ViewController: UIViewController {
             }
         }
         var once = false
-        s.onDisconnect = {[unowned self] (error: NSError?) in
+        s.onDisconnect = { [weak self, weak s]  (error: Error?) in
             if !once {
                 once = true
                 let nextCase = caseNum+1
-                if nextCase <= self.caseCount {
-                    self.getTestInfo(nextCase)
+                print("next test is: \(nextCase)")
+                if nextCase <= (self?.caseCount)! {
+                    self?.getTestInfo(nextCase)
                 } else {
-                    self.finishReports()
+                    self?.finishReports()
                 }
             }
-            self.removeSocket(s)
+            self?.removeSocket(s)
         }
         s.connect()
     }
@@ -133,9 +141,9 @@ class ViewController: UIViewController {
     func finishReports() {
         let s = createSocket("updateReports",0)
         self.socketArray.append(s)
-        s.onDisconnect = {[unowned self] (error: NSError?) in
+        s.onDisconnect = { [weak self, weak s]  (error: Error?) in
             print("finished all the tests!")
-            self.removeSocket(s)
+            self?.removeSocket(s)
         }
         s.connect()
     }

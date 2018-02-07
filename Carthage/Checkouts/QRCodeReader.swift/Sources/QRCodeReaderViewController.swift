@@ -92,8 +92,6 @@ public class QRCodeReaderViewController: UIViewController {
     }
 
     setupUIComponentsWithCancelButtonTitle(builder.cancelButtonTitle)
-
-    NotificationCenter.default.addObserver(self, selector: #selector(orientationDidChange), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
   }
 
   required public init?(coder aDecoder: NSCoder) {
@@ -109,9 +107,6 @@ public class QRCodeReaderViewController: UIViewController {
   }
 
   // MARK: - Responding to View Events
-  override public var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-    return parent?.supportedInterfaceOrientations ?? .all
-  }
 
   override public func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
@@ -133,16 +128,6 @@ public class QRCodeReaderViewController: UIViewController {
     codeReader.previewLayer.frame = view.bounds
   }
 
-  // MARK: - Managing the Orientation
-
-  func orientationDidChange(_ notification: Notification) {
-    readerView.view.setNeedsDisplay()
-
-    if let device = notification.object as? UIDevice , codeReader.previewLayer.connection.isVideoOrientationSupported {
-      codeReader.previewLayer.connection.videoOrientation = QRCodeReader.videoOrientation(deviceOrientation: device.orientation, withSupportedOrientations: supportedInterfaceOrientations, fallbackOrientation: codeReader.previewLayer.connection.videoOrientation)
-    }
-  }
-
   // MARK: - Initializing the AV Components
 
   private func setupUIComponentsWithCancelButtonTitle(_ cancelButtonTitle: String) {
@@ -151,7 +136,8 @@ public class QRCodeReaderViewController: UIViewController {
     let sscb = showSwitchCameraButton && codeReader.hasFrontDevice
     let stb  = showTorchButton && codeReader.isTorchAvailable
 
-    readerView.setupComponents(showCancelButton: showCancelButton, showSwitchCameraButton: sscb, showTorchButton: stb, showOverlayView: showOverlayView)
+    readerView.view.translatesAutoresizingMaskIntoConstraints = false
+    readerView.setupComponents(showCancelButton: showCancelButton, showSwitchCameraButton: sscb, showTorchButton: stb, showOverlayView: showOverlayView, reader: codeReader)
 
     // Setup action methods
 
@@ -159,17 +145,6 @@ public class QRCodeReaderViewController: UIViewController {
     readerView.displayable.toggleTorchButton?.addTarget(self, action: #selector(toggleTorchAction), for: .touchUpInside)
     readerView.displayable.cancelButton?.setTitle(cancelButtonTitle, for: .normal)
     readerView.displayable.cancelButton?.addTarget(self, action: #selector(cancelAction), for: .touchUpInside)
-
-    // Setup camera preview layer
-    codeReader.previewLayer.frame = CGRect(x: 0, y: 0, width: view.frame.size.width, height: view.frame.size.height)
-
-    if codeReader.previewLayer.connection.isVideoOrientationSupported {
-      let orientation = UIDevice.current.orientation
-
-      codeReader.previewLayer.connection.videoOrientation = QRCodeReader.videoOrientation(deviceOrientation: orientation, withSupportedOrientations: supportedInterfaceOrientations)
-    }
-
-    readerView.displayable.cameraView.layer.insertSublayer(codeReader.previewLayer, at: 0)
 
     // Setup constraints
 
@@ -192,7 +167,7 @@ public class QRCodeReaderViewController: UIViewController {
 
   // MARK: - Catching Button Events
 
-  func cancelAction(_ button: UIButton) {
+  @objc func cancelAction(_ button: UIButton) {
     codeReader.stopScanning()
 
     if let _completionBlock = completionBlock {
@@ -202,13 +177,13 @@ public class QRCodeReaderViewController: UIViewController {
     delegate?.readerDidCancel(self)
   }
 
-  func switchCameraAction(_ button: SwitchCameraButton) {
+  @objc func switchCameraAction(_ button: SwitchCameraButton) {
     if let newDevice = codeReader.switchDeviceInput() {
       delegate?.reader(self, didSwitchCamera: newDevice)
     }
   }
   
-  func toggleTorchAction(_ button: ToggleTorchButton) {
+  @objc func toggleTorchAction(_ button: ToggleTorchButton) {
     codeReader.toggleTorch()
   }
 }

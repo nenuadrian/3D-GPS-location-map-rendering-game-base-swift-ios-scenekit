@@ -71,7 +71,7 @@ class Utils {
         return (Float.pi / 180) * angle;
     }
     
-    static func timestamp() -> IntMax {
-        return IntMax(NSDate().timeIntervalSince1970)
+    static func timestamp() -> Int64 {
+        return Int64(NSDate().timeIntervalSince1970)
     }
 }

@@ -15,8 +15,8 @@ class PlayerNode: SCNNode {
         super.init()
         name = "P"
         let obj = SCNSphere(radius: 3)
-        obj.firstMaterial!.diffuse.contents = UIColor.red
-        obj.firstMaterial!.specular.contents = UIColor.white
+        obj.firstMaterial!.diffuse.contents = UIColor.white
+        obj.firstMaterial!.specular.contents = UIColor.black
         geometry = obj
     }
     

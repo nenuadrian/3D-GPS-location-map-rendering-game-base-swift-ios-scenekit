@@ -10,33 +10,38 @@ import UIKit
 import Starscream
 
 class ViewController: UIViewController, WebSocketDelegate {
-    var socket = WebSocket(url: URL(string: "ws://localhost:8080/")!, protocols: ["chat", "superchat"])
+    var socket: WebSocket!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        var request = URLRequest(url: URL(string: "http://localhost:8080")!)
+        request.timeoutInterval = 5
+        socket = WebSocket(request: request)
         socket.delegate = self
         socket.connect()
     }
     
     // MARK: Websocket Delegate Methods.
     
-    func websocketDidConnect(socket: WebSocket) {
+    func websocketDidConnect(socket: WebSocketClient) {
         print("websocket is connected")
     }
     
-    func websocketDidDisconnect(socket: WebSocket, error: NSError?) {
-        if let e = error {
+    func websocketDidDisconnect(socket: WebSocketClient, error: Error?) {
+        if let e = error as? WSError {
+            print("websocket is disconnected: \(e.message)")
+        } else if let e = error {
             print("websocket is disconnected: \(e.localizedDescription)")
         } else {
              print("websocket disconnected")
         }
     }
     
-    func websocketDidReceiveMessage(socket: WebSocket, text: String) {
+    func websocketDidReceiveMessage(socket: WebSocketClient, text: String) {
         print("Received text: \(text)")
     }
     
-    func websocketDidReceiveData(socket: WebSocket, data: Data) {
+    func websocketDidReceiveData(socket: WebSocketClient, data: Data) {
         print("Received data: \(data.count)")
     }
     
