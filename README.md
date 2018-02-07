@@ -22,7 +22,7 @@ In case you don't already have a basic understanding of how GPS maps are tiled.
 
 # Known issues
 
-Very likely if you travel enough you'll hit rounding errors because of the coordinates. When you surpass a certain number of tile, the system should reset and select a new origin tile.
+Very likely if you travel enough you'll hit rounding errors because of the coordinates. When you surpass a certain number of tiles, the system should reset and select a new "primordial" tile to consider as origin of the coordinate system.
 
 There're are surely issues if you go around the globe (eg before first or after last tile in a row)
 
