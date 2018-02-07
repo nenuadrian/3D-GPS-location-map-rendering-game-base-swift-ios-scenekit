@@ -20,6 +20,10 @@ You might want to give a read to articles such as http://www.axismaps.com/guide/
 
 In case you don't already have a basic understanding of how GPS maps are tiled.
 
+I've experimented first with mapzen using this HTML5/PHP processing example:
+
+https://github.com/nenuadrian/OSM-Map-Canvas-Rendering
+
 # Known issues
 
 Very likely if you travel enough you'll hit rounding errors because of the coordinates. When you surpass a certain number of tiles, the system should reset and select a new "primordial" tile to consider as origin of the coordinate system.
