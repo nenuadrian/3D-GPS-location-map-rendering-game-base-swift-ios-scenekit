@@ -15,9 +15,9 @@ import CoreMotion
 import SceneKit
 
 class World3D: UIViewController {
-    static var mapTiles = [Vector2: MapTile]()
+    static var mapTiles = [String: MapTile]()
     
-    private var primordialTile: Vector2!
+    private var primordialTile: (Int, Int)!
     private var playerNode: SCNNode!
     private var locationMaster: LocationMaster!
     private var locationTimer: Timer!
@@ -54,16 +54,19 @@ class World3D: UIViewController {
         
         for i in -Constants.TILE_RANGE...Constants.TILE_RANGE {
             for j in -Constants.TILE_RANGE...Constants.TILE_RANGE {
-                let tileKey = currentTile + Vector2(Float(i), Float(j))
-                if World3D.mapTiles[tileKey] == nil {
-                    World3D.mapTiles[tileKey] = MapTile(tileKey: tileKey, mapNode: sceneView.scene!.rootNode, primordialTile: primordialTile)
+                let tileKey = (currentTile.0 + i, currentTile.1 + j)
+                if World3D.mapTiles["\(tileKey.0)\(tileKey.1)"] == nil {
+                    World3D.mapTiles["\(tileKey.0)\(tileKey.1)"] =
+                        MapTile(tileKey: tileKey, mapNode: sceneView.scene!.rootNode, primordialTile: primordialTile)
                 }
             }
         }
         
-        let playerOffsetInsideTile = Utils.distanceInMetersBetween(latLon1: Utils.tileToLatLon(tile: currentTile), latLon2: playerLatLon) - Vector2(611, 611)/2
-        let playerPosition = World3D.mapTiles[currentTile]!.position + playerOffsetInsideTile * Vector2(1, -1)
-        self.playerNode.position = SCNVector3(x: playerPosition.x, y: playerPosition.y, z: 16)
+        let playerOffset = Utils.distanceInMetersBetween(latLon1: Utils.tileToLatLon(tile: currentTile), latLon2: playerLatLon)
+        let playerOffsetInsideTile = (playerOffset.0 - 611/2, playerOffset.1 - 611/2)
+        let playerPosition = (Double(World3D.mapTiles["\(currentTile.0)\(currentTile.1)"]!.position.0) + playerOffsetInsideTile.0,
+                              (Double(World3D.mapTiles["\(currentTile.0)\(currentTile.1)"]!.position.1) + playerOffsetInsideTile.1) * -1)
+        self.playerNode.position = SCNVector3(x: Float(playerPosition.0), y: Float(playerPosition.1), z: 16)
         
          Logging.info(data: "Player @ P\(playerPosition) OIT\(playerOffsetInsideTile)")
     }

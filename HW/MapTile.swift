@@ -13,27 +13,27 @@ import SwiftyJSON
 
 class MapTile {
     var data: SwiftyJSON.JSON = JSON.null
-    let tileKey: Vector2
-    let position: Vector2
-    let latLon: Vector2
-    let latLonInMeters: Vector2
+    let tileKey: (Int, Int)
+    let position: (Int, Int)
+    let latLon: (Double, Double)
+    let latLonInMeters: (Double, Double)
     var node: SCNNode!
     var lines: [(Double, Double)] = []
 
-    init(tileKey: Vector2, mapNode: SCNNode, primordialTile: Vector2) {
+    init(tileKey: (Int, Int), mapNode: SCNNode, primordialTile: (Int, Int)) {
         self.tileKey = tileKey
-        self.position = Vector2(tileKey.x - primordialTile.x, primordialTile.y - tileKey.y) * 611
+        self.position = ((tileKey.0 - primordialTile.0) * 611, (primordialTile.1 - tileKey.1) * 611)
         self.latLon = Utils.tileToLatLon(tile: tileKey)
         self.latLonInMeters = Utils.latLonToMeters(coord: self.latLon)
         
         Logging.info(data: "TILE \(tileKey) @ \(self.position)")
         
         node = SCNNode()
-        node.position = SCNVector3(x: position.x, y: position.y, z: 0)
+        node.position = SCNVector3(x: Float(position.0), y: Float(position.1), z: 0)
         mapNode.addChildNode(node)
         
 
-        API.get(endpoint: "http://tile.mapzen.com/mapzen/vector/v1/all/16/\(Int(tileKey.x))/\(Int(tileKey.y)).json?api_key=mapzen-YMzZVyX", callback: { (data) in
+        API.get(endpoint: "http://tile.mapzen.com/mapzen/vector/v1/all/16/\(Int(tileKey.0))/\(Int(tileKey.1)).json?api_key=mapzen-YMzZVyX", callback: { (data) in
             self.data = data
             DispatchQueue.main.async {
                 self.render()
@@ -86,11 +86,13 @@ class MapTile {
         for feature in data[field]["features"].array! {
             if feature["geometry"]["type"].string! == "LineString" {
                 let coords = feature["geometry"]["coordinates"].array!
-                let thePoint = Utils.latLonToMeters(coord: Vector2(x: coords[0].array![1].float!, y: coords[0].array![0].float!)) - latLonInMeters
-                context.move(to: CGPoint(x: Double(abs(thePoint.x)), y: Double(abs(thePoint.y))))
+                let pointLatLon = Utils.latLonToMeters(coord: (coords[0].array![1].double!, coords[0].array![0].double!))
+                let thePoint = (pointLatLon.0 - latLonInMeters.0, pointLatLon.1 - latLonInMeters.1)
+                context.move(to: CGPoint(x: abs(thePoint.0), y: abs(thePoint.1)))
                 for point in coords {
-                    let thePointInMeters = Utils.latLonToMeters(coord: Vector2(x: point.array![1].float!, y: point.array![0].float!)) - latLonInMeters
-                    let thePoint = CGPoint(x: Double(abs(thePointInMeters.x)), y: Double(abs(thePointInMeters.y)))
+                    let pointLatLon = Utils.latLonToMeters(coord: (point.array![1].double!, point.array![0].double!))
+                    let thePointInMeters = (pointLatLon.0 - latLonInMeters.0, pointLatLon.1 - latLonInMeters.1)
+                    let thePoint = CGPoint(x: abs(thePointInMeters.0), y: abs(thePointInMeters.1))
                     context.addLine(to: thePoint)
                     context.move(to: thePoint)
                 }
