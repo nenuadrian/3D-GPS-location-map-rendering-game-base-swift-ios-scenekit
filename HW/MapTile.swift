@@ -54,7 +54,7 @@ class MapTile {
     }
     
     func drawShapes(context: CGContext, field: String) {
-        context.setStrokeColor(UIColor(red:0.20, green:0.60, blue:0.88, alpha:1.0).cgColor)
+        context.setStrokeColor(UIColor(red:1, green:1, blue:1, alpha:1.0).cgColor)
         context.setLineWidth(2.0)
 /*if (shape["type"].string! == "polygon") {
  
@@ -107,7 +107,7 @@ class MapTile {
         UIGraphicsBeginImageContextWithOptions(CGSize(width: 611, height: 611), false, scale)
         let context = UIGraphicsGetCurrentContext()!
         
-        context.setFillColor(UIColor(red:0.11, green:0.11, blue:0.13, alpha:1.0).cgColor)
+        context.setFillColor(UIColor(red:0, green:0, blue:0, alpha:1.0).cgColor)
         context.setLineWidth(0)
         context.addRect(CGRect(x: 0, y: 0, width: 611, height: 611))
         context.drawPath(using: .fillStroke)

@@ -10,6 +10,6 @@ import Foundation
 
 class Constants {
     static let TILE_RANGE = 3
-    static let DEBUG = true
+    static let DEBUG = false
     static let DEBUG_LAST = (53.45878, -2.22999)
 }
