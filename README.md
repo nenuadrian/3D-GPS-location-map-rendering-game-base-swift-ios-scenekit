@@ -1,4 +1,4 @@
-# 3D iOS Map Rendering App
+# 3D iOS Map SceneKit Rendering App - Mapzen data
 
 Was a basic attempt at a GPS based game (it was using pre-processed map data, Socket.IO for multiplayer, etc. but those parts were stripped to leave the working map draw)
 
