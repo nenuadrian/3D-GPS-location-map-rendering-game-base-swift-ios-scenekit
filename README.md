@@ -7,7 +7,7 @@ A lot of effort has gone into UX, making the camera rotation with touch to work 
 Mapzen API has been killed, and to transition to mapbox as this repository has:
 https://github.com/nenuadrian/swift-2D-tile-real-world-map-gps-game
 
-Post processing just like in there needs to be done and a bit of the code changes. But what the repo does in PHP, this one can do in Swift
+Post processing just like in there needs to be done and a bit of the code changes. But what that repo does in PHP, this one can do in Swift
 
 # Setup
 
