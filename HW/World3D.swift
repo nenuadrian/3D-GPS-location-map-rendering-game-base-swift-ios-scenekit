@@ -8,8 +8,7 @@
 
 import Foundation
 import UIKit
-import SwiftyJSON
-import SwiftHTTP
+
 import QuartzCore
 import CoreMotion
 import SceneKit

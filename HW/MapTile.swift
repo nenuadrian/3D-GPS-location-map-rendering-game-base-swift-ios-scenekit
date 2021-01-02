@@ -9,10 +9,10 @@
 import Foundation
 import UIKit
 import SceneKit
-import SwiftyJSON
+
 
 class MapTile {
-    var data: SwiftyJSON.JSON = JSON.null
+    var data: JSON = JSON.null
     let tileKey: (Int, Int)
     let position: (Int, Int)
     let latLon: (Double, Double)
@@ -32,8 +32,10 @@ class MapTile {
         node.position = SCNVector3(x: Float(position.0), y: Float(position.1), z: 0)
         mapNode.addChildNode(node)
         
-
-        API.get(endpoint: "http://tile.mapzen.com/mapzen/vector/v1/all/16/\(Int(tileKey.0))/\(Int(tileKey.1)).json?api_key=mapzen-YMzZVyX", callback: { (data) in
+        // TODO not gonna work until handling MVT format / post processing
+        // see https://github.com/nenuadrian/swift-2D-tile-real-world-map-gps-game
+        // for an example
+        API.get(endpoint: "http://api.mapbox.com/mapzen/vector/v4/mapbox.mapbox-streets-v8/16/\(Int(tileKey.0))/\(Int(tileKey.1)).mvt?acces=mapzen-YMzZVyX", callback: { (data) in
             self.data = data
             DispatchQueue.main.async {
                 self.render()
