@@ -1,13 +1,13 @@
 # 3D iOS Map SceneKit Rendering App - Mapzen data
 
-A SceneKit based Map rendering from scratch using MapBox data at zoom level 16
 
-A lot of effort has gone into UX, making the camera rotation with touch to work in an acceptable way (cannot go underground, cannot pass a certain height, can rotate 360 around the player etc)
+The project involves creating a custom Map rendering using SceneKit and MapBox data at zoom level 16.
 
-Mapzen API has been killed, and to transition to mapbox as this repository has:
-https://github.com/nenuadrian/swift-2D-tile-real-world-map-gps-game
+Significant effort has been dedicated to ensuring a seamless user experience, particularly regarding touch-based camera rotation. The implementation restricts camera movement, preventing it from going underground or surpassing a certain height, while enabling a full 360-degree rotation around the player.
 
-Post processing just like in there needs to be done and a bit of the code changes. But what that repo does in PHP, this one can do in Swift
+Due to the discontinuation of the Mapzen API, a transition to Mapbox is necessary, similar to the process undertaken in the following repository: https://github.com/nenuadrian/swift-2D-tile-real-world-map-gps-game
+
+To achieve desired results, post-processing similar to the mentioned repository should be implemented, along with necessary code modifications. Notably, the advantage of this Swift-based project is its ability to accomplish what the PHP repository accomplishes.
 
 # Setup
 
